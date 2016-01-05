@@ -1,6 +1,6 @@
 <?php
 
-Yii::setPathOfAlias('bootstrap', dirname(__FILE__).'/../extensions/bootstrap');
+Yii::setPathOfAlias('bootstrap', dirname(__FILE__) . '/../extensions/bootstrap');
 
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
@@ -14,6 +14,7 @@ return array(
         'application.components.*',
         'application.helpers.*',
         'application.extensions.bootstrap.widgets.*',
+        'application.extensions.bootstrap.helpers.*',
     ),
     'modules' => array(
         // uncomment the following to enable the Gii tool
@@ -27,6 +28,9 @@ return array(
     ),
     // application components
     'components' => array(
+        'bootstrap' => array(
+            'class' => 'bootstrap.components.Bootstrap',
+        ),
         'user' => array(
             // enable cookie-based authentication
             'allowAutoLogin' => true,
@@ -84,9 +88,8 @@ return array(
     // using Yii::app()->params['paramName']
     'params' => array(
         // this is used in contact page
-        
+
         'diretorioImagens' => 'images/',
-        
         'adminEmail' => 'webmaster@example.com',
     ),
 );

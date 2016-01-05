@@ -1689,3 +1689,35 @@ Stack trace:
 #28 {main}
 REQUEST_URI=/erp/index.php?r=cliente/admin
 ---
+2016/01/05 20:43:28 [error] [exception.CException] exception 'CException' with message 'A propriedade "CWebApplication.bootstrap" não está definida.' in /var/www/yii_1_1_14/base/CComponent.php:130
+Stack trace:
+#0 /var/www/yii_1_1_14/base/CModule.php(105): CComponent->__get('bootstrap')
+#1 /var/www/erp/protected/views/layouts/main.php(17): CModule->__get('bootstrap')
+#2 /var/www/yii_1_1_14/web/CBaseController.php(126): require('/var/www/erp/pr...')
+#3 /var/www/yii_1_1_14/web/CBaseController.php(95): CBaseController->renderInternal('/var/www/erp/pr...', Array, true)
+#4 /var/www/yii_1_1_14/web/widgets/CContentDecorator.php(76): CBaseController->renderFile('/var/www/erp/pr...', Array, true)
+#5 /var/www/yii_1_1_14/web/widgets/CContentDecorator.php(54): CContentDecorator->decorate('<div class="spa...')
+#6 /var/www/yii_1_1_14/web/widgets/COutputProcessor.php(44): CContentDecorator->processOutput('<div class="spa...')
+#7 /var/www/yii_1_1_14/web/CBaseController.php(206): COutputProcessor->run()
+#8 /var/www/yii_1_1_14/web/CBaseController.php(300): CBaseController->endWidget('CContentDecorat...')
+#9 /var/www/erp/protected/views/layouts/column2.php(22): CBaseController->endContent()
+#10 /var/www/yii_1_1_14/web/CBaseController.php(126): require('/var/www/erp/pr...')
+#11 /var/www/yii_1_1_14/web/CBaseController.php(95): CBaseController->renderInternal('/var/www/erp/pr...', Array, true)
+#12 /var/www/yii_1_1_14/web/CController.php(734): CBaseController->renderFile('/var/www/erp/pr...', Array, true)
+#13 /var/www/erp/protected/controllers/ClienteController.php(138): CController->render('admin', Array)
+#14 /var/www/yii_1_1_14/web/actions/CInlineAction.php(49): ClienteController->actionAdmin()
+#15 /var/www/yii_1_1_14/web/CController.php(294): CInlineAction->runWithParams(Array)
+#16 /var/www/yii_1_1_14/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#17 /var/www/yii_1_1_14/web/filters/CFilter.php(40): CFilterChain->run()
+#18 /var/www/yii_1_1_14/web/CController.php(1070): CFilter->filter(Object(CFilterChain))
+#19 /var/www/yii_1_1_14/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#20 /var/www/yii_1_1_14/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#21 /var/www/yii_1_1_14/web/CController.php(279): CFilterChain->run()
+#22 /var/www/yii_1_1_14/web/CController.php(256): CController->runActionWithFilters(Object(CInlineAction), Array)
+#23 /var/www/yii_1_1_14/web/CWebApplication.php(282): CController->run('admin')
+#24 /var/www/yii_1_1_14/web/CWebApplication.php(141): CWebApplication->runController('cliente/admin')
+#25 /var/www/yii_1_1_14/base/CApplication.php(180): CWebApplication->processRequest()
+#26 /var/www/erp/index.php(13): CApplication->run()
+#27 {main}
+REQUEST_URI=/erp/index.php?r=cliente/admin
+---

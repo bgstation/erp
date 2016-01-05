@@ -47,8 +47,8 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'endereço'); ?>
-		<?php echo $form->textField($model,'endereço',array('size'=>60,'maxlength'=>100)); ?>
+		<?php echo $form->label($model,'endereco'); ?>
+		<?php echo $form->textField($model,'endereco',array('size'=>60,'maxlength'=>100)); ?>
 	</div>
 
 	<div class="row">

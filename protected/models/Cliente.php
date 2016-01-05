@@ -104,7 +104,7 @@ class Cliente extends CActiveRecord {
         $criteria->compare('sexo', $this->sexo, true);
         $criteria->compare('telefone_fixo', $this->telefone_fixo, true);
         $criteria->compare('celular', $this->celular, true);
-        $criteria->compare('endereco', $this->endereço, true);
+        $criteria->compare('endereco', $this->endereco, true);
         $criteria->compare('numero', $this->numero);
         $criteria->compare('complemento', $this->complemento, true);
         $criteria->compare('data_cadastro', $this->data_cadastro, true);

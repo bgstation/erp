@@ -14,7 +14,7 @@ class m160105_163731_criar_tabela_de_clientes extends CDbMigration {
             'endereco' => 'varchar(100)',
             'numero' => 'integer',
             'complemento' => 'varchar(20)',
-            'data_cadastro' => 'varchar(15)',
+            'data_cadastro' => 'DATETIME',
             'excluido' => 'BOOLEAN DEFAULT FALSE',
         ));
         

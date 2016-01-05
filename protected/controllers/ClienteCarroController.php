@@ -14,7 +14,7 @@ class ClienteCarroController extends Controller {
     public function filters() {
         return array(
             'accessControl', // perform access control for CRUD operations
-            'postOnly + delete', // we only allow deletion via POST request
+//            'postOnly + delete', // we only allow deletion via POST request
         );
     }
 
@@ -88,7 +88,7 @@ class ClienteCarroController extends Controller {
         if (isset($_POST['ClienteCarro'])) {
             $model->attributes = $_POST['ClienteCarro'];
             if ($model->save())
-                $this->redirect(array('view', 'id' => $model->id));
+                $this->redirect(array('cliente/view', 'id' => $model->cliente_id));
         }
 
         $this->render('update', array(
@@ -102,7 +102,7 @@ class ClienteCarroController extends Controller {
      * @param integer $id the ID of the model to be deleted
      */
     public function actionDelete($id) {
-        $this->loadModel($id)->delete();
+        $this->loadModel($id)->marcarExcluido();
 
         // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))

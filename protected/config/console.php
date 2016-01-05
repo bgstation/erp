@@ -7,7 +7,6 @@ return array(
     'name' => 'My Console Application',
     // preloading 'log' component
     'preload' => array('log'),
-    // application components
     'components' => array(
         'db' => array(
             'connectionString' => 'mysql:host=localhost;dbname=erp',

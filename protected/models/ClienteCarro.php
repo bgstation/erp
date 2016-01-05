@@ -12,7 +12,7 @@
  * @property integer $excluido
  */
 class ClienteCarro extends CActiveRecord {
-    
+
     public $aMarcaCarro = array(
         'Agrale',
         'Aston Martin',
@@ -82,6 +82,7 @@ class ClienteCarro extends CActiveRecord {
             array('placa, cliente_id', 'required'),
             array('marca_carro_id, cliente_id, excluido', 'numerical', 'integerOnly' => true),
             array('placa', 'length', 'max' => 8),
+            array('placa', 'checarUnique', 'except' => 'marcarExcluido'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, placa, marca_carro_id, cliente_id, observacao, excluido', 'safe', 'on' => 'search'),
@@ -96,6 +97,25 @@ class ClienteCarro extends CActiveRecord {
         // class name for the relations automatically generated below.
         return array(
         );
+    }
+
+    public function scopes() {
+        return array(
+            'naoExcluido' => array(
+                'condition' => 't.excluido = false'
+            ),
+        );
+    }
+
+    public function checarUnique() {
+        $models = self::model()->naoExcluido()->findByAttributes(array(
+            'placa' => $this->placa,
+        ));
+        if (!empty($models)) {
+            $this->addError($this->placa, 'Esta placa já encontra-se cadastrada.');
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -149,6 +169,14 @@ class ClienteCarro extends CActiveRecord {
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
+    }
+    
+    public function marcarExcluido(){
+        $this->scenario = 'marcarExcluido';
+        $this->excluido = 1;
+        if(!$this->save()){
+            die(var_dump($this->getErrors()));
+        }
     }
 
 }

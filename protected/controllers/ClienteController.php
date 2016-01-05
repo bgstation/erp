@@ -48,13 +48,11 @@ class ClienteController extends Controller {
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView($id) {
-        $oClienteCarros = ClienteCarro::model()->findAllByAttributes(array(
-            'cliente_id' => $id
-        ));
-        
+        $oClienteCarro = new ClienteCarro;
+
         $this->render('view', array(
             'model' => $this->loadModel($id),
-            'oClienteCarros' => $oClienteCarros,
+            'oClienteCarro' => $oClienteCarro,
         ));
     }
 
@@ -71,6 +69,7 @@ class ClienteController extends Controller {
 
         if (isset($_POST['Cliente'])) {
             $model->attributes = $_POST['Cliente'];
+            $model->data_cadastro = date('d/m/Y H:i:s');
             if ($model->save())
                 $this->redirect(array('clienteCarro/create', 'clienteId' => $model->id));
         }

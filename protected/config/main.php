@@ -12,8 +12,8 @@ return array(
     'import' => array(
         'application.models.*',
         'application.components.*',
-        'application.extensions.bootstrap.widgets.*',
         'application.helpers.*',
+        'application.extensions.bootstrap.widgets.*',
     ),
     'modules' => array(
         // uncomment the following to enable the Gii tool

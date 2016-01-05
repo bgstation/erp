@@ -44,6 +44,8 @@ class Cliente extends CActiveRecord {
             array('telefone_fixo, celular, complemento', 'length', 'max' => 20),
             array('data_cadastro', 'length', 'max' => 15),
             array('nome, sexo', 'required'),
+            array('cpf, email', 'unique'),
+//            array('email', 'validarEmailDuplicado', 'on' => 'insert, alterar_email'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
             array('id, email, nome, cpf, sexo, telefone_fixo, celular, endereco, numero, complemento, data_cadastro', 'safe', 'on' => 'search'),

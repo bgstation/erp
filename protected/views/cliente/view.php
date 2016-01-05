@@ -36,3 +36,9 @@ $this->widget('zii.widgets.CDetailView', array(
     ),
 ));
 ?>
+
+<hr>
+
+<h3>Carros cadastrados</h3>
+
+<?= ClienteCarroHelper::renderCarrosCliente($oClienteCarros) ?>

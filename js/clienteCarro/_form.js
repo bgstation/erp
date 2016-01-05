@@ -1,0 +1,1 @@
+$('#ClienteCarro_placa').mask('AAA-0000', {translation:  {'A': {pattern: /[A-Za-z]/}}});

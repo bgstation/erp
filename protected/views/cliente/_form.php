@@ -81,7 +81,7 @@
 		<?php echo $form->textField($model,'complemento',array('size'=>20,'maxlength'=>20)); ?>
 		<?php echo $form->error($model,'complemento'); ?>
 	</div>
-
+       
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Cadastrar' : 'Atualizar'); ?>
 	</div>

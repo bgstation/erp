@@ -8,10 +8,12 @@ return array(
     // preloading 'log' component
     'preload' => array('log'),
     // autoloading model and component classes
+    'language' => 'pt_br',
     'import' => array(
         'application.models.*',
         'application.components.*',
         'application.extensions.bootstrap.widgets.*',
+        'application.helpers.*',
     ),
     'modules' => array(
         // uncomment the following to enable the Gii tool

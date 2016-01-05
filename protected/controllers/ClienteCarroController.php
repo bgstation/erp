@@ -1,6 +1,6 @@
 <?php
 
-class ClienteController extends Controller {
+class ClienteCarroController extends Controller {
 
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -48,13 +48,8 @@ class ClienteController extends Controller {
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView($id) {
-        $oClienteCarros = ClienteCarro::model()->findAllByAttributes(array(
-            'cliente_id' => $id
-        ));
-        
         $this->render('view', array(
             'model' => $this->loadModel($id),
-            'oClienteCarros' => $oClienteCarros,
         ));
     }
 
@@ -63,16 +58,15 @@ class ClienteController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $this->pageTitle = 'RPSystem - Cadastro de clientes';
-        $model = new Cliente;
+        $model = new ClienteCarro;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Cliente'])) {
-            $model->attributes = $_POST['Cliente'];
+        if (isset($_POST['ClienteCarro'])) {
+            $model->attributes = $_POST['ClienteCarro'];
             if ($model->save())
-                $this->redirect(array('clienteCarro/create', 'clienteId' => $model->id));
+                $this->redirect(array('cliente/view', 'id' => $model->cliente_id));
         }
 
         $this->render('create', array(
@@ -91,8 +85,8 @@ class ClienteController extends Controller {
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Cliente'])) {
-            $model->attributes = $_POST['Cliente'];
+        if (isset($_POST['ClienteCarro'])) {
+            $model->attributes = $_POST['ClienteCarro'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -119,7 +113,7 @@ class ClienteController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('Cliente');
+        $dataProvider = new CActiveDataProvider('ClienteCarro');
         $this->render('index', array(
             'dataProvider' => $dataProvider,
         ));
@@ -129,10 +123,10 @@ class ClienteController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
-        $model = new Cliente('search');
+        $model = new ClienteCarro('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['Cliente']))
-            $model->attributes = $_GET['Cliente'];
+        if (isset($_GET['ClienteCarro']))
+            $model->attributes = $_GET['ClienteCarro'];
 
         $this->render('admin', array(
             'model' => $model,
@@ -143,11 +137,11 @@ class ClienteController extends Controller {
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Cliente the loaded model
+     * @return ClienteCarro the loaded model
      * @throws CHttpException
      */
     public function loadModel($id) {
-        $model = Cliente::model()->findByPk($id);
+        $model = ClienteCarro::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -155,10 +149,10 @@ class ClienteController extends Controller {
 
     /**
      * Performs the AJAX validation.
-     * @param Cliente $model the model to be validated
+     * @param ClienteCarro $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'cliente-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'cliente-carro-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

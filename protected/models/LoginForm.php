@@ -51,9 +51,7 @@ class LoginForm extends CFormModel {
             }
         }
     }
-git config remote.origin.url https://didatico:wtivrd09@github.com/didatico/cursotutormodelo.git
-    
-git config remote.origin.url https://rpsystem:informal17@github.com/rpsystem/erp.git
+
     /**
      * Logs in the user using the given username and password in the model.
      * @return boolean whether login is successful

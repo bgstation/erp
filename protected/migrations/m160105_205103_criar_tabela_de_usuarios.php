@@ -7,8 +7,8 @@ class m160105_205103_criar_tabela_de_usuarios extends CDbMigration {
             'id' => 'pk  not null auto_increment',
             'nome' => 'varchar(100)',
             'login' => 'varchar(100)',
-            'senha' => 'varchar(20)',
-            'tipo_usuario_id' => 'integer references tipos_usuarios(id)',
+            'senha' => 'varchar(60)',
+            'acl_tipo_usuario_id' => 'integer references acl_tipos_usuarios(id)',
             'excluido' => 'boolean default false',
             'data_cadastro' => 'DATETIME',
         ));

@@ -11,7 +11,34 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 ));
 ?>
 
-<h1>Cliente: <?= $model->nome ?></h1>
+<h2><?= $model->nome ?></h2>
+
+<ul class="nav_alter">
+    <li>
+        <?php
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'type' => 'primary',
+            'size' => 'medium',
+            'label' => 'Adicionar carro',
+            'url' => Yii::app()->createUrl('clienteCarro/create', array('clienteId' => $model->id)),
+            'htmlOptions' => array(),
+                )
+        );
+        ?>
+    </li>
+    <li>
+        <?php
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'type' => 'button',
+            'size' => 'medium',
+            'label' => Yii::t('site', 'Exibir Clientes'),
+            'url' => Yii::app()->createUrl('admin'),
+            'htmlOptions' => array(),
+                )
+        );
+        ?>
+    </li>
+</ul>
 
 <?php
 $this->widget('zii.widgets.CDetailView', array(
@@ -51,13 +78,7 @@ if (!empty($model->clientesCarros)) {
 }
 ?>
 
-<div class="row buttons">
-    <?php
-    echo CHtml::button('Adicionar veículo', array(
-        'onclick' => 'location.href="' . Yii::app()->createUrl('clienteCarro/create', array('clienteId' => $model->id)) . '";',
-    ));
-    ?>
-</div>
+
 
 <h3><?= Yii::t('site', 'Opções alternativas') ?></h3>
 <ul class="nav_alter">

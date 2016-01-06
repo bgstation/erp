@@ -2011,3 +2011,31 @@ Stack trace:
 REQUEST_URI=/fashioncar/index.php?r=cliente/create
 HTTP_REFERER=http://localhost:8888/fashioncar/index.php?r=cliente/admin
 ---
+2016/01/06 09:00:36 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection: SQLSTATE[HY000] [2005] Unknown MySQL server host 'localhost:8889' (25)' in /var/www/html/yii_1_1_14/db/CDbConnection.php:382
+Stack trace:
+#0 /var/www/html/yii_1_1_14/db/CDbConnection.php(330): CDbConnection->open()
+#1 /var/www/html/yii_1_1_14/db/CDbConnection.php(308): CDbConnection->setActive(true)
+#2 /var/www/html/yii_1_1_14/base/CModule.php(387): CDbConnection->init()
+#3 /var/www/html/yii_1_1_14/cli/commands/MigrateCommand.php(442): CModule->getComponent('db')
+#4 /var/www/html/yii_1_1_14/cli/commands/MigrateCommand.php(451): MigrateCommand->getDbConnection()
+#5 /var/www/html/yii_1_1_14/cli/commands/MigrateCommand.php(482): MigrateCommand->getMigrationHistory(-1)
+#6 /var/www/html/yii_1_1_14/cli/commands/MigrateCommand.php(84): MigrateCommand->getNewMigrations()
+#7 [internal function]: MigrateCommand->actionUp(Array)
+#8 /var/www/html/yii_1_1_14/console/CConsoleCommand.php(172): ReflectionMethod->invokeArgs(Object(MigrateCommand), Array)
+#9 /var/www/html/yii_1_1_14/console/CConsoleCommandRunner.php(71): CConsoleCommand->run(Array)
+#10 /var/www/html/yii_1_1_14/console/CConsoleApplication.php(92): CConsoleCommandRunner->run(Array)
+#11 /var/www/html/yii_1_1_14/base/CApplication.php(180): CConsoleApplication->processRequest()
+#12 /var/www/html/yii_1_1_14/yiic.php(33): CApplication->run()
+#13 /var/www/html/erp/protected/yiic.php(7): require_once('/var/www/html/y...')
+#14 /var/www/html/erp/protected/yiic(4): require_once('/var/www/html/e...')
+#15 {main}
+---
+2016/01/06 11:29:11 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ON UPDATE CURRENT_TIMESTAMP
+)' at line 7. The SQL statement executed was: CREATE TABLE `acl_tipos_usuarios_rotas` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY  not null auto_increment,
+	`acl_rota_id` int(11),
+	`acl_tipo_usuario_id` int(11),
+	`excluido` tinyint(1) default false,
+	`data_insercao` DATETIME DEFAULT CURRENT_TIMESTAMP,
+	`data_ultima_atualizacao` DATETIME DEFAULT ON UPDATE CURRENT_TIMESTAMP
+).

@@ -25,7 +25,11 @@
         <div class="container" id="page">
 
             <div id="header">
-                <div id="logo"><?= CHtml::image(Yii::app()->params['diretorioImagens'] . 'logo.png', 'fashion car') ?></div>
+                <div id="logo">
+                    <a href="<?= Yii::app()->createUrl('site/index') ?>">
+                        <?= CHtml::image(Yii::app()->params['diretorioImagens'] . 'logo.png', 'fashion car') ?>
+                    </a>
+                </div>
             </div>
 
             <div id="mainmenu">
@@ -34,10 +38,10 @@
                     'type' => 'tabs',
                     'stacked' => false,
                     'items' => array(
-                        array('label' => 'Home', 'url' => array('/site/index')),
+//                        array('label' => 'Home', 'url' => array('/site/index')),
                         array('label' => 'Cadastro', 'items' => array(
                                 array('label' => 'Clientes', 'url' => array('cliente/admin'),),
-                                array('label' => 'Tipos de Usuários', 'url' => array('tipoUsuario/admin'),),
+                                array('label' => 'Tipos de Usuários', 'url' => array('aclTipoUsuario/admin'),),
                                 array('label' => 'Usuários', 'url' => array('usuario/admin'),),
                             ), 'visible' => !Yii::app()->user->isGuest),
                         array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),

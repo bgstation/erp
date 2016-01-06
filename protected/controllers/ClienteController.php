@@ -13,8 +13,8 @@ class ClienteController extends Controller {
      */
     public function filters() {
         return array(
-            'accessControl', // perform access control for CRUD operations
-            'postOnly + delete', // we only allow deletion via POST request
+            'accessControl',
+            'postOnly + delete',
         );
     }
 
@@ -25,16 +25,16 @@ class ClienteController extends Controller {
      */
     public function accessRules() {
         return array(
-            array('allow', // allow all users to perform 'index' and 'view' actions
+            array('allow',
                 'actions' => array('index', 'view'),
                 'users' => array('*'),
             ),
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update'),
+            array('allow',
+                'actions' => array('create', 'update', 'admin', 'delete'),
                 'users' => array('@'),
             ),
-            array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions' => array('admin', 'delete'),
+            array('allow',
+                'actions' => array(),
                 'users' => array('admin'),
             ),
             array('deny', // deny all users
@@ -64,9 +64,6 @@ class ClienteController extends Controller {
         $this->pageTitle = 'RPSystem - Cadastro de clientes';
         $model = new Cliente;
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
         if (isset($_POST['Cliente'])) {
             $model->attributes = $_POST['Cliente'];
             $model->data_cadastro = date('d/m/Y H:i:s');
@@ -87,9 +84,6 @@ class ClienteController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
         if (isset($_POST['Cliente'])) {
             $model->attributes = $_POST['Cliente'];
             if ($model->save())
@@ -109,7 +103,6 @@ class ClienteController extends Controller {
     public function actionDelete($id) {
         $this->loadModel($id)->delete();
 
-        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
@@ -129,7 +122,7 @@ class ClienteController extends Controller {
      */
     public function actionAdmin() {
         $model = new Cliente('search');
-        $model->unsetAttributes();  // clear any default values
+        $model->unsetAttributes();
         if (isset($_GET['Cliente']))
             $model->attributes = $_GET['Cliente'];
 

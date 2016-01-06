@@ -1,0 +1,21 @@
+/* 
+    Document   : site.css
+    Created on : 10/03/2014, 16:49:35
+    Author     : pedro
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.textarea_texto {
+    width: 670px;
+}
+#navegacao_passos {
+    position: static; left: 0; width: 100%; margin-bottom: 1em;
+}
+#btn_finalizar{
+    margin-right: 10px;
+}
+#btn_adicionar_projeto {
+    margin-top:-10px;
+    margin-left:10px;
+}

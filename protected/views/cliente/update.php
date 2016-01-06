@@ -2,20 +2,15 @@
 /* @var $this ClienteController */
 /* @var $model Cliente */
 
-$this->breadcrumbs=array(
-	'Clientes'=>array('index'),
-	$model->id=>array('view','id'=>$model->id),
-	'Update',
-);
-
-$this->menu=array(
-	array('label'=>'List Cliente', 'url'=>array('index')),
-	array('label'=>'Create Cliente', 'url'=>array('create')),
-	array('label'=>'View Cliente', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Cliente', 'url'=>array('admin')),
-);
+$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+    'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
+    'links' => array(
+        'Clientes' => Yii::app()->createUrl('cliente/admin'),
+        'Atualizar',
+    ),
+));
 ?>
 
-<h1>Update Cliente <?php echo $model->id; ?></h1>
+<h1>Atualizar Cliente: <?= $model->nome ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model' => $model)); ?>

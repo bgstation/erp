@@ -6,16 +6,18 @@
         <meta name="language" content="en" />
 
         <!-- blueprint CSS framework -->
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" />
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print.css" media="print" />
+        <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/screen.css" media="screen, projection" />
+        <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/print.css" media="print" />
         <!--[if lt IE 8]>
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie.css" media="screen, projection" />
+        <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/ie.css" media="screen, projection" />
         <![endif]-->
 
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
-        <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
-        <?php Yii::app()->bootstrap->register(); ?>
-        <title><?php echo CHtml::encode($this->pageTitle); ?></title>
+        <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/main.css" />
+        <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/form.css" />
+        <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/site.css" />
+        <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/bootstrap.min.css" />
+        <?php Yii::app()->bootstrap->register() ?>
+        <title><?= CHtml::encode($this->pageTitle) ?></title>
     </head>
 
     <body>
@@ -23,8 +25,8 @@
         <div class="container" id="page">
 
             <div id="header">
-                <div id="logo"><?php echo CHtml::image(Yii::app()->params['diretorioImagens'].'logo.png', 'fashion car'); ?></div>
-            </div><!-- header -->
+                <div id="logo"><?= CHtml::image(Yii::app()->params['diretorioImagens'] . 'logo.png', 'fashion car') ?></div>
+            </div>
 
             <div id="mainmenu">
                 <?php
@@ -33,33 +35,34 @@
                     'stacked' => false,
                     'items' => array(
                         array('label' => 'Home', 'url' => array('/site/index')),
-                        array('label' => 'About', 'url' => array('/site/page', 'view' => 'about')),
-                        array('label' => 'Contact', 'url' => array('/site/contact')),
+                        array('label' => 'Cadastro', 'items' => array(
+                                array('label' => 'Clientes', 'url' => array('cliente/admin'),),
+                                array('label' => 'Tipos de Usuários', 'url' => array('tipoUsuario/admin'),),
+                                array('label' => 'Usuários', 'url' => array('usuario/admin'),),
+                            ), 'visible' => !Yii::app()->user->isGuest),
                         array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
-                        array('label' => 'Logout (' . Yii::app()->user->name . ')', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest)
+                        array('label' => 'Logout (' . Yii::app()->user->name . ')', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest, 'itemOptions' => array('style' => 'float:right;'))
                     ),
                 ));
                 ?>
-            </div><!-- mainmenu -->
+            </div>
             <?php if (isset($this->breadcrumbs)): ?>
                 <?php
                 $this->widget('zii.widgets.CBreadcrumbs', array(
                     'links' => $this->breadcrumbs,
                 ));
-                ?><!-- breadcrumbs -->
-<?php endif ?>
+                ?>
+            <?php endif ?>
 
-<?php echo $content; ?>
+            <?= $content ?>
 
             <div class="clear"></div>
 
             <div id="footer">
-                Copyright &copy; <?php echo date('Y'); ?> by My Company.<br/>
-                All Rights Reserved.<br/>
-<?php echo Yii::powered(); ?>
-            </div><!-- footer -->
+                Copyright &copy; <?= date('Y') ?> by RPsystem. Todos os direitos reservados.
+            </div>
 
-        </div><!-- page -->
+        </div>
 
     </body>
 </html>

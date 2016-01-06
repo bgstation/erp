@@ -53,7 +53,7 @@ pre {margin:1.5em 0;white-space:pre;}
 pre, code, tt {font:1em 'andale mono', 'lucida console', monospace;line-height:1.5;}
 li ul, li ol {margin:0;}
 ul, ol {margin:0 1.5em 1.5em 0;padding-left:1.5em;}
-ul {list-style-type:disc;}
+ul {list-style-type:none;}
 ol {list-style-type:decimal;}
 dl {margin:0 0 1.5em 0;}
 dl dt {font-weight:bold;}
@@ -236,3 +236,6 @@ hr.space {background:#fff;color:#fff;visibility:hidden;}
 .clearfix:after, .container:after {content:"\0020";display:block;height:0;clear:both;visibility:hidden;overflow:hidden;}
 .clearfix, .container {display:block;}
 .clear {clear:both;}
+.nav_alter li {
+    float:left;
+}

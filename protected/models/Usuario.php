@@ -33,6 +33,13 @@ class Usuario extends CActiveRecord {
             array('id, nome, login, senha, tipo_usuario_id, excluido, data_cadastro', 'safe', 'on' => 'search'),
         );
     }
+    
+    public function beforeSave() {
+        if ($this->isNewRecord) {
+            $this->data_cadastro = date('Y-m-d H:i:s');
+        }
+        return parent::beforeSave();
+    }
 
     /**
      * @return array relational rules.

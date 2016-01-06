@@ -2,28 +2,32 @@
 /* @var $this TipoUsuarioController */
 /* @var $model TipoUsuario */
 
-$this->breadcrumbs=array(
-	'Tipo Usuarios'=>array('index'),
-	$model->id,
-);
-
-$this->menu=array(
-	array('label'=>'List TipoUsuario', 'url'=>array('index')),
-	array('label'=>'Create TipoUsuario', 'url'=>array('create')),
-	array('label'=>'Update TipoUsuario', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete TipoUsuario', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage TipoUsuario', 'url'=>array('admin')),
-);
+$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+    'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
+    'links' => array(
+        'Tipos de Usuários' => Yii::app()->createUrl('tipoUsuario/admin'),
+        $model->titulo,
+    ),
+));
 ?>
 
-<h1>View TipoUsuario #<?php echo $model->id; ?></h1>
+<h1>Tipo de Usuário: <?= $model->titulo ?></h1>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'titulo',
-		'excluido',
-		'data_cadastro',
-	),
-)); ?>
+<?php
+$this->widget('zii.widgets.CDetailView', array(
+    'data' => $model,
+    'attributes' => array(
+        'id',
+        'titulo',
+        'excluido',
+        'data_cadastro',
+    ),
+));
+?>
+
+<h3><?= Yii::t('site', 'Opções alternativas') ?></h3>
+<ul class="nav_alter">
+    <li><a class="btn" href="<?= $this->createUrl('admin') ?>"><?= Yii::t('site', 'Exibir Tipos de Usuários') ?></a></li>
+    <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar Tipos de Usuários') ?></a></li>
+    <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar Tipos de Usuários') ?></a></li>
+</ul>

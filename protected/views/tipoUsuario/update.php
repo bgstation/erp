@@ -2,20 +2,15 @@
 /* @var $this TipoUsuarioController */
 /* @var $model TipoUsuario */
 
-$this->breadcrumbs=array(
-	'Tipo Usuarios'=>array('index'),
-	$model->id=>array('view','id'=>$model->id),
-	'Update',
-);
-
-$this->menu=array(
-	array('label'=>'List TipoUsuario', 'url'=>array('index')),
-	array('label'=>'Create TipoUsuario', 'url'=>array('create')),
-	array('label'=>'View TipoUsuario', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage TipoUsuario', 'url'=>array('admin')),
-);
+$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+    'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
+    'links' => array(
+        'Tipos de Usuários' => Yii::app()->createUrl('tipoUsuario/admin'),
+        'Atualizar',
+    ),
+));
 ?>
 
-<h1>Update TipoUsuario <?php echo $model->id; ?></h1>
+<h1>Atualizar Tipo de Usuário: <?= $model->titulo ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

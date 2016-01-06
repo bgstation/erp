@@ -2,21 +2,16 @@
 /* @var $this ClienteController */
 /* @var $model Cliente */
 
-$this->breadcrumbs = array(
-    'Clientes' => array('index'),
-    $model->id,
-);
-
-$this->menu = array(
-    array('label' => 'List Cliente', 'url' => array('index')),
-    array('label' => 'Create Cliente', 'url' => array('create')),
-    array('label' => 'Update Cliente', 'url' => array('update', 'id' => $model->id)),
-    array('label' => 'Delete Cliente', 'url' => '#', 'linkOptions' => array('submit' => array('delete', 'id' => $model->id), 'confirm' => 'Are you sure you want to delete this item?')),
-    array('label' => 'Manage Cliente', 'url' => array('admin')),
-);
+$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+    'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
+    'links' => array(
+        'Clientes' => Yii::app()->createUrl('cliente/admin'),
+        $model->nome,
+    ),
+));
 ?>
 
-<h1><?php echo $model->nome; ?></h1>
+<h1>Cliente: <?= $model->nome ?></h1>
 
 <?php
 $this->widget('zii.widgets.CDetailView', array(
@@ -44,25 +39,32 @@ $this->widget('zii.widgets.CDetailView', array(
 <?php
 if (!empty($model->clientesCarros)) {
     foreach ($model->clientesCarros as $clienteCarro) {
-        $urlDelete = "'".Yii::app()->createUrl('clienteCarro/delete', array('id' => $clienteCarro->id))."'";
+        $urlDelete = "'" . Yii::app()->createUrl('clienteCarro/delete', array('id' => $clienteCarro->id)) . "'";
         echo '<ul>';
         echo '<li>Placa: ' . strtoupper($clienteCarro->placa) . '</li>';
         echo '<li>Marca: ' . $oClienteCarro->aMarcaCarro[$clienteCarro->marca_carro_id] . '</li>';
         echo '<li>Observação: ' . $clienteCarro->observacao . '</li>';
         echo '<li>';
-        echo '<a onclick="removerCarro('.$urlDelete.')" href="javascript:void(0)">Remover</a> - <a href="' . Yii::app()->createUrl('clienteCarro/update', array('id' => $clienteCarro->id, 'clienteId' => $clienteCarro->cliente_id)) . '">Editar</a></li>';
+        echo '<a onclick="removerCarro(' . $urlDelete . ')" href="javascript:void(0)">Remover</a> - <a href="' . Yii::app()->createUrl('clienteCarro/update', array('id' => $clienteCarro->id, 'clienteId' => $clienteCarro->cliente_id)) . '">Editar</a></li>';
         echo '</ul>';
     }
 }
 ?>
 
 <div class="row buttons">
-    <?php echo CHtml::button('Adicionar veículo', array(
-        'onclick' => 'location.href="'.Yii::app()->createUrl('clienteCarro/create', array('clienteId' => $model->id)).'";',
-    )); ?>
+    <?php
+    echo CHtml::button('Adicionar veículo', array(
+        'onclick' => 'location.href="' . Yii::app()->createUrl('clienteCarro/create', array('clienteId' => $model->id)) . '";',
+    ));
+    ?>
 </div>
+
+<h3><?= Yii::t('site', 'Opções alternativas') ?></h3>
+<ul class="nav_alter">
+    <li><a class="btn" href="<?= $this->createUrl('admin') ?>"><?= Yii::t('site', 'Exibir Clientes') ?></a></li>
+    <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar Cliente') ?></a></li>
+    <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar Cliente') ?></a></li>
+</ul>
 
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery-2.1.4.min.js"></script>
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/cliente/view.js"></script>
-
-<!--<//?= ClienteCarroHelper::renderCarrosCliente($oClienteCarros) ?>-->

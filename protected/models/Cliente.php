@@ -34,8 +34,6 @@ class Cliente extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('numero', 'numerical', 'integerOnly' => true),
             array('email, nome, endereco', 'length', 'max' => 100),
@@ -45,11 +43,15 @@ class Cliente extends CActiveRecord {
             array('data_cadastro', 'length', 'max' => 15),
             array('nome, sexo', 'required'),
             array('cpf, email', 'unique'),
-//            array('email', 'validarEmailDuplicado', 'on' => 'insert, alterar_email'),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
             array('id, email, nome, cpf, sexo, telefone_fixo, celular, endereco, numero, complemento, data_cadastro', 'safe', 'on' => 'search'),
         );
+    }
+
+    public function beforeSave() {
+        if ($this->isNewRecord) {
+            $this->data_cadastro = date('Y-m-d H:i:s');
+        }
+        return parent::beforeSave();
     }
 
     /**

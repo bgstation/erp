@@ -2,17 +2,15 @@
 /* @var $this UsuarioController */
 /* @var $model Usuario */
 
-$this->breadcrumbs=array(
-	'Usuarios'=>array('index'),
-	'Create',
-);
-
-$this->menu=array(
-	array('label'=>'List Usuario', 'url'=>array('index')),
-	array('label'=>'Manage Usuario', 'url'=>array('admin')),
-);
+$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+    'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
+    'links' => array(
+        'Usuários' => Yii::app()->createUrl('usuario/admin'),
+        'Cadastrar',
+    ),
+));
 ?>
 
-<h1>Create Usuario</h1>
+<h1>Cadastrar Usuário</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php $this->renderPartial('_form', array('model' => $model)); ?>

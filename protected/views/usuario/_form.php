@@ -31,26 +31,34 @@
 
     <div class="row">
         <?= $form->labelEx($model, 'senha') ?>
-        <?= $form->textField($model, 'senha', array('size' => 20, 'maxlength' => 20)) ?>
+        <?= $form->passwordField($model, 'senha', array('size' => 20, 'maxlength' => 20)) ?>
         <?= $form->error($model, 'senha') ?>
+        <?= !$model->isNewRecord ? '<p>Preencha apenas caso queira alterar a senha</p>' : '' ?>
     </div>
 
     <div class="row">
-        <?= $form->labelEx($model, 'tipo_usuario_id') ?>
-        <?= $form->textField($model, 'tipo_usuario_id') ?>
-        <?= $form->error($model, 'tipo_usuario_id') ?>
+        <?= $form->labelEx($model, 'acl_tipo_usuario_id') ?>
+        <?php
+        $this->widget('ext.select2.ESelect2', array(
+            'model' => $model,
+            'attribute' => 'acl_tipo_usuario_id',
+            'data' => CHtml::listData($oAclTiposUsuarios, 'id', 'titulo'),
+            'options' => array(
+                'placeholder' => 'Selecione o tipo da biblioteca',
+                'allowClear' => false,
+            ),
+            'htmlOptions' => array(
+                'id' => 'select2_acl_tipo_usuario_id',
+            ),
+        ));
+        ?>
+        <?= $form->error($model, 'acl_tipo_usuario_id') ?>
     </div>
 
     <div class="row">
         <?= $form->labelEx($model, 'excluido') ?>
-        <?= $form->textField($model, 'excluido') ?>
+        <?= $form->checkBox($model, 'excluido') ?>
         <?= $form->error($model, 'excluido') ?>
-    </div>
-
-    <div class="row">
-        <?= $form->labelEx($model, 'data_cadastro') ?>
-        <?= $form->textField($model, 'data_cadastro') ?>
-        <?= $form->error($model, 'data_cadastro') ?>
     </div>
 
     <div class="row buttons">

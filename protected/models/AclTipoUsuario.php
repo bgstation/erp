@@ -56,6 +56,14 @@ class AclTipoUsuario extends CActiveRecord {
             'data_cadastro' => 'Data Cadastro',
         );
     }
+    
+    public function scopes() {
+        return array(
+            'naoExcluido' => array(
+                'condition' => 't.excluido = false'
+            ),
+        );
+    }
 
     /**
      * Retrieves a list of models based on the current search/filter conditions.

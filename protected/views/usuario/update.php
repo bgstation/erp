@@ -13,4 +13,4 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 
 <h1>Atualizar Usuário <?= $model->nome ?></h1>
 
-<?php $this->renderPartial('_form', array('model' => $model)); ?>
+<?php $this->renderPartial('_form', array('model' => $model, 'oAclTiposUsuarios' => $oAclTiposUsuarios)); ?>

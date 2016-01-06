@@ -68,6 +68,7 @@ class UsuarioController extends Controller {
 
         $this->render('create', array(
             'model' => $model,
+            'oAclTiposUsuarios' => AclTipoUsuario::model()->naoExcluido()->findAll(),
         ));
     }
 
@@ -87,6 +88,7 @@ class UsuarioController extends Controller {
 
         $this->render('update', array(
             'model' => $model,
+            'oAclTiposUsuarios' => AclTipoUsuario::model()->naoExcluido()->findAll(),
         ));
     }
 

@@ -2039,3 +2039,11 @@ Stack trace:
 	`data_insercao` DATETIME DEFAULT CURRENT_TIMESTAMP,
 	`data_ultima_atualizacao` DATETIME DEFAULT ON UPDATE CURRENT_TIMESTAMP
 ).
+2016/01/06 20:30:22 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42000]: Syntax error or access violation: 1067 Invalid default value for 'data_insercao'. The SQL statement executed was: CREATE TABLE `acl_tipos_usuarios_rotas` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY  not null auto_increment,
+	`acl_rota_id` int(11),
+	`acl_tipo_usuario_id` int(11),
+	`excluido` tinyint(1) default false,
+	`data_insercao` DATETIME DEFAULT CURRENT_TIMESTAMP,
+	`data_ultima_atualizacao` DATETIME ON UPDATE CURRENT_TIMESTAMP
+).

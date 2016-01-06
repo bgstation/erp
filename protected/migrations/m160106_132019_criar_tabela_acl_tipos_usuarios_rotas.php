@@ -9,8 +9,8 @@ class m160106_132019_criar_tabela_acl_tipos_usuarios_rotas extends CDbMigration
                 'acl_rota_id' => 'integer',
                 'acl_tipo_usuario_id' => 'integer',
                 'excluido' => 'boolean default false',
-                'data_insercao' => 'DATETIME DEFAULT CURRENT_TIMESTAMP',
-                'data_ultima_atualizacao' => 'DATETIME ON UPDATE CURRENT_TIMESTAMP',
+                'data_insercao' => 'DATETIME',
+                'data_ultima_atualizacao' => 'DATETIME',
             ));
 	}
 

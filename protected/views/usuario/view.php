@@ -20,8 +20,14 @@ $this->widget('zii.widgets.CDetailView', array(
         'id',
         'nome',
         'login',
-        'tipo_usuario_id',
-        'excluido',
+        array(
+            'name' => 'acl_tipo_usuario_id',
+            'value' => !empty($model->acl_tipo_usuario_id) ? $model->acl_tipo_usuario->titulo : '',
+        ),
+        array(
+            'name' => 'excluido',
+            'value' => $model->excluido == 0 ? 'Não' : 'Sim',
+        ),
         'data_cadastro',
     ),
 ));

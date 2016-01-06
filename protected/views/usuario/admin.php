@@ -23,7 +23,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'columns' => array(
         'nome',
         'login',
-        'tipo_usuario_id',
+        'acl_tipo_usuario_id',
         array(
             'name' => 'excluido',
             'value' => '$data->excluido? \'Sim\' : \'Não\''

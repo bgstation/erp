@@ -13,4 +13,4 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 
 <h1>Cadastrar Usuário</h1>
 
-<?php $this->renderPartial('_form', array('model' => $model)); ?>
+<?php $this->renderPartial('_form', array('model' => $model, 'oAclTiposUsuarios' => $oAclTiposUsuarios)); ?>

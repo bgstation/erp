@@ -8,7 +8,7 @@
  * @property string $nome
  * @property string $login
  * @property string $senha
- * @property integer $tipo_usuario_id
+ * @property integer $acl_tipo_usuario_id
  * @property integer $excluido
  * @property string $data_cadastro
  */
@@ -26,14 +26,30 @@ class Usuario extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('tipo_usuario_id, excluido', 'numerical', 'integerOnly' => true),
+            array('acl_tipo_usuario_id, excluido', 'numerical', 'integerOnly' => true),
             array('nome, login', 'length', 'max' => 100),
             array('senha', 'length', 'max' => 60),
+            array('senha, login, acl_tipo_usuario_id', 'required'),
+            array('login', 'unique'),
+            array('senha', 'tratarSenha'),
             array('data_cadastro', 'safe'),
-            array('id, nome, login, senha, tipo_usuario_id, excluido, data_cadastro', 'safe', 'on' => 'search'),
+            array('id, nome, login, senha, acl_tipo_usuario_id, excluido, data_cadastro', 'safe', 'on' => 'search'),
         );
     }
-    
+
+    public function tratarSenha() {
+        if ($this->isNewRecord) {
+            $this->senha = md5($this->senha);
+        } else {
+            $model = self::model()->findByPk($this->id);
+            if ($model->senha != md5($this->senha)) {
+                $this->senha = md5($this->senha);
+            } else {
+                $this->senha = $model->senha;
+            }
+        }
+    }
+
     public function beforeSave() {
         if ($this->isNewRecord) {
             $this->data_cadastro = date('Y-m-d H:i:s');
@@ -46,6 +62,7 @@ class Usuario extends CActiveRecord {
      */
     public function relations() {
         return array(
+            'acl_tipo_usuario' => array(self::BELONGS_TO, 'AclTipoUsuario', 'acl_tipo_usuario_id'),
         );
     }
 
@@ -58,12 +75,12 @@ class Usuario extends CActiveRecord {
             'nome' => 'Nome',
             'login' => 'Login',
             'senha' => 'Senha',
-            'tipo_usuario_id' => 'Tipo Usuário',
-            'excluido' => 'Excluído',
+            'acl_tipo_usuario_id' => 'Tipo Usuário',
+            'excluido' => 'Desabilitado',
             'data_cadastro' => 'Data Cadastro',
         );
     }
-    
+
     public function scopes() {
         return array(
             'naoExcluido' => array(
@@ -93,7 +110,7 @@ class Usuario extends CActiveRecord {
         $criteria->compare('nome', $this->nome, true);
         $criteria->compare('login', $this->login, true);
         $criteria->compare('senha', $this->senha, true);
-        $criteria->compare('tipo_usuario_id', $this->tipo_usuario_id);
+        $criteria->compare('acl_tipo_usuario_id', $this->acl_tipo_usuario_id);
         $criteria->compare('excluido', $this->excluido);
         $criteria->compare('data_cadastro', $this->data_cadastro, true);
 

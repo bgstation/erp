@@ -17,15 +17,13 @@ return array(
             'charset' => 'utf8'
         ),
         // uncomment the following to use a MySQL database
-        /*
-          'db'=>array(
-          'connectionString' => 'mysql:host=localhost;dbname=testdrive',
-          'emulatePrepare' => true,
-          'username' => 'root',
-          'password' => '',
-          'charset' => 'utf8',
-          ),
-         */
+        'db' => array(
+            'connectionString' => 'mysql:host=localhost:8889;dbname=erp',
+            'emulatePrepare' => true,
+            'username' => 'root',
+            'password' => 'root',
+            'charset' => 'utf8',
+        ),
         'log' => array(
             'class' => 'CLogRouter',
             'routes' => array(

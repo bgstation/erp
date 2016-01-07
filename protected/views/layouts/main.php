@@ -41,6 +41,9 @@
                         array('label' => 'Home', 'url' => array('/site/index')),
                         array('label' => 'Cadastro', 'items' => array(
                                 array('label' => 'Clientes', 'url' => array('cliente/admin'),),
+                                array('label' => 'Marcas', 'url' => array('marca/admin'),),
+                                array('label' => 'Modelos', 'url' => array('modelo/admin'),),
+                                array('label' => 'Produtos', 'url' => array('produto/admin'),),
                                 array('label' => 'Serviços', 'url' => array('servico/admin'),),
                                 array('label' => 'Tipos de Usuários', 'url' => array('aclTipoUsuario/admin'),),
                                 array('label' => 'Usuários', 'url' => array('usuario/admin'),),

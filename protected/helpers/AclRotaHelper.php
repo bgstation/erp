@@ -4,8 +4,6 @@ class AclRotaHelper {
 
     public static function renderAclRotas($aAclRotas, $aAclTipoUsuarioRotas) {
         $return = '';
-//        echo '<pre>';
-//        die(var_dump($aAclTipoUsuarioRotas));
         if (!empty($aAclRotas)) {
             foreach ($aAclRotas as $categoria => $aValue) {
                 $search = explode(",", "ç,æ,œ,á,é,í,ó,ú,à,è,ì,ò,ù,ä,ë,ï,ö,ü,ÿ,â,ê,î,ô,û,å,e,i,ø,u");

@@ -44,7 +44,7 @@
             'attribute' => 'acl_tipo_usuario_id',
             'data' => CHtml::listData($oAclTiposUsuarios, 'id', 'titulo'),
             'options' => array(
-                'placeholder' => 'Selecione o tipo da biblioteca',
+                'placeholder' => 'Tipo do usuário',
                 'allowClear' => false,
             ),
             'htmlOptions' => array(

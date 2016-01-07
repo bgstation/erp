@@ -1,19 +1,19 @@
 <?php
 
-class m160107_114111_criar_tabela_servicos extends CDbMigration {
+class m160107_161612_criar_tabela_de_modelos extends CDbMigration {
 
     public function safeUp() {
-        $this->createTable('servicos', array(
+        $this->createTable('modelos', array(
             'id' => 'pk  not null auto_increment',
             'titulo' => 'varchar(200)',
-            'preco' => 'decimal(10,2)',
+            'marca_id' => 'integer',
             'observacao' => 'text',
-                )
-        );
+            'excluido' => 'boolean default false',
+        ));
     }
 
     public function down() {
-        echo "m160107_114111_criar_tabela_itens does not support migration down.\n";
+        echo "m160107_161612_criar_tabela_de_modelos does not support migration down.\n";
         return false;
     }
 

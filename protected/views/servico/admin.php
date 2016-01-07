@@ -5,12 +5,12 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Cadastro' => '',
-        'Serviços'
+        'Servicos'
     ),
 ));
 ?>
 
-<h1>Servicos</h1>
+<h3>Servicos</h3>
 
 <?php
 $this->widget('bootstrap.widgets.TbButton', array(

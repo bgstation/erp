@@ -84,8 +84,8 @@ class ProdutoController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
+        $oModelos = Modelo::model()->naoExcluido()->findAll();
+        $oMarcas = Marca::model()->naoExcluido()->findAll();
 
         if (isset($_POST['Produto'])) {
             $model->attributes = $_POST['Produto'];
@@ -95,6 +95,8 @@ class ProdutoController extends Controller {
 
         $this->render('update', array(
             'model' => $model,
+            'oModelos' => $oModelos,
+            'oMarcas' => $oMarcas,
         ));
     }
 

@@ -6,7 +6,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Marcas' => Yii::app()->createUrl('marca/admin'),
-        $model->titulo,
+        $model->titulo => '',
         'Atualizar',
     ),
 ));

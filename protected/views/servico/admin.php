@@ -1,24 +1,23 @@
 <?php
-/* @var $this TipoUsuarioController */
-/* @var $model AclTipoUsuario */
-
+/* @var $this ServicoController */
+/* @var $model Servico */
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Cadastro' => '',
-        'Tipos de Usuários'
+        'Serviços'
     ),
 ));
 ?>
 
-<h1>Tipos de Usuários</h1>
+<h1>Servicos</h1>
 
 <?php
 $this->widget('bootstrap.widgets.TbButton', array(
     'type' => 'primary',
     'size' => 'medium',
     'label' => 'Cadastrar',
-    'url' => Yii::app()->createUrl('aclTipoUsuario/create'),
+    'url' => Yii::app()->createUrl('servico/create'),
     'htmlOptions' => array(
         'class' => 'pull-left',
     ),
@@ -26,20 +25,21 @@ $this->widget('bootstrap.widgets.TbButton', array(
 );
 ?>
     <br>
-
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
-    'id' => 'acl-tipo-usuario-grid',
+    'id' => 'servico-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
+        'id',
         'titulo',
         array(
-            'name' => 'excluido',
-            'value' => '$data->excluido? \'Sim\' : \'Não\''
+            'name' => 'preco',
+            'value' => '!empty($data->preco) ? number_format($data->preco, 2, ",", ".") : ""',
         ),
+        'observacao',
         array(
-            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'class' => 'CButtonColumn',
         ),
     ),
 ));

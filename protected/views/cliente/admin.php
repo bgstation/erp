@@ -13,7 +13,19 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 
 <h1>Clientes</h1>
 
-<?= CHtml::link('Cadastrar', Yii::app()->createUrl('cliente/create'), array('class' => 'search-button')) ?>
+<?php
+$this->widget('bootstrap.widgets.TbButton', array(
+    'type' => 'primary',
+    'size' => 'medium',
+    'label' => 'Cadastrar',
+    'url' => Yii::app()->createUrl('cliente/create'),
+    'htmlOptions' => array(
+        'class' => 'pull-left',
+    ),
+        )
+);
+?>
+    <br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(

@@ -8,24 +8,17 @@ class UserRole extends CPhpAuthManager {
     public function init() {
         $return = parent::init();
 
-        $oRoleTypeProjeto = RoleTypeProjeto::model()->find(array(
-            'join' => 'join usuarios_role_types_projetos as u ON (u.role_type_projeto_id = t.id)',
-            'condition' => 'u.usuario_id=' . Yii::app()->user->getId() . ' AND projeto_id=' . Yii::app()->params['projeto_id'],
-        ));
+        $oUsuario = Usuario::model()->findByPk(Yii::app()->user->getId());
 
-        $role = $this->createRole($oRoleTypeProjeto->role_type->titulo);
+        $role = $this->createRole($oUsuario->acl_tipo_usuario->titulo);
 
-        if (empty($_SESSION[base64_encode(Yii::app()->params['projeto_id'] . '_PermissoesFuncao')][base64_encode('PermissoesAcessoUsuario')])) {
-            $_aPermissoes = Yii::app()->user->getState('__' . base64_encode(Yii::app()->params['projeto_id'] . '_PermissoesAcessoUsuario'));
+        if (empty($_SESSION[base64_encode(Yii::app()->params['projeto'] . '_PermissoesAcesso')][base64_encode('PermissoesAcessoUsuario')])) {
+            $_aPermissoes = Yii::app()->user->getState('__' . base64_encode(Yii::app()->params['projeto'] . '_PermissoesAcessoUsuario'));
             if(!empty($_aPermissoes)) {
-                $aPermissoes = $_aPermissoes[base64_encode(Yii::app()->params['projeto_id'] . '_PermissoesFuncao')][base64_encode('PermissoesAcessoUsuario')];
+                $aPermissoes = $_aPermissoes[base64_encode(Yii::app()->params['projeto'] . '_PermissoesAcesso')][base64_encode('PermissoesAcessoUsuario')];
             }
         } else {
-            $aPermissoes = $_SESSION[base64_encode(Yii::app()->params['projeto_id'] . '_PermissoesFuncao')][base64_encode('PermissoesAcessoUsuario')];
-        }
-        if ($oRoleTypeProjeto->role_type->titulo == 'Didatico') {
-            $this->createOperation('roleDidatico');
-            $role->addChild('roleDidatico');
+            $aPermissoes = $_SESSION[base64_encode(Yii::app()->params['projeto'] . '_PermissoesAcesso')][base64_encode('PermissoesAcessoUsuario')];
         }
 
         $this->createOperation('site/logout');

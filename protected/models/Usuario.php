@@ -128,5 +128,21 @@ class Usuario extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
+    
+    public function carregarPermissoes() {
+        $oAclTipoUsuarioRota = AclTipoUsuarioRota::model()->findAllByAttributes(array(
+            'acl_tipo_usuario_id' => $this->acl_tipo_usuario_id,
+        ));
+        $_aPermissoes = array();
+        if (!empty($oAclTipoUsuarioRota)) {
+            if (!empty($_SESSION[base64_encode(Yii::app()->params['projeto'] . '_PermissoesAcesso')][base64_encode('PermissoesAcessoUsuario')])) {
+                unset($_SESSION[base64_encode(Yii::app()->params['projeto'] . '_PermissoesAcesso')][base64_encode('PermissoesAcessoUsuario')]);
+            }
+            foreach ($oAclTipoUsuarioRota as $aclTipoUsuarioRota) {
+                $_aPermissoes[base64_encode(Yii::app()->params['projeto'] . '_PermissoesAcesso')][base64_encode('PermissoesAcessoUsuario')][base64_encode($aclTipoUsuarioRota->rota->controller)][base64_encode('actions')][] = base64_encode($aclTipoUsuarioRota->rota->action);
+            }
+            Yii::app()->user->setState('__' . base64_encode(Yii::app()->params['projeto'] . '_PermissoesAcessoUsuario'), $_aPermissoes);
+        }
+    }
 
 }

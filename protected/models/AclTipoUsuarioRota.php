@@ -24,13 +24,9 @@ class AclTipoUsuarioRota extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('acl_rota_id, acl_tipo_usuario_id, excluido', 'numerical', 'integerOnly' => true),
             array('data_insercao, data_ultima_atualizacao', 'safe'),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
             array('id, acl_rota_id, acl_tipo_usuario_id, excluido, data_insercao, data_ultima_atualizacao', 'safe', 'on' => 'search'),
         );
     }
@@ -39,9 +35,9 @@ class AclTipoUsuarioRota extends CActiveRecord {
      * @return array relational rules.
      */
     public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
+            'rota' => array(self::BELONGS_TO, 'AclRota', 'acl_rota_id'),
+            'tipoUsuario' => array(self::BELONGS_TO, 'AclTipoUsuario', 'acl_tipo_usuario_id'),
         );
     }
 

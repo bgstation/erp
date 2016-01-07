@@ -25,10 +25,10 @@ class UserIdentity extends CUserIdentity {
             'login' => $this->username,
             'senha' => md5($this->password),
         ));
-
         if (!empty($oUsuario)) {
             $this->idUsuario = $oUsuario->id;
             $this->errorCode = self::ERROR_NONE;
+            $oUsuario->carregarPermissoes();
         } else {
             $this->errorCode = self::ERROR_PASSWORD_INVALID;
         }

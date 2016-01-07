@@ -24,15 +24,11 @@ class AclRota extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('excluido', 'numerical', 'integerOnly' => true),
             array('controller, action', 'length', 'max' => 50),
             array('titulo', 'length', 'max' => 20),
             array('descricao', 'safe'),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
             array('id, controller, action, titulo, descricao, excluido', 'safe', 'on' => 'search'),
         );
     }
@@ -41,8 +37,6 @@ class AclRota extends CActiveRecord {
      * @return array relational rules.
      */
     public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
         );
     }

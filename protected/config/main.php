@@ -25,12 +25,13 @@ return array(
         'bootstrap' => array(
             'class' => 'bootstrap.components.Bootstrap',
         ),
-        'user' => array(
-            'allowAutoLogin' => true,
-            'loginUrl' => array('site/login'),
-        ),
         'authManager' => array(
             'class' => 'application.components.UserRole',
+        ),
+        'user' => array(
+            'class' => 'application.components.WebUser',
+            'allowAutoLogin' => true,
+            'loginUrl' => array('site/login'),
         ),
         /*
           'urlManager'=>array(

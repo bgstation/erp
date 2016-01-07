@@ -38,7 +38,7 @@
                     'type' => 'tabs',
                     'stacked' => false,
                     'items' => array(
-//                        array('label' => 'Home', 'url' => array('/site/index')),
+                        array('label' => 'Home', 'url' => array('/site/index')),
                         array('label' => 'Cadastro', 'items' => array(
                                 array('label' => 'Clientes', 'url' => array('cliente/admin'),),
                                 array('label' => 'Serviços', 'url' => array('item/admin'),),

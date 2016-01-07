@@ -29,6 +29,9 @@ return array(
             'allowAutoLogin' => true,
             'loginUrl' => array('site/login'),
         ),
+        'authManager' => array(
+            'class' => 'application.components.UserRole',
+        ),
         /*
           'urlManager'=>array(
           'urlFormat'=>'path',

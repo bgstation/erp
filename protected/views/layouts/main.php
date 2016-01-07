@@ -41,7 +41,7 @@
                         array('label' => 'Home', 'url' => array('/site/index')),
                         array('label' => 'Cadastro', 'items' => array(
                                 array('label' => 'Clientes', 'url' => array('cliente/admin'),),
-                                array('label' => 'Serviços', 'url' => array('item/admin'),),
+                                array('label' => 'Serviços', 'url' => array('servico/admin'),),
                                 array('label' => 'Tipos de Usuários', 'url' => array('aclTipoUsuario/admin'),),
                                 array('label' => 'Usuários', 'url' => array('usuario/admin'),),
                             ), 'visible' => !Yii::app()->user->isGuest),

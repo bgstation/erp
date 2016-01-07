@@ -1,26 +1,22 @@
 <?php
 
 /**
- * This is the model class for table "produtos".
+ * This is the model class for table "modelos".
  *
- * The followings are the available columns in table 'produtos':
+ * The followings are the available columns in table 'modelos':
  * @property integer $id
  * @property string $titulo
- * @property string $codigo_barra
  * @property integer $marca_id
- * @property integer $modelo_id
- * @property string $preco
  * @property string $observacao
- * @property integer $quantidade
  * @property integer $excluido
  */
-class Produto extends CActiveRecord {
+class Modelo extends CActiveRecord {
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'produtos';
+        return 'modelos';
     }
 
     /**
@@ -30,22 +26,12 @@ class Produto extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('marca_id, modelo_id, quantidade, excluido', 'numerical', 'integerOnly' => true),
+            array('marca_id, excluido', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
-            array('codigo_barra', 'length', 'max' => 300),
-            array('preco', 'length', 'max' => 10),
             array('observacao', 'safe'),
-            array('titulo', 'required'),
-            array('preco', 'tratarPreco'),
-            array('id, titulo, codigo_barra, marca_id, modelo_id, preco, observacao, quantidade, excluido', 'safe', 'on' => 'search'),
+            array('titulo, marca_id', 'required'),
+            array('id, titulo, marca_id, observacao, excluido', 'safe', 'on' => 'search'),
         );
-    }
-    
-    public function tratarPreco() {
-        if (!empty($this->preco)) {
-            $preco = str_replace('.', '', $this->preco);
-            $this->preco = str_replace(',', '.', $preco);
-        }
     }
 
     /**
@@ -54,7 +40,6 @@ class Produto extends CActiveRecord {
     public function relations() {
         return array(
             'marca' => array(self::BELONGS_TO, 'Marca', 'marca_id'),
-            'modelo' => array(self::BELONGS_TO, 'Modelo', 'modelo_id'),
         );
     }
 
@@ -63,15 +48,19 @@ class Produto extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => 'Código',
+            'id' => 'ID',
             'titulo' => 'Titulo',
-            'codigo_barra' => 'Codigo Barra',
             'marca_id' => 'Marca',
-            'modelo_id' => 'Modelo',
-            'preco' => 'Preco',
             'observacao' => 'Observacao',
-            'quantidade' => 'Quantidade',
             'excluido' => 'Excluido',
+        );
+    }
+    
+    public function scopes() {
+        return array(
+            'naoExcluido' => array(
+                'condition' => 't.excluido = false'
+            ),
         );
     }
 
@@ -94,12 +83,8 @@ class Produto extends CActiveRecord {
 
         $criteria->compare('id', $this->id);
         $criteria->compare('titulo', $this->titulo, true);
-        $criteria->compare('codigo_barra', $this->codigo_barra, true);
         $criteria->compare('marca_id', $this->marca_id);
-        $criteria->compare('modelo_id', $this->modelo_id);
-        $criteria->compare('preco', $this->preco, true);
         $criteria->compare('observacao', $this->observacao, true);
-        $criteria->compare('quantidade', $this->quantidade);
         $criteria->compare('excluido', $this->excluido);
 
         return new CActiveDataProvider($this, array(
@@ -111,7 +96,7 @@ class Produto extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Produto the static model class
+     * @return Modelo the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);

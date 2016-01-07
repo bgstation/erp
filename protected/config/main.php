@@ -64,6 +64,7 @@ return array(
         ),
     ),
     'params' => array(
+        'projeto' => 'fashion_car',
         'diretorioImagens' => 'images/',
         'adminEmail' => 'webmaster@example.com',
     ),

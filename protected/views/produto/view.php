@@ -2,33 +2,48 @@
 /* @var $this ProdutoController */
 /* @var $model Produto */
 
-$this->breadcrumbs=array(
-	'Produtos'=>array('index'),
-	$model->id,
-);
-
-$this->menu=array(
-	array('label'=>'List Produto', 'url'=>array('index')),
-	array('label'=>'Create Produto', 'url'=>array('create')),
-	array('label'=>'Update Produto', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Produto', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Produto', 'url'=>array('admin')),
-);
+$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+    'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
+    'links' => array(
+        'Produtos' => Yii::app()->createUrl('produto/admin'),
+        $model->titulo
+    ),
+));
 ?>
 
-<h1>View Produto #<?php echo $model->id; ?></h1>
+<h3><?php echo $model->titulo; ?></h3>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'titulo',
-		'codigo_barra',
-		'marca_id',
-		'modelo_id',
-		'preco',
-		'observacao',
-		'quantidade',
-		'excluido',
-	),
-)); ?>
+<?php
+$this->widget('zii.widgets.CDetailView', array(
+    'data' => $model,
+    'attributes' => array(
+        'id',
+        'titulo',
+        'codigo_barra',
+        array(
+            'name' => 'marca_id',
+            'value' => !empty($model->marca_id) ? $model->marca->titulo : '',
+        ),
+        array(
+            'name' => 'modelo_id',
+            'value' => !empty($model->modelo_id) ? $model->modelo->titulo : '',
+        ),
+        array(
+            'name' => 'preco',
+            'value' => !empty($model->preco) ? number_format($model->preco, 2, ',', '.') : '',
+        ),
+        'observacao',
+        'quantidade',
+        array(
+            'name' => 'excluido',
+            'value' => $model->excluido == 0 ? 'Não' : 'Sim',
+        ),
+    ),
+));
+?>
+<h3><?= Yii::t('site', 'Opções alternativas') ?></h3>
+<ul class="nav_alter">
+    <li><a class="btn" href="<?= $this->createUrl('admin') ?>"><?= Yii::t('site', 'Exibir produtos') ?></a></li>
+    <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar produto') ?></a></li>
+    <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar produto') ?></a></li>
+</ul>

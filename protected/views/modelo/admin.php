@@ -1,24 +1,26 @@
 <?php
-/* @var $this ProdutoController */
-/* @var $model Produto */
+/* @var $this ModeloController */
+/* @var $model Modelo */
 
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Cadastro' => '',
-        'Produtos'
+        'Modelos'
     ),
 ));
+
 ?>
 
-<h3>Produtos</h3>
+<h3>Modelos</h3>
+
 
 <?php
 $this->widget('bootstrap.widgets.TbButton', array(
     'type' => 'primary',
     'size' => 'medium',
     'label' => 'Cadastrar',
-    'url' => Yii::app()->createUrl('produto/create'),
+    'url' => Yii::app()->createUrl('modelo/create'),
     'htmlOptions' => array(
         'class' => 'pull-left',
     ),
@@ -26,23 +28,17 @@ $this->widget('bootstrap.widgets.TbButton', array(
 );
 ?>
     <br>
-    
+
 <?php $this->widget('bootstrap.widgets.TbGridView', array(
-	'id'=>'produto-grid',
+	'id'=>'modelo-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
 		'id',
 		'titulo',
-		'codigo_barra',
 		'marca_id',
-		'modelo_id',
-		'preco',
-		/*
 		'observacao',
-		'quantidade',
 		'excluido',
-		*/
 		array(
 			'class'=>'CButtonColumn',
 		),

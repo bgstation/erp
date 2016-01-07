@@ -3,19 +3,15 @@
 /* @var $model Produto */
 /* @var $form CActiveForm */
 ?>
-
+<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery-2.1.4.min.js"></script>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'produto-form',
-	// Please note: When you enable ajax validation, make sure the corresponding
-	// controller action is handling ajax validation correctly.
-	// There is a call to performAjaxValidation() commented in generated controller code.
-	// See class documentation of CActiveForm for details on this.
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note">Os campos com <span class="required">*</span> são obrigatórios.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
@@ -33,13 +29,39 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'marca_id'); ?>
-		<?php echo $form->textField($model,'marca_id'); ?>
+		<?php
+                    $this->widget('ext.select2.ESelect2', array(
+                        'model' => $model,
+                        'attribute' => 'marca_id',
+                        'data' => CHtml::listData($oMarcas, 'id', 'titulo'),
+                        'options' => array(
+                            'placeholder' => 'Marca',
+                            'allowClear' => false,
+                        ),
+                        'htmlOptions' => array(
+                            'id' => 'select2_marca_id',
+                        ),
+                    ));
+                ?>
 		<?php echo $form->error($model,'marca_id'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'modelo_id'); ?>
-		<?php echo $form->textField($model,'modelo_id'); ?>
+		<?php
+                    $this->widget('ext.select2.ESelect2', array(
+                        'model' => $model,
+                        'attribute' => 'modelo_id',
+                        'data' => CHtml::listData($oModelos, 'id', 'titulo'),
+                        'options' => array(
+                            'placeholder' => 'Modelo',
+                            'allowClear' => false,
+                        ),
+                        'htmlOptions' => array(
+                            'id' => 'select2_modelo_id',
+                        ),
+                    ));
+                ?>
 		<?php echo $form->error($model,'modelo_id'); ?>
 	</div>
 
@@ -57,20 +79,31 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'quantidade'); ?>
-		<?php echo $form->textField($model,'quantidade'); ?>
+		<?php echo $form->numberField($model,'quantidade'); ?>
 		<?php echo $form->error($model,'quantidade'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'excluido'); ?>
-		<?php echo $form->textField($model,'excluido'); ?>
+		<?php echo $form->checkBox($model,'excluido'); ?>
 		<?php echo $form->error($model,'excluido'); ?>
 	</div>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php
+                    $this->widget('bootstrap.widgets.TbButton', array(
+                        'type' => 'success',
+                        'size' => 'medium',
+                        'buttonType' => 'submit',
+                        'label' => $model->isNewRecord ? 'Cadastrar' : 'Atualizar'
+                            )
+                    );
+                ?>
 	</div>
 
 <?php $this->endWidget(); ?>
+        
+<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery.mask.js"></script>
+<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/produto/_form.js"></script>
 
 </div><!-- form -->

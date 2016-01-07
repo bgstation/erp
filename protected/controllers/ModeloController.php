@@ -1,6 +1,6 @@
 <?php
 
-class ProdutoController extends Controller {
+class ModeloController extends Controller {
 
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -58,20 +58,18 @@ class ProdutoController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new Produto;
+        $model = new Modelo;
 
-        $oModelos = Modelo::model()->naoExcluido()->findAll();
         $oMarcas = Marca::model()->naoExcluido()->findAll();
-                
-        if (isset($_POST['Produto'])) {
-            $model->attributes = $_POST['Produto'];
+
+        if (isset($_POST['Modelo'])) {
+            $model->attributes = $_POST['Modelo'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
         $this->render('create', array(
             'model' => $model,
-            'oModelos' => $oModelos,
             'oMarcas' => $oMarcas,
         ));
     }
@@ -84,17 +82,17 @@ class ProdutoController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
+        $oMarcas = Marca::model()->naoExcluido()->findAll();
 
-        if (isset($_POST['Produto'])) {
-            $model->attributes = $_POST['Produto'];
+        if (isset($_POST['Modelo'])) {
+            $model->attributes = $_POST['Modelo'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
         $this->render('update', array(
             'model' => $model,
+            'oMarcas' => $oMarcas,
         ));
     }
 
@@ -115,7 +113,7 @@ class ProdutoController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('Produto');
+        $dataProvider = new CActiveDataProvider('Modelo');
         $this->render('index', array(
             'dataProvider' => $dataProvider,
         ));
@@ -125,10 +123,10 @@ class ProdutoController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
-        $model = new Produto('search');
+        $model = new Modelo('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['Produto']))
-            $model->attributes = $_GET['Produto'];
+        if (isset($_GET['Modelo']))
+            $model->attributes = $_GET['Modelo'];
 
         $this->render('admin', array(
             'model' => $model,
@@ -139,11 +137,11 @@ class ProdutoController extends Controller {
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Produto the loaded model
+     * @return Modelo the loaded model
      * @throws CHttpException
      */
     public function loadModel($id) {
-        $model = Produto::model()->findByPk($id);
+        $model = Modelo::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -151,10 +149,10 @@ class ProdutoController extends Controller {
 
     /**
      * Performs the AJAX validation.
-     * @param Produto $model the model to be validated
+     * @param Modelo $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'produto-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'modelo-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

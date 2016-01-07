@@ -1,13 +1,13 @@
 <?php
-/* @var $this ServicoController */
-/* @var $model Servico */
+/* @var $this ItemController */
+/* @var $model Item */
 /* @var $form CActiveForm */
 ?>
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery-2.1.4.min.js"></script>
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'servico-form',
+	'id'=>'item-form',
 	'enableAjaxValidation'=>false,
 )); ?>
 
@@ -15,6 +15,25 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'tipo_item_id'); ?>
+		<?php
+                    $this->widget('ext.select2.ESelect2', array(
+                        'model' => $model,
+                        'attribute' => 'tipo_item_id',
+                        'data' => $model->aTiposItem,
+                        'options' => array(
+                            'placeholder' => 'Tipo do item',
+                            'allowClear' => false,
+                        ),
+                        'htmlOptions' => array(
+                            'id' => 'select2_tipo_item_id',
+                        ),
+                    ));
+                ?>
+		<?php echo $form->error($model,'tipo_item_id'); ?>
+	</div>
+        
 	<div class="row">
 		<?php echo $form->labelEx($model,'titulo'); ?>
 		<?php echo $form->textField($model,'titulo',array('size'=>60,'maxlength'=>200)); ?>
@@ -50,4 +69,4 @@
 </div><!-- form -->
 
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery.mask.js"></script>
-<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/servico/_form.js"></script>
+<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/item/_form.js"></script>

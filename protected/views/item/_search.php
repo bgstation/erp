@@ -1,6 +1,6 @@
 <?php
-/* @var $this ServicoController */
-/* @var $model Servico */
+/* @var $this ItemController */
+/* @var $model Item */
 /* @var $form CActiveForm */
 ?>
 

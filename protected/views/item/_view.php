@@ -1,6 +1,6 @@
 <?php
-/* @var $this ServicoController */
-/* @var $data Servico */
+/* @var $this ItemController */
+/* @var $data Item */
 ?>
 
 <div class="view">

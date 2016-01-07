@@ -1,23 +1,23 @@
 <?php
-/* @var $this ServicoController */
-/* @var $model Servico */
+/* @var $this ItemController */
+/* @var $model Item */
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Cadastro' => '',
-        'Serviços'
+        'Itens'
     ),
 ));
 ?>
 
-<h1>Servicos</h1>
+<h3>Itens</h3>
 
 <?php
 $this->widget('bootstrap.widgets.TbButton', array(
     'type' => 'primary',
     'size' => 'medium',
     'label' => 'Cadastrar',
-    'url' => Yii::app()->createUrl('servico/create'),
+    'url' => Yii::app()->createUrl('item/create'),
     'htmlOptions' => array(
         'class' => 'pull-left',
     ),
@@ -27,7 +27,7 @@ $this->widget('bootstrap.widgets.TbButton', array(
     <br>
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
-    'id' => 'servico-grid',
+    'id' => 'item-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(

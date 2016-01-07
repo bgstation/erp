@@ -1,21 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "servicos".
+ * This is the model class for table "items".
  *
- * The followings are the available columns in table 'servicos':
+ * The followings are the available columns in table 'items':
  * @property integer $id
  * @property string $titulo
  * @property string $preco
  * @property string $observacao
  */
-class Servico extends CActiveRecord {
+class Item extends CActiveRecord {
+    
+    public $aTiposItem = array(
+        1 => 'Produto',
+        2 => 'Serviço',
+    );
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'servicos';
+        return 'itens';
     }
 
     /**
@@ -25,14 +30,15 @@ class Servico extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
+            array('tipo_item_id', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
             array('preco', 'length', 'max' => 10),
             array('observacao', 'safe'),
             array('preco', 'tratarPreco'),
-            array('titulo', 'required'),
+            array('titulo, tipo_item_id', 'required'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, titulo, preco, observacao', 'safe', 'on' => 'search'),
+            array('id, titulo, preco, observacao, tipo_item_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -62,6 +68,7 @@ class Servico extends CActiveRecord {
             'titulo' => 'Titulo',
             'preco' => 'Preço R$',
             'observacao' => 'Observação',
+            'tipo_item_id' => 'Tipo do item',
         );
     }
 
@@ -86,6 +93,7 @@ class Servico extends CActiveRecord {
         $criteria->compare('titulo', $this->titulo, true);
         $criteria->compare('preco', $this->preco, true);
         $criteria->compare('observacao', $this->observacao, true);
+        $criteria->compare('tipo_item_id', $this->tipo_item_id, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -96,7 +104,7 @@ class Servico extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Servico the static model class
+     * @return Item the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);

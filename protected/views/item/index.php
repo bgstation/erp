@@ -1,18 +1,18 @@
 <?php
-/* @var $this ServicoController */
+/* @var $this ItemController */
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Servicos',
+	'Itens',
 );
 
 $this->menu=array(
-	array('label'=>'Create Servico', 'url'=>array('create')),
-	array('label'=>'Manage Servico', 'url'=>array('admin')),
+	array('label'=>'Create Item', 'url'=>array('create')),
+	array('label'=>'Manage Item', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Servicos</h1>
+<h1>Itens</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

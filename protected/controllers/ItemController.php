@@ -1,6 +1,6 @@
 <?php
 
-class ServicoController extends Controller {
+class ItemController extends Controller {
 
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -58,13 +58,13 @@ class ServicoController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new Servico;
+        $model = new Item;
         
 //        echo '<pre>';
 //        die(var_dump($_POST));
         
-        if (isset($_POST['Servico'])) {
-            $model->attributes = $_POST['Servico'];
+        if (isset($_POST['Item'])) {
+            $model->attributes = $_POST['Item'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -82,8 +82,8 @@ class ServicoController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
 
-        if (isset($_POST['Servico'])) {
-            $model->attributes = $_POST['Servico'];
+        if (isset($_POST['Item'])) {
+            $model->attributes = $_POST['Item'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -110,7 +110,7 @@ class ServicoController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('Servico');
+        $dataProvider = new CActiveDataProvider('Item');
         $this->render('index', array(
             'dataProvider' => $dataProvider,
         ));
@@ -120,10 +120,10 @@ class ServicoController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
-        $model = new Servico('search');
+        $model = new Item('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['Servico']))
-            $model->attributes = $_GET['Servico'];
+        if (isset($_GET['Item']))
+            $model->attributes = $_GET['Item'];
 
         $this->render('admin', array(
             'model' => $model,
@@ -134,11 +134,11 @@ class ServicoController extends Controller {
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Servico the loaded model
+     * @return Item the loaded model
      * @throws CHttpException
      */
     public function loadModel($id) {
-        $model = Servico::model()->findByPk($id);
+        $model = Item::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -146,10 +146,10 @@ class ServicoController extends Controller {
 
     /**
      * Performs the AJAX validation.
-     * @param Servico $model the model to be validated
+     * @param Item $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'servico-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'item-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

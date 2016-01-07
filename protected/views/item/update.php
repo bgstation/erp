@@ -1,16 +1,16 @@
 <?php
-/* @var $this ServicoController */
-/* @var $model Servico */
+/* @var $this ItemController */
+/* @var $model Item */
 
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
-        'Servicos' => Yii::app()->createUrl('servico/admin'),
+        'Itens' => Yii::app()->createUrl('item/admin'),
         'Atualizar',
     ),
 ));
 ?>
 
-<h3>Atualizar servico <?php echo $model->titulo; ?></h3>
+<h3>Atualizar item <?php echo $model->titulo; ?></h3>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

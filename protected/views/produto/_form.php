@@ -3,7 +3,7 @@
 /* @var $model Produto */
 /* @var $form CActiveForm */
 ?>
-<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery-2.1.4.min.js"></script>
+
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(

@@ -30,7 +30,7 @@ class ModeloController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update'),
+                'actions' => array('create', 'update', 'getDataJson'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -156,6 +156,19 @@ class ModeloController extends Controller {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
+    }
+    
+    public function actiongetDataJson(){
+        $array = array();
+        $oModelos = Modelo::model()->naoExcluido()->findAllByAttributes(array('marca_id' => $_POST['marcaId']));
+        $i = 0;
+        foreach ($oModelos as $modelo){
+            $array[$i]['id'] = intval($modelo->id);
+            $array[$i]['text'] = $modelo->titulo;
+            $i++;
+        }
+//        $array = CHtml::listData(Modelo::model()->naoExcluido()->findAllByAttributes(array('marca_id' => $_POST['marcaId'])), 'id', 'titulo');
+        echo json_encode($array);
     }
 
 }

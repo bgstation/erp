@@ -65,7 +65,7 @@ class Produto extends CActiveRecord {
         return array(
             'id' => 'Código',
             'titulo' => 'Titulo',
-            'codigo_barra' => 'Codigo Barra',
+            'codigo_barra' => 'Codigo de barra',
             'marca_id' => 'Marca',
             'modelo_id' => 'Modelo',
             'preco' => 'Preco',

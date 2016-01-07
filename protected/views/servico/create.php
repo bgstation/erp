@@ -1,18 +1,18 @@
 <?php
-/* @var $this ItemController */
-/* @var $model Item */
+/* @var $this ServicoController */
+/* @var $model Servico */
 
 
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
-        'Itens' => Yii::app()->createUrl('item/admin'),
+        'Servicos' => Yii::app()->createUrl('servico/admin'),
         'Cadastrar',
     ),
 ));
 ?>
 
 
-<h3>Cadastro de item</h3>
+<h3>Cadastro de servico</h3>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

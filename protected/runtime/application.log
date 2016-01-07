@@ -2047,3 +2047,9 @@ Stack trace:
 	`data_insercao` DATETIME DEFAULT CURRENT_TIMESTAMP,
 	`data_ultima_atualizacao` DATETIME ON UPDATE CURRENT_TIMESTAMP
 ).
+2016/01/07 09:50:30 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'acl_tipos_usuarios_rotas' already exists. The SQL statement executed was: CREATE TABLE `acl_tipos_usuarios_rotas` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY  not null auto_increment,
+	`titulo` varchar(200),
+	`preco` decimal(10,2),
+	`observacao` text
+).

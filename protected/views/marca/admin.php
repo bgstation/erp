@@ -14,30 +14,46 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 <h3>Marcas</h3>
 
 <?php
-$this->widget('bootstrap.widgets.TbButton', array(
-    'type' => 'primary',
-    'size' => 'medium',
-    'label' => 'Cadastrar',
-    'url' => Yii::app()->createUrl('marca/create'),
-    'htmlOptions' => array(
-        'class' => 'pull-left',
-    ),
-        )
-);
+if (Yii::app()->user->checkAccess('marca/create')) {
+    $this->widget('bootstrap.widgets.TbButton', array(
+        'type' => 'success',
+        'size' => 'medium',
+        'label' => 'Cadastrar',
+        'url' => Yii::app()->createUrl('marca/create'),
+        'htmlOptions' => array(
+            'class' => 'pull-left',
+        ),
+            )
+    );
+}
 ?>
-    <br>
+<br>
 
-<?php $this->widget('bootstrap.widgets.TbGridView', array(
-	'id'=>'marca-grid',
-	'dataProvider'=>$model->search(),
-	'filter'=>$model,
-	'columns'=>array(
-		'id',
-		'titulo',
-		'observacao',
-		'excluido',
-		array(
-			'class'=>'CButtonColumn',
-		),
-	),
-)); ?>
+<?php
+$this->widget('bootstrap.widgets.TbGridView', array(
+    'id' => 'marca-grid',
+    'dataProvider' => $model->search(),
+    'filter' => $model,
+    'columns' => array(
+        'id',
+        'titulo',
+        'observacao',
+        'excluido',
+        array(
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'template' => '{view}{update}{delete}',
+            'buttons' => array(
+                'view' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("marca/view")',
+                ),
+                'update' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("marca/update")',
+                ),
+                'delete' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("marca/delete")',
+                ),
+            ),
+        ),
+    ),
+));
+?>

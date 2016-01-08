@@ -18,7 +18,7 @@ return array(
         ),
         // uncomment the following to use a MySQL database
         'db' => array(
-            'connectionString' => 'mysql:host=localhost;dbname=erp',
+            'connectionString' => 'mysql:host=localhost:8889;dbname=erp',
             'emulatePrepare' => true,
             'username' => 'root',
             'password' => 'root',

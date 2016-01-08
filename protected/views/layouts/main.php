@@ -40,13 +40,13 @@
                     'items' => array(
                         array('label' => 'Home', 'url' => array('/site/index')),
                         array('label' => 'Cadastro', 'items' => array(
-                                array('label' => 'Clientes', 'url' => array('cliente/admin'),),
-                                array('label' => 'Marcas', 'url' => array('marca/admin'),),
-                                array('label' => 'Modelos', 'url' => array('modelo/admin'),),
-                                array('label' => 'Produtos', 'url' => array('produto/admin'),),
-                                array('label' => 'Serviços', 'url' => array('servico/admin'),),
-                                array('label' => 'Tipos de Usuários', 'url' => array('aclTipoUsuario/admin'),),
-                                array('label' => 'Usuários', 'url' => array('usuario/admin'),),
+                                array('label' => 'Clientes', 'url' => array('cliente/admin'), 'visible' => Yii::app()->user->checkAccess('cliente/admin')),
+                                array('label' => 'Marcas', 'url' => array('marca/admin'), 'visible' => Yii::app()->user->checkAccess('marca/admin')),
+                                array('label' => 'Modelos', 'url' => array('modelo/admin'), 'visible' => Yii::app()->user->checkAccess('modelo/admin')),
+                                array('label' => 'Produtos', 'url' => array('produto/admin'), 'visible' => Yii::app()->user->checkAccess('produto/admin')),
+                                array('label' => 'Serviços', 'url' => array('servico/admin'), 'visible' => Yii::app()->user->checkAccess('servico/admin')),
+                                array('label' => 'Tipos de Usuários', 'url' => array('aclTipoUsuario/admin'), 'visible' => Yii::app()->user->checkAccess('aclTipoUsuario/admin')),
+                                array('label' => 'Usuários', 'url' => array('usuario/admin'), 'visible' => Yii::app()->user->checkAccess('usuario/admin')),
                             ), 'visible' => !Yii::app()->user->isGuest),
                         array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
                         array('label' => 'Logout (' . Yii::app()->user->name . ')', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest, 'itemOptions' => array('style' => 'float:right;'))

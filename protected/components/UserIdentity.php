@@ -28,6 +28,7 @@ class UserIdentity extends CUserIdentity {
         if (!empty($oUsuario)) {
             $this->idUsuario = $oUsuario->id;
             $this->errorCode = self::ERROR_NONE;
+            $this->setState('roleId', $oUsuario->acl_tipo_usuario_id);
             $oUsuario->carregarPermissoes();
         } else {
             $this->errorCode = self::ERROR_PASSWORD_INVALID;

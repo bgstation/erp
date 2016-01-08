@@ -13,33 +13,6 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 
 <h2><?= $model->nome ?></h2>
 
-<ul class="nav_alter">
-    <li>
-        <?php
-        $this->widget('bootstrap.widgets.TbButton', array(
-            'type' => 'primary',
-            'size' => 'medium',
-            'label' => 'Adicionar carro',
-            'url' => Yii::app()->createUrl('clienteCarro/create', array('clienteId' => $model->id)),
-            'htmlOptions' => array(),
-                )
-        );
-        ?>
-    </li>
-    <li>
-        <?php
-        $this->widget('bootstrap.widgets.TbButton', array(
-            'type' => 'button',
-            'size' => 'medium',
-            'label' => Yii::t('site', 'Exibir Clientes'),
-            'url' => Yii::app()->createUrl('admin'),
-            'htmlOptions' => array(),
-                )
-        );
-        ?>
-    </li>
-</ul>
-
 <?php
 $this->widget('zii.widgets.CDetailView', array(
     'data' => $model,
@@ -75,16 +48,27 @@ if (!empty($model->clientesCarros)) {
         echo '<a onclick="removerCarro(' . $urlDelete . ')" href="javascript:void(0)">Remover</a> - <a href="' . Yii::app()->createUrl('clienteCarro/update', array('id' => $clienteCarro->id, 'clienteId' => $clienteCarro->cliente_id)) . '">Editar</a></li>';
         echo '</ul>';
     }
+} else {
+    echo '<h4>Nenhum carro cadastrado.</h4>';
 }
 ?>
 
-
+<hr>
 
 <h3><?= Yii::t('site', 'Opções alternativas') ?></h3>
 <ul class="nav_alter">
-    <li><a class="btn" href="<?= $this->createUrl('admin') ?>"><?= Yii::t('site', 'Exibir Clientes') ?></a></li>
-    <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar Cliente') ?></a></li>
-    <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar Cliente') ?></a></li>
+    <?php if (Yii::app()->user->checkAccess('cliente/admin')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('admin') ?>"><?= Yii::t('site', 'Exibir Clientes') ?></a></li>
+    <?php endif; ?>
+    <?php if (Yii::app()->user->checkAccess('cliente/update')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar Cliente') ?></a></li>
+    <?php endif; ?>
+    <?php if (Yii::app()->user->checkAccess('cliente/create')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar Cliente') ?></a></li>
+    <?php endif; ?>
+    <?php if (Yii::app()->user->checkAccess('clienteCarro/create')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('clienteCarro/create', array('clienteId' => $model->id)) ?>"><?= Yii::t('site', 'Cadastrar Carro') ?></a></li>
+    <?php endif; ?>
 </ul>
 
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery-2.1.4.min.js"></script>

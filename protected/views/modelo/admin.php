@@ -9,38 +9,53 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
         'Modelos'
     ),
 ));
-
 ?>
 
 <h3>Modelos</h3>
 
 
 <?php
-$this->widget('bootstrap.widgets.TbButton', array(
-    'type' => 'primary',
-    'size' => 'medium',
-    'label' => 'Cadastrar',
-    'url' => Yii::app()->createUrl('modelo/create'),
-    'htmlOptions' => array(
-        'class' => 'pull-left',
-    ),
-        )
-);
+if (Yii::app()->user->checkAccess('modelo/create')) {
+    $this->widget('bootstrap.widgets.TbButton', array(
+        'type' => 'success',
+        'size' => 'medium',
+        'label' => 'Cadastrar',
+        'url' => Yii::app()->createUrl('modelo/create'),
+        'htmlOptions' => array(
+            'class' => 'pull-left',
+        ),
+            )
+    );
+}
 ?>
-    <br>
+<br>
 
-<?php $this->widget('bootstrap.widgets.TbGridView', array(
-	'id'=>'modelo-grid',
-	'dataProvider'=>$model->search(),
-	'filter'=>$model,
-	'columns'=>array(
-		'id',
-		'titulo',
-		'marca_id',
-		'observacao',
-		'excluido',
-		array(
-			'class'=>'CButtonColumn',
-		),
-	),
-)); ?>
+<?php
+$this->widget('bootstrap.widgets.TbGridView', array(
+    'id' => 'modelo-grid',
+    'dataProvider' => $model->search(),
+    'filter' => $model,
+    'columns' => array(
+        'id',
+        'titulo',
+        'marca_id',
+        'observacao',
+        'excluido',
+        array(
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'template' => '{view}{update}{delete}',
+            'buttons' => array(
+                'view' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("modelo/view")',
+                ),
+                'update' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("modelo/update")',
+                ),
+                'delete' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("modelo/delete")',
+                ),
+            ),
+        ),
+    ),
+));
+?>

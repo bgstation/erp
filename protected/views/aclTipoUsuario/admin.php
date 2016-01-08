@@ -14,18 +14,20 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 <h1>Tipos de Usuários</h1>
 
 <?php
-$this->widget('bootstrap.widgets.TbButton', array(
-    'type' => 'primary',
-    'size' => 'medium',
-    'label' => 'Cadastrar',
-    'url' => Yii::app()->createUrl('aclTipoUsuario/create'),
-    'htmlOptions' => array(
-        'class' => 'pull-left',
-    ),
-        )
-);
+if (Yii::app()->user->checkAccess('aclTipoUsuario/create')) {
+    $this->widget('bootstrap.widgets.TbButton', array(
+        'type' => 'success',
+        'size' => 'medium',
+        'label' => 'Cadastrar',
+        'url' => Yii::app()->createUrl('aclTipoUsuario/create'),
+        'htmlOptions' => array(
+            'class' => 'pull-left',
+        ),
+            )
+    );
+}
 ?>
-    <br>
+<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -40,6 +42,18 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
+            'template' => '{view}{update}{delete}',
+            'buttons' => array(
+                'view' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("aclTipoUsuario/view")',
+                ),
+                'update' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("aclTipoUsuario/update")',
+                ),
+                'delete' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("aclTipoUsuario/delete")',
+                ),
+            ),
         ),
     ),
 ));

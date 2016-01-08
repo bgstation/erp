@@ -27,7 +27,13 @@ $this->widget('zii.widgets.CDetailView', array(
 
 <h3><?= Yii::t('site', 'Opções alternativas') ?></h3>
 <ul class="nav_alter">
-    <li><a class="btn" href="<?= $this->createUrl('admin') ?>"><?= Yii::t('site', 'Exibir Tipos de Usuários') ?></a></li>
-    <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar Tipos de Usuários') ?></a></li>
-    <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar Tipos de Usuários') ?></a></li>
+    <?php if (Yii::app()->user->checkAccess('aclTipoUsuario/admin')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('admin') ?>"><?= Yii::t('site', 'Exibir Tipos de Usuários') ?></a></li>
+    <?php endif; ?>
+    <?php if (Yii::app()->user->checkAccess('aclTipoUsuario/update')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar Tipos de Usuários') ?></a></li>
+    <?php endif; ?>
+    <?php if (Yii::app()->user->checkAccess('aclTipoUsuario/create')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar Tipos de Usuários') ?></a></li>
+    <?php endif; ?>
 </ul>

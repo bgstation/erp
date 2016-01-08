@@ -13,18 +13,20 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 <h3>Servicos</h3>
 
 <?php
-$this->widget('bootstrap.widgets.TbButton', array(
-    'type' => 'primary',
-    'size' => 'medium',
-    'label' => 'Cadastrar',
-    'url' => Yii::app()->createUrl('servico/create'),
-    'htmlOptions' => array(
-        'class' => 'pull-left',
-    ),
-        )
-);
+if (Yii::app()->user->checkAccess('servico/create')) {
+    $this->widget('bootstrap.widgets.TbButton', array(
+        'type' => 'success',
+        'size' => 'medium',
+        'label' => 'Cadastrar',
+        'url' => Yii::app()->createUrl('servico/create'),
+        'htmlOptions' => array(
+            'class' => 'pull-left',
+        ),
+            )
+    );
+}
 ?>
-    <br>
+<br>
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'servico-grid',
@@ -35,11 +37,23 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         'titulo',
         array(
             'name' => 'preco',
-            'value' => '!empty($data->preco) ? number_format($data->preco, 2, ",", ".") : ""',
+            'value' => '!empty($data->preco) ? RPFormat::valorMonetario($data->preco) : ""',
         ),
         'observacao',
         array(
-            'class' => 'CButtonColumn',
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'template' => '{view}{update}{delete}',
+            'buttons' => array(
+                'view' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("servico/view")',
+                ),
+                'update' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("servico/update")',
+                ),
+                'delete' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("servico/delete")',
+                ),
+            ),
         ),
     ),
 ));

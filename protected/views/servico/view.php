@@ -31,8 +31,14 @@ $this->widget('zii.widgets.CDetailView', array(
 
 <h3><?= Yii::t('site', 'Opções alternativas') ?></h3>
 <ul class="nav_alter">
-    <li><a class="btn" href="<?= $this->createUrl('admin') ?>"><?= Yii::t('site', 'Exibir itens') ?></a></li>
-    <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar itens') ?></a></li>
-    <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar itens') ?></a></li>
+    <?php if (Yii::app()->user->checkAccess('servico/admin')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('admin') ?>"><?= Yii::t('site', 'Exibir itens') ?></a></li>
+    <?php endif; ?>
+    <?php if (Yii::app()->user->checkAccess('servico/update')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar itens') ?></a></li>
+    <?php endif; ?>
+    <?php if (Yii::app()->user->checkAccess('servico/create')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar itens') ?></a></li>
+    <?php endif; ?>
 </ul>
 

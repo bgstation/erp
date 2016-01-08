@@ -46,6 +46,12 @@ class AclRota extends CActiveRecord {
             'naoExcluido' => array(
                 'condition' => 't.excluido = false'
             ),
+            'exibir' => array(
+                'condition' => 't.exibir = true'
+            ),
+            'naoExibir' => array(
+                'condition' => 't.exibir = false'
+            ),
         );
     }
 
@@ -104,7 +110,7 @@ class AclRota extends CActiveRecord {
 
     public function getAclRotasArray() {
         $aAclRotas = array();
-        $oAclRotas = self::model()->naoExcluido()->findAll();
+        $oAclRotas = self::model()->naoExcluido()->exibir()->findAll();
         $i = 0;
         if (!empty($oAclRotas))
             foreach ($oAclRotas as $oAclRotas) {

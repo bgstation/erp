@@ -4,6 +4,8 @@
 /* @var $form CActiveForm */
 ?>
 
+<link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/produto/_form.css" />
+
 <div class="form">
 
     <?php
@@ -41,17 +43,26 @@
                 'allowClear' => false,
             ),
             'htmlOptions' => array(
-                'style' => 'width: 350px',
                 'id' => 'select2_marca_id',
             ),
         ));
         ?>
+        <?php if (Yii::app()->user->checkAccess('marca/create')): ?>
+            <a href="<?= Yii::app()->createUrl('marca/create') ?>" title="Adicionar uma nova marca.">
+                <i class="fa fa-plus-square"></i>
+            </a>
+        <?php endif; ?>
         <?php echo $form->error($model, 'marca_id'); ?>
     </div>
 
     <div class="row modelo" style="display: none">
         <?php echo $form->labelEx($model, 'modelo_id'); ?>
-        <input type="hidden" name="Produto[modelo_id]" id="select2_modelo_id" style="width: 350px">
+        <input type="hidden" name="Produto[modelo_id]" id="select2_modelo_id">
+        <?php if (Yii::app()->user->checkAccess('modelo/create')): ?>
+            <a href="<?= Yii::app()->createUrl('modelo/create') ?>" title="Adicionar um novo modelo.">
+                <i class="fa fa-plus-square"></i>
+            </a>
+        <?php endif; ?>
         <?php echo $form->error($model, 'modelo_id'); ?>
     </div>
 

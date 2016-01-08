@@ -128,6 +128,20 @@ class AclTipoUsuarioRota extends CActiveRecord {
         }
     }
 
+    public function salvarRotasFilhas($aclRotaPaiId) {
+        $oAclRotas = AclRota::model()->naoExcluido()->naoExibir()->findAllByAttributes(array(
+            'acl_rota_id' => $aclRotaPaiId
+        ));
+        if (!empty($oAclRotas)) {
+            foreach ($oAclRotas as $aclRota) {
+                $model = new self;
+                $model->acl_tipo_usuario_id = $this->acl_tipo_usuario_id;
+                $model->acl_rota_id = $aclRota->id;
+                $model->save();
+            }
+        }
+    }
+
     public function salvarTipoUsuarioRotas($post) {
         $this->marcarComoExcluido();
         if (!empty($post['AclTipoUsuarioRotas'])) {
@@ -136,6 +150,7 @@ class AclTipoUsuarioRota extends CActiveRecord {
                 $model->acl_tipo_usuario_id = $this->acl_tipo_usuario_id;
                 $model->acl_rota_id = $value;
                 $model->save();
+                $this->salvarRotasFilhas($value);
             }
         }
     }

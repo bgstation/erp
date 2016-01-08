@@ -130,7 +130,7 @@ class Usuario extends CActiveRecord {
     }
     
     public function carregarPermissoes() {
-        $oAclTipoUsuarioRota = AclTipoUsuarioRota::model()->findAllByAttributes(array(
+        $oAclTipoUsuarioRota = AclTipoUsuarioRota::model()->naoExcluido()->findAllByAttributes(array(
             'acl_tipo_usuario_id' => $this->acl_tipo_usuario_id,
         ));
         $_aPermissoes = array();

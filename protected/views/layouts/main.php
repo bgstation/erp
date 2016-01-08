@@ -16,6 +16,9 @@
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/form.css" />
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/site.css" />
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/bootstrap.min.css" />
+        
+        <!-- Font-Awesome -->
+        <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/font-awesome-4.5.0/css/font-awesome.min.css" />
         <?php Yii::app()->bootstrap->register() ?>
         <title><?= CHtml::encode($this->pageTitle) ?></title>
     </head>

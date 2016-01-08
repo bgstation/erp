@@ -7,6 +7,13 @@ return array(
     'name' => 'My Console Application',
     // preloading 'log' component
     'preload' => array('log'),
+    'import' => array(
+        'application.models.*',
+        'application.components.*',
+        'application.helpers.*',
+        'application.extensions.bootstrap.widgets.*',
+        'application.extensions.bootstrap.helpers.*',
+    ),
     'components' => array(
         'db' => array(
             'connectionString' => 'mysql:host=localhost;dbname=erp',
@@ -18,7 +25,7 @@ return array(
         ),
         // uncomment the following to use a MySQL database
         'db' => array(
-            'connectionString' => 'mysql:host=localhost:8889;dbname=erp',
+            'connectionString' => 'mysql:host=localhost;dbname=erp',
             'emulatePrepare' => true,
             'username' => 'root',
             'password' => 'root',

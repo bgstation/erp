@@ -23,7 +23,7 @@ $this->menu=array(
 	'attributes'=>array(
 		'id',
 		'placa',
-		'marca_carro_id',
+		'marca_id',
 		'cliente_id',
 		'observacao',
 		'excluido',

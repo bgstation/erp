@@ -59,10 +59,11 @@ class ClienteCarroController extends Controller {
      */
     public function actionCreate() {
         $model = new ClienteCarro;
-
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
+        
+        $oMarcas = Marca::model()->naoExcluido()->ordenarTitulo()->findAll();
+        $oCliente = Cliente::model()->findByPk($_GET['clienteId']);
+        $oCores = Cor::model()->naoExcluido()->ordenarTitulo()->findAll();
+        
         if (isset($_POST['ClienteCarro'])) {
             $model->attributes = $_POST['ClienteCarro'];
             if ($model->save())
@@ -71,6 +72,9 @@ class ClienteCarroController extends Controller {
 
         $this->render('create', array(
             'model' => $model,
+            'oMarcas' => $oMarcas,
+            'oCliente' => $oCliente,
+            'oCores' => $oCores,
         ));
     }
 
@@ -82,8 +86,9 @@ class ClienteCarroController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
+        $oMarcas = Marca::model()->naoExcluido()->ordenarTitulo()->findAll();
+        $oCliente = Cliente::model()->findByPk($_GET['clienteId']);
+        $oCores = Cor::model()->naoExcluido()->ordenarTitulo()->findAll();
 
         if (isset($_POST['ClienteCarro'])) {
             $model->attributes = $_POST['ClienteCarro'];
@@ -93,6 +98,9 @@ class ClienteCarroController extends Controller {
 
         $this->render('update', array(
             'model' => $model,
+            'oMarcas' => $oMarcas,
+            'oCliente' => $oCliente,
+            'oCores' => $oCores,
         ));
     }
 

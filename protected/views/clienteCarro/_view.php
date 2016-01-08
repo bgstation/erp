@@ -13,8 +13,8 @@
 	<?php echo CHtml::encode($data->placa); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('marca_carro_id')); ?>:</b>
-	<?php echo CHtml::encode($data->marca_carro_id); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('marca_id')); ?>:</b>
+	<?php echo CHtml::encode($data->marca_id); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('cliente_id')); ?>:</b>

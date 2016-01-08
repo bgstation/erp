@@ -1,22 +1,21 @@
 <?php
 
 /**
- * This is the model class for table "modelos".
+ * This is the model class for table "cores".
  *
- * The followings are the available columns in table 'modelos':
+ * The followings are the available columns in table 'cores':
  * @property integer $id
  * @property string $titulo
- * @property integer $marca_id
- * @property string $observacao
+ * @property string $rgb
  * @property integer $excluido
  */
-class Modelo extends CActiveRecord {
+class Cor extends CActiveRecord {
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'modelos';
+        return 'cores';
     }
 
     /**
@@ -26,11 +25,12 @@ class Modelo extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('marca_id, excluido', 'numerical', 'integerOnly' => true),
-            array('titulo', 'length', 'max' => 200),
-            array('observacao', 'safe'),
-            array('titulo, marca_id', 'required'),
-            array('id, titulo, marca_id, observacao, excluido', 'safe', 'on' => 'search'),
+            array('excluido', 'numerical', 'integerOnly' => true),
+            array('titulo, rgb', 'length', 'max' => 20),
+            array('titulo', 'required'),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('id, titulo, rgb, excluido', 'safe', 'on' => 'search'),
         );
     }
 
@@ -39,20 +39,6 @@ class Modelo extends CActiveRecord {
      */
     public function relations() {
         return array(
-            'marca' => array(self::BELONGS_TO, 'Marca', 'marca_id'),
-        );
-    }
-
-    /**
-     * @return array customized attribute labels (name=>label)
-     */
-    public function attributeLabels() {
-        return array(
-            'id' => 'ID',
-            'titulo' => 'Titulo',
-            'marca_id' => 'Marca',
-            'observacao' => 'Observacao',
-            'excluido' => 'Excluido',
         );
     }
 
@@ -64,6 +50,18 @@ class Modelo extends CActiveRecord {
             'ordenarTitulo' => array(
                 'order' => 't.titulo ASC'
             ),
+        );
+    }
+
+    /**
+     * @return array customized attribute labels (name=>label)
+     */
+    public function attributeLabels() {
+        return array(
+            'id' => 'ID',
+            'titulo' => 'Titulo',
+            'rgb' => 'Rgb',
+            'excluido' => 'Excluido',
         );
     }
 
@@ -86,8 +84,7 @@ class Modelo extends CActiveRecord {
 
         $criteria->compare('id', $this->id);
         $criteria->compare('titulo', $this->titulo, true);
-        $criteria->compare('marca_id', $this->marca_id);
-        $criteria->compare('observacao', $this->observacao, true);
+        $criteria->compare('rgb', $this->rgb, true);
         $criteria->compare('excluido', $this->excluido);
 
         return new CActiveDataProvider($this, array(
@@ -99,7 +96,7 @@ class Modelo extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Modelo the static model class
+     * @return Cor the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);

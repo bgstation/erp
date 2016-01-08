@@ -6,7 +6,7 @@
  * The followings are the available columns in table 'clientes_carros':
  * @property integer $id
  * @property string $placa
- * @property integer $marca_carro_id
+ * @property integer $marca_id
  * @property integer $cliente_id
  * @property string $observacao
  * @property integer $excluido
@@ -80,12 +80,12 @@ class ClienteCarro extends CActiveRecord {
         return array(
             array('observacao', 'safe'),
             array('placa, cliente_id', 'required'),
-            array('marca_carro_id, cliente_id, excluido', 'numerical', 'integerOnly' => true),
+            array('marca_id, cliente_id, excluido, modelo_id', 'numerical', 'integerOnly' => true),
             array('placa', 'length', 'max' => 8),
             array('placa', 'checarUnique', 'except' => 'marcarExcluido'),
             // The following rule is used by search().
             // @todo Please remove those attributes that should not be searched.
-            array('id, placa, marca_carro_id, cliente_id, observacao, excluido', 'safe', 'on' => 'search'),
+            array('id, placa, marca_id, cliente_id, observacao, excluido, modelo_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -93,9 +93,10 @@ class ClienteCarro extends CActiveRecord {
      * @return array relational rules.
      */
     public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
+            'marca' => array(self::BELONGS_TO, 'Marca', 'marca_id'),
+            'modelo' => array(self::BELONGS_TO, 'Modelo', 'modelo_id'),
+            'cor' => array(self::BELONGS_TO, 'Cor', 'cor_id'),
         );
     }
 
@@ -125,7 +126,9 @@ class ClienteCarro extends CActiveRecord {
         return array(
             'id' => 'ID',
             'placa' => 'Placa',
-            'marca_carro_id' => 'Marca',
+            'marca_id' => 'Marca',
+            'modelo_id' => 'Modelo',
+            'cor_id' => 'Cor',
             'cliente_id' => 'Cliente',
             'observacao' => 'Observação',
             'excluido' => 'Excluido',
@@ -151,7 +154,8 @@ class ClienteCarro extends CActiveRecord {
 
         $criteria->compare('id', $this->id);
         $criteria->compare('placa', $this->placa, true);
-        $criteria->compare('marca_carro_id', $this->marca_carro_id);
+        $criteria->compare('marca_id', $this->marca_id);
+        $criteria->compare('modelo_id', $this->modelo_id);
         $criteria->compare('cliente_id', $this->cliente_id);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);

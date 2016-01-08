@@ -62,6 +62,9 @@ class Marca extends CActiveRecord {
             'naoExcluido' => array(
                 'condition' => 't.excluido = false'
             ),
+            'ordenarTitulo' => array(
+                'order' => 't.titulo ASC'
+            ),
         );
     }
 

@@ -60,8 +60,8 @@ class ProdutoController extends Controller {
     public function actionCreate() {
         $model = new Produto;
 
-        $oModelos = Modelo::model()->naoExcluido()->findAll();
-        $oMarcas = Marca::model()->naoExcluido()->findAll();
+        $oModelos = Modelo::model()->ordenarTitulo()->naoExcluido()->findAll();
+        $oMarcas = Marca::model()->ordenarTitulo()->naoExcluido()->findAll();
                 
         if (isset($_POST['Produto'])) {
             $model->attributes = $_POST['Produto'];
@@ -84,8 +84,8 @@ class ProdutoController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
 
-        $oModelos = Modelo::model()->naoExcluido()->findAll();
-        $oMarcas = Marca::model()->naoExcluido()->findAll();
+        $oModelos = Modelo::model()->ordenarTitulo()->naoExcluido()->findAll();
+        $oMarcas = Marca::model()->ordenarTitulo()->naoExcluido()->findAll();
 
         if (isset($_POST['Produto'])) {
             $model->attributes = $_POST['Produto'];

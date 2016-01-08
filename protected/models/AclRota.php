@@ -52,6 +52,9 @@ class AclRota extends CActiveRecord {
             'naoExibir' => array(
                 'condition' => 't.exibir = false'
             ),
+            'ordenarCategoriaTitulo' => array(
+                'order' => 't.categoria, t.titulo ASC'
+            ),
         );
     }
 
@@ -110,7 +113,7 @@ class AclRota extends CActiveRecord {
 
     public function getAclRotasArray() {
         $aAclRotas = array();
-        $oAclRotas = self::model()->naoExcluido()->exibir()->findAll();
+        $oAclRotas = self::model()->naoExcluido()->exibir()->ordenarCategoriaTitulo()->findAll();
         $i = 0;
         if (!empty($oAclRotas))
             foreach ($oAclRotas as $oAclRotas) {

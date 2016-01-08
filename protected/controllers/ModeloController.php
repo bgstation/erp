@@ -160,7 +160,7 @@ class ModeloController extends Controller {
     
     public function actiongetDataJson(){
         $array = array();
-        $oModelos = Modelo::model()->naoExcluido()->findAllByAttributes(array('marca_id' => $_POST['marcaId']));
+        $oModelos = Modelo::model()->naoExcluido()->ordenarTitulo()->findAllByAttributes(array('marca_id' => $_POST['marcaId']));
         $i = 0;
         foreach ($oModelos as $modelo){
             $array[$i]['id'] = intval($modelo->id);

@@ -1,6 +1,6 @@
 <?php
-/* @var $this ClienteCarroController */
-/* @var $model ClienteCarro */
+/* @var $this CorController */
+/* @var $model Cor */
 /* @var $form CActiveForm */
 ?>
 
@@ -17,23 +17,13 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'placa'); ?>
-		<?php echo $form->textField($model,'placa',array('size'=>8,'maxlength'=>8)); ?>
+		<?php echo $form->label($model,'titulo'); ?>
+		<?php echo $form->textField($model,'titulo',array('size'=>20,'maxlength'=>20)); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'marca_id'); ?>
-		<?php echo $form->textField($model,'marca_id'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'cliente_id'); ?>
-		<?php echo $form->textField($model,'cliente_id'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'observacao'); ?>
-		<?php echo $form->textField($model,'observacao',array('size'=>60,'maxlength'=>100)); ?>
+		<?php echo $form->label($model,'rgb'); ?>
+		<?php echo $form->textField($model,'rgb',array('size'=>20,'maxlength'=>20)); ?>
 	</div>
 
 	<div class="row">

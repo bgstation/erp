@@ -36,22 +36,7 @@ $this->widget('zii.widgets.CDetailView', array(
 
 <h3>Carros cadastrados:</h3>
 
-<?php
-if (!empty($model->clientesCarros)) {
-    foreach ($model->clientesCarros as $clienteCarro) {
-        $urlDelete = "'" . Yii::app()->createUrl('clienteCarro/delete', array('id' => $clienteCarro->id)) . "'";
-        echo '<ul>';
-        echo '<li>Placa: ' . strtoupper($clienteCarro->placa) . '</li>';
-        echo '<li>Marca: ' . $oClienteCarro->aMarcaCarro[$clienteCarro->marca_carro_id] . '</li>';
-        echo '<li>Observação: ' . $clienteCarro->observacao . '</li>';
-        echo '<li>';
-        echo '<a onclick="removerCarro(' . $urlDelete . ')" href="javascript:void(0)">Remover</a> - <a href="' . Yii::app()->createUrl('clienteCarro/update', array('id' => $clienteCarro->id, 'clienteId' => $clienteCarro->cliente_id)) . '">Editar</a></li>';
-        echo '</ul>';
-    }
-} else {
-    echo '<h4>Nenhum carro cadastrado.</h4>';
-}
-?>
+<?= ClienteCarroHelper::renderCarrosCliente($model->clientesCarros) ?>
 
 <hr>
 

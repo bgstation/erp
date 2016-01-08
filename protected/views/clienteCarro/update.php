@@ -2,20 +2,23 @@
 /* @var $this ClienteCarroController */
 /* @var $model ClienteCarro */
 
-$this->breadcrumbs=array(
-	'Cliente Carros'=>array('index'),
-	$model->id=>array('view','id'=>$model->id),
-	'Update',
-);
-
-$this->menu=array(
-	array('label'=>'List ClienteCarro', 'url'=>array('index')),
-	array('label'=>'Create ClienteCarro', 'url'=>array('create')),
-	array('label'=>'View ClienteCarro', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage ClienteCarro', 'url'=>array('admin')),
-);
+$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+    'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
+    'links' => array(
+        'Clientes' => Yii::app()->createUrl('cliente/admin'),
+        $oCliente->nome => Yii::app()->createUrl('cliente/view', array('id' => $oCliente->id)),
+        'Atualizar carro'
+    ),
+));
 ?>
 
 <h1>Update ClienteCarro <?php echo $model->id; ?></h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php
+$this->renderPartial('_form', array(
+    'model' => $model,
+    'oMarcas' => $oMarcas,
+    'oCliente' => $oCliente,
+    'oCores' => $oCores,
+));
+?>

@@ -2,17 +2,23 @@
 /* @var $this ClienteCarroController */
 /* @var $model ClienteCarro */
 
-$this->breadcrumbs=array(
-	'Cliente Carros'=>array('index'),
-	'Create',
-);
-
-$this->menu=array(
-	array('label'=>'List ClienteCarro', 'url'=>array('index')),
-	array('label'=>'Manage ClienteCarro', 'url'=>array('admin')),
-);
+$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+    'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
+    'links' => array(
+        'Clientes' => Yii::app()->createUrl('cliente/admin'),
+        $oCliente->nome => Yii::app()->createUrl('cliente/view', array('id' => $oCliente->id)),
+        'Cadastro de carro'
+    ),
+));
 ?>
 
 <h1>Cadastro de carro</h1>
 
-<?php $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php
+$this->renderPartial('_form', array(
+    'model' => $model,
+    'oMarcas' => $oMarcas,
+    'oCliente' => $oCliente,
+    'oCores' => $oCores,
+));
+?>

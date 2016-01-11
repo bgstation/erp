@@ -127,7 +127,7 @@
                         </tr>
                     </thead>
                     <tbody id="produtos_adicionados">
-
+                        <?= OrdemServicoHelper::renderItens(1, $model->ordemServicoItens) ?>
                     </tbody>
                 </table>
             </div>
@@ -142,7 +142,7 @@
                         </tr>
                     </thead>
                     <tbody id="servicos_adicionados">
-
+                        <?= OrdemServicoHelper::renderItens("produto", $model->ordemServicoItens) ?>
                     </tbody>
                 </table>
             </div>
@@ -198,6 +198,12 @@
     var aServicos = new Array;
     var clienteId = '<?= $model->cliente_id ?>';
     var clienteCarroId = '<?= $model->cliente_carro_id ?>';
+    
+    <?php if(!empty($model->ordemServicoItens)): ?>
+        <?php foreach ($model->ordemServicoItens as $model){
+            
+        } ?>
+    <?php endif; ?>
 
     var removerServico = function (tipoItem, itemId, identificadorId) {
         if (tipoItem == 1) {

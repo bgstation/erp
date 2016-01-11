@@ -45,6 +45,7 @@ class OrdemServico extends CActiveRecord {
      */
     public function relations() {
         return array(
+            'ordemServicoItens' => array(self::HAS_MANY, 'OrdemServicoItem', 'ordem_servico_id'),
         );
     }
     

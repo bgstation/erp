@@ -45,6 +45,8 @@ class OrdemServicoItem extends CActiveRecord {
      */
     public function relations() {
         return array(
+            'produto' => array(self::BELONGS_TO, 'Produto', 'item_id'),
+            'servico' => array(self::BELONGS_TO, 'Servico', 'item_id'),
         );
     }
 
@@ -132,6 +134,10 @@ class OrdemServicoItem extends CActiveRecord {
                 }
             }
         }
+    }
+
+    public function getItens() {
+        
     }
 
 }

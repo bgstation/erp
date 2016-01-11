@@ -92,10 +92,10 @@ class OrdemServicoController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
-
+        
         $oClientes = Cliente::model()->ordemNome()->findAll();
         $oOrdemServicoItem = new OrdemServicoItem;
-
+        
         if (isset($_POST['OrdemServico'])) {
             $model->attributes = $_POST['OrdemServico'];
             if ($model->save())

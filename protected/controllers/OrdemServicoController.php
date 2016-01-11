@@ -1,6 +1,6 @@
 <?php
 
-class ModeloController extends Controller {
+class OrdemServicoController extends Controller {
 
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -30,7 +30,7 @@ class ModeloController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update', 'getDataJson'),
+                'actions' => array('create', 'update', 'getItensPorTipoJson'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -58,19 +58,30 @@ class ModeloController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new Modelo;
+        $model = new OrdemServico;
 
-        $oMarcas = Marca::model()->naoExcluido()->findAll();
+        $oClientes = Cliente::model()->ordemNome()->findAll();
+        $oOrdemServicoItem = new OrdemServicoItem;
 
-        if (isset($_POST['Modelo'])) {
-            $model->attributes = $_POST['Modelo'];
-            if ($model->save())
+        if (isset($_POST['OrdemServico'])) {
+            $model->attributes = $_POST['OrdemServico'];
+            if ($model->save()){
+                $oLogOrdemServico = new LogOrdemServico;
+                $oLogOrdemServico->status = 1;
+                $oLogOrdemServico->ordem_servico_id = $model->id;
+                $oLogOrdemServico->salvarLog();
+                if(!empty($_POST['OrdemServicoItem'])){
+                    $oOrdemServicoItem->ordem_servico_id = $model->id;
+                    $oOrdemServicoItem->salvarItens($_POST['OrdemServicoItem']);
+                }
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('create', array(
             'model' => $model,
-            'oMarcas' => $oMarcas,
+            'oClientes' => $oClientes,
+            'oOrdemServicoItem' => $oOrdemServicoItem,
         ));
     }
 
@@ -82,17 +93,19 @@ class ModeloController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
 
-        $oMarcas = Marca::model()->naoExcluido()->findAll();
+        $oClientes = Cliente::model()->ordemNome()->findAll();
+        $oOrdemServicoItem = new OrdemServicoItem;
 
-        if (isset($_POST['Modelo'])) {
-            $model->attributes = $_POST['Modelo'];
+        if (isset($_POST['OrdemServico'])) {
+            $model->attributes = $_POST['OrdemServico'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
         $this->render('update', array(
             'model' => $model,
-            'oMarcas' => $oMarcas,
+            'oClientes' => $oClientes,
+            'oOrdemServicoItem' => $oOrdemServicoItem,
         ));
     }
 
@@ -113,7 +126,7 @@ class ModeloController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('Modelo');
+        $dataProvider = new CActiveDataProvider('OrdemServico');
         $this->render('index', array(
             'dataProvider' => $dataProvider,
         ));
@@ -123,10 +136,10 @@ class ModeloController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
-        $model = new Modelo('search');
+        $model = new OrdemServico('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['Modelo']))
-            $model->attributes = $_GET['Modelo'];
+        if (isset($_GET['OrdemServico']))
+            $model->attributes = $_GET['OrdemServico'];
 
         $this->render('admin', array(
             'model' => $model,
@@ -137,11 +150,11 @@ class ModeloController extends Controller {
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Modelo the loaded model
+     * @return OrdemServico the loaded model
      * @throws CHttpException
      */
     public function loadModel($id) {
-        $model = Modelo::model()->findByPk($id);
+        $model = OrdemServico::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -149,25 +162,26 @@ class ModeloController extends Controller {
 
     /**
      * Performs the AJAX validation.
-     * @param Modelo $model the model to be validated
+     * @param OrdemServico $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'modelo-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'ordem-servico-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
     }
     
-    public function actiongetDataJson(){
-        $array = array();
-        $oModelos = Modelo::model()->naoExcluido()->ordenarTitulo()->findAllByAttributes(array('marca_id' => $_POST['marcaId']));
-        $i = 0;
-        foreach ($oModelos as $modelo){
-            $array[$i]['id'] = intval($modelo->id);
-            $array[$i]['text'] = $modelo->titulo;
-            $i++;
+    public function actionGetItensPorTipoJson(){
+        if(!empty($_POST['tipoItemId'])){
+            if(!empty($_POST['tipoItemId']) && $_POST['tipoItemId'] == 1){
+                $oProduto = new Produto;
+                echo CJSON::encode($oProduto->getDataJson());
+            }
+            if(!empty($_POST['tipoItemId']) && $_POST['tipoItemId'] == 2){
+                $oServico = new Servico;
+                echo CJSON::encode($oServico->getDataJson());
+            }
         }
-        echo json_encode($array);
     }
 
 }

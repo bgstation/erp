@@ -47,6 +47,17 @@ class Produto extends CActiveRecord {
             $this->preco = str_replace(',', '.', $preco);
         }
     }
+    
+    public function scopes() {
+        return array(
+            'naoExcluido' => array(
+                'condition' => 't.excluido = false',
+            ),
+            'ordenarTitulo' => array(
+                'order' => 't.titulo ASC',
+            ),
+        );
+    }
 
     /**
      * @return array relational rules.
@@ -115,6 +126,22 @@ class Produto extends CActiveRecord {
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
+    }
+    
+    public function getDataJson(){
+        $aModels = array();
+        $oModels = self::model()->naoExcluido()->ordenarTitulo()->findAll();
+        if(!empty($oModels)){
+            $i=0;
+            foreach ($oModels as $model){
+                $aModels[$i]['id'] = $model->id;
+                $aModels[$i]['text'] = $model->titulo;
+                $aModels[$i]['preco'] = $model->preco;
+                $aModels[$i]['tipoItem'] = 'produto';
+                $i++;
+            }
+        }
+        return $aModels;
     }
 
 }

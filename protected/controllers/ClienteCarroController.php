@@ -30,7 +30,7 @@ class ClienteCarroController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update'),
+                'actions' => array('create', 'update', 'getDataJson'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -59,11 +59,11 @@ class ClienteCarroController extends Controller {
      */
     public function actionCreate() {
         $model = new ClienteCarro;
-        
+
         $oMarcas = Marca::model()->naoExcluido()->ordenarTitulo()->findAll();
         $oCliente = Cliente::model()->findByPk($_GET['clienteId']);
         $oCores = Cor::model()->naoExcluido()->ordenarTitulo()->findAll();
-        
+
         if (isset($_POST['ClienteCarro'])) {
             $model->attributes = $_POST['ClienteCarro'];
             if ($model->save())
@@ -164,6 +164,20 @@ class ClienteCarroController extends Controller {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
+    }
+
+    public function actionGetDataJson() {
+        $array = array();
+        $oModels = ClienteCarro::model()->naoExcluido()->ordenarPlaca()->findAllByAttributes(array('cliente_id' => $_POST['clienteId']));
+        $i = 0;
+        if (!empty($oModels)) {
+            foreach ($oModels as $model) {
+                $array[$i]['id'] = intval($model->id);
+                $array[$i]['text'] = $model->placa;
+                $i++;
+            }
+        }
+        echo json_encode($array);
     }
 
 }

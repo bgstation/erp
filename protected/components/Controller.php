@@ -24,20 +24,20 @@ class Controller extends CController {
      */
     public $breadcrumbs = array();
 
-    protected function beforeAction($action) {
-        $aNaoVerificar = array(
-            0 => 'site/semPermissao',
-            1 => 'site/logout',
-            2 => 'site/login',
-            3 => 'site/index',
-            8 => 'site/error',
-        );
-        if (!in_array(Yii::app()->controller->id . '/' . Yii::app()->controller->action->id, $aNaoVerificar)) {
-            if (!Yii::app()->user->checkAccess(Yii::app()->controller->id . '/' . Yii::app()->controller->action->id)) {
-                $this->redirect(array('site/semPermissao'));
-            }
-        }
-        return parent::beforeAction($action);
-    }
+//    protected function beforeAction($action) {
+//        $aNaoVerificar = array(
+//            0 => 'site/semPermissao',
+//            1 => 'site/logout',
+//            2 => 'site/login',
+//            3 => 'site/index',
+//            8 => 'site/error',
+//        );
+//        if (!in_array(Yii::app()->controller->id . '/' . Yii::app()->controller->action->id, $aNaoVerificar)) {
+//            if (!Yii::app()->user->checkAccess(Yii::app()->controller->id . '/' . Yii::app()->controller->action->id)) {
+//                $this->redirect(array('site/semPermissao'));
+//            }
+//        }
+//        return parent::beforeAction($action);
+//    }
 
 }

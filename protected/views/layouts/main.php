@@ -18,6 +18,8 @@
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/produto/_form.css" />
         
+        <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/biblioteca.js"></script>
+        
         <!-- Font-Awesome -->
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/font-awesome-4.5.0/css/font-awesome.min.css" />
         <?php Yii::app()->bootstrap->register() ?>
@@ -48,6 +50,7 @@
                                 array('label' => 'Clientes', 'url' => array('cliente/admin'), 'visible' => Yii::app()->user->checkAccess('cliente/admin')),
                                 array('label' => 'Marcas', 'url' => array('marca/admin'), 'visible' => Yii::app()->user->checkAccess('marca/admin')),
                                 array('label' => 'Modelos', 'url' => array('modelo/admin'), 'visible' => Yii::app()->user->checkAccess('modelo/admin')),
+                                array('label' => 'Ordens de serviço', 'url' => array('produto/admin'), 'visible' => Yii::app()->user->checkAccess('ordemServico/admin')),
                                 array('label' => 'Produtos', 'url' => array('produto/admin'), 'visible' => Yii::app()->user->checkAccess('produto/admin')),
                                 array('label' => 'Serviços', 'url' => array('servico/admin'), 'visible' => Yii::app()->user->checkAccess('servico/admin')),
                                 array('label' => 'Tipos de Usuários', 'url' => array('aclTipoUsuario/admin'), 'visible' => Yii::app()->user->checkAccess('aclTipoUsuario/admin')),

@@ -43,7 +43,7 @@
             'attribute' => 'sexo',
             'data' => $model->aSexo,
             'options' => array(
-                'placeholder' => 'Selecione o tipo da biblioteca',
+                'placeholder' => 'Sexo',
                 'allowClear' => false,
             ),
             'htmlOptions' => array(

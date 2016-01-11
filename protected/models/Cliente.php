@@ -37,10 +37,10 @@ class Cliente extends CActiveRecord {
         return array(
             array('numero', 'numerical', 'integerOnly' => true),
             array('email, nome, endereco', 'length', 'max' => 100),
+            array('data_cadastro', 'safe'),
             array('cpf', 'length', 'max' => 14),
             array('sexo', 'length', 'max' => 1),
             array('telefone_fixo, celular, complemento', 'length', 'max' => 20),
-            array('data_cadastro', 'length', 'max' => 15),
             array('nome, sexo', 'required'),
             array('cpf, email', 'unique'),
             array('id, email, nome, cpf, sexo, telefone_fixo, celular, endereco, numero, complemento, data_cadastro', 'safe', 'on' => 'search'),
@@ -60,6 +60,14 @@ class Cliente extends CActiveRecord {
     public function relations() {
         return array(
             'clientesCarros' => array(self::HAS_MANY, 'ClienteCarro', 'cliente_id'),
+        );
+    }
+    
+    public function scopes() {
+        return array(
+            'ordemNome' => array(
+                'order' => 'nome ASC',
+            ),
         );
     }
 

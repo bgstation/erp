@@ -1,21 +1,29 @@
 <?php
 
 /**
- * This is the model class for table "servicos".
+ * This is the model class for table "ordens_servico".
  *
- * The followings are the available columns in table 'servicos':
+ * The followings are the available columns in table 'ordens_servico':
  * @property integer $id
- * @property string $titulo
- * @property string $preco
+ * @property integer $cliente_id
+ * @property integer $cliente_carro_id
+ * @property integer $forma_pagamento_id
  * @property string $observacao
+ * @property integer $excluido
  */
-class Servico extends CActiveRecord {
+class OrdemServico extends CActiveRecord {
+    
+    public $aFormasPagemento = array(
+        1 => 'Dinheiro',
+        2 => 'Débito',
+        3 => 'Crédito',
+    );
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'servicos';
+        return 'ordens_servico';
     }
 
     /**
@@ -25,31 +33,10 @@ class Servico extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('excluido', 'numerical', 'integerOnly' => true),
-            array('titulo', 'length', 'max' => 200),
-            array('preco', 'length', 'max' => 10),
+            array('cliente_id, cliente_carro_id, forma_pagamento_id, excluido', 'numerical', 'integerOnly' => true),
             array('observacao', 'safe'),
-            array('preco', 'tratarPreco'),
-            array('titulo', 'required'),
-            array('id, titulo, preco, observacao, excluido', 'safe', 'on' => 'search'),
-        );
-    }
-
-    public function tratarPreco() {
-        if (!empty($this->preco)) {
-            $preco = str_replace('.', '', $this->preco);
-            $this->preco = str_replace(',', '.', $preco);
-        }
-    }
-
-    public function scopes() {
-        return array(
-            'naoExcluido' => array(
-                'condition' => 't.excluido = false',
-            ),
-            'ordenarTitulo' => array(
-                'order' => 't.titulo ASC',
-            ),
+            array('cliente_id, cliente_carro_id', 'required'),
+            array('id, cliente_id, cliente_carro_id, forma_pagamento_id, observacao, excluido', 'safe', 'on' => 'search'),
         );
     }
 
@@ -60,15 +47,24 @@ class Servico extends CActiveRecord {
         return array(
         );
     }
+    
+    public function scopes() {
+        return array(
+            'naoExcluido' => array(
+                'condition' => 't.excluido = false'
+            ),
+        );
+    }
 
     /**
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels() {
         return array(
-            'id' => 'Código',
-            'titulo' => 'Titulo',
-            'preco' => 'Preço R$',
+            'id' => 'Número',
+            'cliente_id' => 'Cliente',
+            'cliente_carro_id' => 'Placa do carro',
+            'forma_pagamento_id' => 'Forma de pagamento',
             'observacao' => 'Observação',
             'excluido' => 'Excluido',
         );
@@ -92,8 +88,9 @@ class Servico extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('titulo', $this->titulo, true);
-        $criteria->compare('preco', $this->preco, true);
+        $criteria->compare('cliente_id', $this->cliente_id);
+        $criteria->compare('cliente_carro_id', $this->cliente_carro_id);
+        $criteria->compare('forma_pagamento_id', $this->forma_pagamento_id);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
 
@@ -106,26 +103,10 @@ class Servico extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Servico the static model class
+     * @return OrdemServico the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
-    }
-
-    public function getDataJson() {
-        $aModels = array();
-        $oModels = self::model()->naoExcluido()->ordenarTitulo()->findAll();
-        if (!empty($oModels)) {
-            $i = 0;
-            foreach ($oModels as $model) {
-                $aModels[$i]['id'] = $model->id;
-                $aModels[$i]['text'] = $model->titulo;
-                $aModels[$i]['preco'] = $model->preco;
-                $aModels[$i]['tipoItem'] = 'servico';
-                $i++;
-            }
-        }
-        return $aModels;
     }
 
 }

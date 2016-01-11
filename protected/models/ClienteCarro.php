@@ -105,6 +105,9 @@ class ClienteCarro extends CActiveRecord {
             'naoExcluido' => array(
                 'condition' => 't.excluido = false'
             ),
+            'ordenarPlaca' => array(
+                'order' => 't.placa ASC'
+            ),
         );
     }
 

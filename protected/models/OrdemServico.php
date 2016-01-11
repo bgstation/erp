@@ -12,7 +12,7 @@
  * @property integer $excluido
  */
 class OrdemServico extends CActiveRecord {
-    
+
     public $aFormasPagemento = array(
         1 => 'Dinheiro',
         2 => 'Débito',
@@ -48,7 +48,7 @@ class OrdemServico extends CActiveRecord {
             'ordemServicoItens' => array(self::HAS_MANY, 'OrdemServicoItem', 'ordem_servico_id'),
         );
     }
-    
+
     public function scopes() {
         return array(
             'naoExcluido' => array(
@@ -108,6 +108,21 @@ class OrdemServico extends CActiveRecord {
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
+    }
+
+    public function getValorTotal() {
+        $valor_total = 0;
+        if(!empty($this->ordemServicoItens)){
+            foreach ($this->ordemServicoItens as $item){
+                if($item->tipo_item_id == 1){
+                    $valor_total = $valor_total + $item->produto->preco;
+                }
+                if($item->tipo_item_id == 2){
+                    $valor_total = $valor_total + $item->servico->preco;
+                }
+            }
+        }
+        return $valor_total;
     }
 
 }

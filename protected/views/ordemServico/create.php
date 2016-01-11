@@ -18,5 +18,6 @@ $this->renderPartial('_form', array(
     'model' => $model,
     'oClientes' => $oClientes,
     'oOrdemServicoItem' => $oOrdemServicoItem,
+    'valor_total' => $valor_total,
 ));
 ?>

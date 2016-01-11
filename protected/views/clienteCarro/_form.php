@@ -46,24 +46,24 @@
         ));
         ?>
         <?php if (Yii::app()->user->checkAccess('marca/create')): ?>
-            <a href="<?= Yii::app()->createUrl('marca/create') ?>" title="Adicionar uma nova marca.">
+            <a target="_blank" href="<?= Yii::app()->createUrl('marca/create') ?>" title="Adicionar uma nova marca.">
                 <i class="fa fa-plus-square"></i>
             </a>
         <?php endif; ?>
         <?php echo $form->error($model, 'marca_id'); ?>
     </div>
-    
+
     <div class="row modelo" style="display: none">
         <?php echo $form->labelEx($model, 'modelo_id'); ?>
         <input type="hidden" name="ClienteCarro[modelo_id]" id="select2_modelo_id">
         <?php if (Yii::app()->user->checkAccess('modelo/create')): ?>
-            <a href="<?= Yii::app()->createUrl('modelo/create') ?>" title="Adicionar um novo modelo.">
+            <a target="_blank" href="<?= Yii::app()->createUrl('modelo/create') ?>" title="Adicionar um novo modelo.">
                 <i class="fa fa-plus-square"></i>
             </a>
         <?php endif; ?>
         <?php echo $form->error($model, 'modelo_id'); ?>
     </div>
-    
+
     <div class="row">
         <?php echo $form->labelEx($model, 'cor_id'); ?>
         <?php
@@ -81,7 +81,7 @@
         ));
         ?>
         <?php if (Yii::app()->user->checkAccess('cor/create')): ?>
-            <a href="<?= Yii::app()->createUrl('cor/create') ?>" title="Adicionar uma nova cor.">
+            <a target="_blank" href="<?= Yii::app()->createUrl('cor/create') ?>" title="Adicionar uma nova cor.">
                 <i class="fa fa-plus-square"></i>
             </a>
         <?php endif; ?>
@@ -101,9 +101,30 @@
         <?php echo $form->checkBox($model, 'excluido'); ?>
         <?php echo $form->error($model, 'excluido'); ?>
     </div>
-
+    <input type="hidden" id="abrir_os" name="abrir_os" />
     <div class="row buttons">
-        <?php echo CHtml::submitButton($model->isNewRecord ? 'Cadastrar' : 'Atualizar'); ?>
+        <?php
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'type' => 'success',
+            'size' => 'medium',
+            'buttonType' => 'submit',
+            'label' => $model->isNewRecord ? 'Cadastrar' : 'Atualizar'
+                )
+        );
+        ?>
+        <?php
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'type' => 'success',
+            'size' => 'medium',
+            'buttonType' => 'submit',
+            'label' => 'Cadastrar e abrir OS',
+            'htmlOptions' => array(
+                'onclick' => '$("#abrir_os").val("true")',
+                'id' => 'cadastrar_abrir_os',
+            ),
+                )
+        );
+        ?>
     </div>
 
     <?php $this->endWidget(); ?>
@@ -114,11 +135,11 @@
 </div><!-- form -->
 
 <script>
-
+    
     var marcaId = '<?= $model->marca_id ?>';
     var modeloId = '<?= $model->modelo_id ?>';
 
-    var carregaSelect2Modelos = function (marcaId) {
+    var carregaSelect2Modelos = function(marcaId) {
         $("#select2_modelo_id").parents('div').css('display', '');
         $.ajax({
             url: "<?= Yii::app()->createUrl('modelo/getDataJson') ?>",
@@ -126,14 +147,14 @@
             data: {
                 marcaId: marcaId,
             },
-            success: function (data) {
+            success: function(data) {
                 $("#select2_modelo_id").select2({
                     data: $.parseJSON(data),
                 });
             },
         });
     }
-    $(document).ready(function () {
+    $(document).ready(function() {
         if (marcaId !== "") {
             $("#select2_modelo_id").parents('div').css('display', '');
             carregaSelect2Modelos(marcaId);
@@ -144,7 +165,7 @@
 
     })
 
-    $('#select2_marca_id').click(function () {
+    $('#select2_marca_id').click(function() {
         $("#select2_modelo_id").select2('data', null)
         carregaSelect2Modelos($(this).val());
     });

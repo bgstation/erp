@@ -3,6 +3,8 @@
 class m160108_113511_inserir_permissoes extends CDbMigration {
 
     public function safeUp() {
+        $this->addColumn('acl_rotas', 'exibir', 'boolean default true');
+        $this->addColumn('acl_rotas', 'acl_rota_id', 'integer');
         $this->insert('acl_rotas', array(
             'controller' => 'produto',
             'action' => 'create',

@@ -2,15 +2,9 @@
 /* @var $this OrdemServicoController */
 /* @var $model OrdemServico */
 /* @var $form CActiveForm */
+//echo '<pre>';
+//    die(var_dump($model->ordemServicoItens));
 ?>
-
-<style>
-
-    .testere{
-        float: right
-    }
-
-</style>
 
 <div class="form">
 
@@ -29,10 +23,7 @@
         </li> 
         <li role="presentation" class="">
             <a href="#servicos" role="tab" id="servicos-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Serviços</a>
-        </li> 
-        <li role="presentation" class="">
-            <a href="#pagamento" role="tab" id="pagamento-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Forma de pagamento</a>
-        </li> 
+        </li>
     </ul>
     <div id="myTabContent" class="tab-content" style="min-height: 500px">
         <div role="tabpanel" class="tab-pane fade active in" id="cliente" aria-labelledby="cliente-tab">
@@ -117,7 +108,6 @@
             <input type="hidden" name="OrdemServicoItem[Servico]" id="OrdemServicoItem_servicos" />
 
             <div>
-                <h4>Produtos adicionados:</h4>
                 <table class="acl_section">
                     <thead>
                         <tr>
@@ -132,7 +122,6 @@
                 </table>
             </div>
             <div>
-                <h4>Serviços adicionados:</h4>
                 <table class="acl_section">
                     <thead>
                         <tr>
@@ -142,14 +131,11 @@
                         </tr>
                     </thead>
                     <tbody id="servicos_adicionados">
-                        <?= OrdemServicoHelper::renderItens("produto", $model->ordemServicoItens) ?>
+                        <?= OrdemServicoHelper::renderItens(2, $model->ordemServicoItens) ?>
                     </tbody>
                 </table>
             </div>
-
-        </div> 
-        <div role="tabpanel" class="tab-pane fade" id="pagamento" aria-labelledby="pagamento-tab">
-
+            <p id="valor_total" total="<?= $valor_total ?>">Total: R$<span><?= number_format($valor_total, 2, ',', '.') ?></span></p>
         </div> 
     </div>
 
@@ -182,7 +168,10 @@
             'type' => 'success',
             'size' => 'medium',
             'buttonType' => 'submit',
-            'label' => $model->isNewRecord ? 'Abrir ordem de serviço' : 'Atualizar'
+            'label' => $model->isNewRecord ? 'Abrir ordem de serviço' : 'Atualizar',
+            'htmlOptions' => array(
+                'onclick' => 'acoesFinalizar()'
+            ),
                 )
         );
         ?>
@@ -198,51 +187,74 @@
     var aServicos = new Array;
     var clienteId = '<?= $model->cliente_id ?>';
     var clienteCarroId = '<?= $model->cliente_carro_id ?>';
-    
-    <?php if(!empty($model->ordemServicoItens)): ?>
-        <?php foreach ($model->ordemServicoItens as $model){
-            
-        } ?>
-    <?php endif; ?>
 
-    var removerServico = function (tipoItem, itemId, identificadorId) {
+    var acoesFinalizar = function() {
+        $('#OrdemServicoItem_produtos').val(aProdutos);
+        $('#OrdemServicoItem_servicos').val(aServicos);
+    }
+
+<?php if (!empty($model->ordemServicoItens)): ?>
+    <?php
+    foreach ($model->ordemServicoItens as $model) {
+        if ($model->tipo_item_id == 1):
+            ?>
+                aProdutos.push(parseInt('<?= $model->item_id ?>'));
+        <?php endif;
+        if ($model->tipo_item_id == 2):
+            ?>
+                aServicos.push(parseInt('<?= $model->item_id ?>'));
+        <?php endif; ?>
+
+    <?php } ?>
+<?php endif; ?>
+    
+    var objItem;
+    
+    var atualizaValor = function(valor) {
+        $("#valor_total span").text(number_format(valor, 2, ',', '.'));
+        $("#valor_total").attr('total', valor);
+    }
+
+    var removerServico = function(tipoItem, itemId, identificadorId, preco) {
+        console.log(preco);
         if (tipoItem == 1) {
             var index = aProdutos.indexOf(itemId);
             if (index != -1) {
                 aProdutos.splice(index, 1);
-                $('#OrdemServicoItem_produtos').val(aProdutos);
                 $('tr[identificador=produto_' + identificadorId + ']').remove();
+                var novoValor = parseFloat($("#valor_total").attr('total')) - parseFloat(preco);
+                atualizaValor(novoValor);
             }
-            console.log(aProdutos);
         }
         if (tipoItem == 2) {
             var index = aServicos.indexOf(itemId);
             if (index != -1) {
                 aServicos.splice(index, 1);
-                $('#OrdemServicoItem_servicos').val(aServicos);
                 $('tr[identificador=servico_' + identificadorId + ']').remove();
+                var novoValor = parseFloat($("#valor_total").attr('total')) - parseFloat(preco);
+                atualizaValor(novoValor);
             }
-            console.log(aServicos);
         }
     }
 
-    var adicionarItem = function (tipoItem, itemId) {
+    var adicionarItem = function(tipoItem, itemId) {
         if (itemId !== "" && tipoItem !== "") {
             if (tipoItem == 1) {
                 var objItem = $('#produto_' + itemId);
                 aProdutos.push(parseInt(itemId));
-                $('#OrdemServicoItem_produtos').val(aProdutos);
                 var html = '';
                 html += '<tr identificador="produto_' + identificador + '">';
                 html += '<td>' + objItem.attr('text') + '</td>';
                 html += '<td> R$' + number_format(objItem.attr('preco'), 2, ',', '.') + '</td>';
                 html += '<td>';
-                html += '<a href="javascript:void(0)" class="remove" onclick="removerServico(' + tipoItem + ', ' + objItem.attr('objId') + ', ' + identificador + ')">';
+                html += '<a href="javascript:void(0)" class="remove" onclick="removerServico(' + tipoItem + ', ' + objItem.attr('objId') + ', ' + identificador + ', '+objItem.attr('preco')+')">';
                 html += '<i class="fa fa-times"></i>';
                 html += '</a>';
                 html += '</td>';
                 html += '</tr>';
                 $('#produtos_adicionados').append(html);
+                var novoValor = parseFloat($("#valor_total").attr('total')) + parseFloat(objItem.attr('preco'));
+                atualizaValor(novoValor);
             }
             if (tipoItem == 2) {
                 var objItem = $('#servico_' + itemId);
@@ -250,18 +262,19 @@
                 html += '<tr identificador="servico_' + identificador + '">';
                 html += '<td>' + objItem.attr('text') + '</td>';
                 html += '<td> R$' + number_format(objItem.attr('preco'), 2, ',', '.') + '</td>';
-                html += '<td><a href="javascript:void(0)" class="remove" onclick="removerServico(' + tipoItem + ', ' + objItem.attr('objId') + ', ' + identificador + ')"><i class="fa fa-times"></i></a></td>';
+                html += '<td><a href="javascript:void(0)" class="remove" onclick="removerServico(' + tipoItem + ', ' + objItem + ', ' + identificador + ', '+objItem.attr('preco')+')"><i class="fa fa-times"></i></a></td>';
                 html += '</tr>';
                 $('#servicos_adicionados').append(html);
                 aServicos.push(parseInt(itemId));
-                $('#OrdemServicoItem_servicos').val(aServicos);
+                var novoValor = parseFloat($("#valor_total").attr('total')) + parseFloat(objItem.attr('preco'));
+                atualizaValor(novoValor);
             }
             identificador++;
         }
     }
 
-    $('#btn_add_item').click(function () {
-        if ($('#select2_tipo_item_id').val() !== "" &&$("#OrdemServicoItem_item_id").val() !== "") {
+    $('#btn_add_item').click(function() {
+        if ($('#select2_tipo_item_id').val() !== "" && $("#OrdemServicoItem_item_id").val() !== "") {
             adicionarItem($('#select2_tipo_item_id').val(), $("#OrdemServicoItem_item_id").val());
         } else {
             alert('Favor selecionar um item.');
@@ -286,7 +299,7 @@
     }
     ;
 
-    var carregaItens = function (tipoItemId) {
+    var carregaItens = function(tipoItemId) {
         $("#OrdemServicoItem_item_id").parents('div').css('display', '');
         $.ajax({
             url: "<?= Yii::app()->createUrl('ordemServico/getItensPorTipoJson') ?>",
@@ -294,12 +307,12 @@
             data: {
                 tipoItemId: tipoItemId,
             },
-            success: function (data) {
+            success: function(data) {
                 $("#OrdemServicoItem_item_id").select2({
                     formatResult: format,
                     formatSelection: format2,
                     data: $.parseJSON(data),
-                    escapeMarkup: function (m) {
+                    escapeMarkup: function(m) {
                         return m;
                     }
                 });
@@ -308,7 +321,7 @@
         });
     }
 
-    var carregaSelect2Carros = function (clienteId) {
+    var carregaSelect2Carros = function(clienteId) {
         $("#OrdemServico_cliente_carro_id").parents('div').css('display', '');
         $.ajax({
             url: "<?= Yii::app()->createUrl('clienteCarro/getDataJson') ?>",
@@ -316,14 +329,14 @@
             data: {
                 clienteId: clienteId,
             },
-            success: function (data) {
+            success: function(data) {
                 $("#OrdemServico_cliente_carro_id").select2({
                     data: $.parseJSON(data),
                 });
             },
         });
     }
-    $(document).ready(function () {
+    $(document).ready(function() {
         if (clienteId !== "") {
             $("#OrdemServico_cliente_carro_id").parents('div').css('display', '');
             carregaSelect2Carros(clienteId);
@@ -333,14 +346,14 @@
         }
     });
 
-    $('#select2_cliente_id').click(function () {
+    $('#select2_cliente_id').click(function() {
         if ($("#OrdemServico_cliente_carro_id").val() !== "") {
             $("#OrdemServico_cliente_carro_id").select2('data', null);
         }
         carregaSelect2Carros($(this).val());
     });
 
-    $('#select2_tipo_item_id').click(function () {
+    $('#select2_tipo_item_id').click(function() {
         if ($("#OrdemServicoItem_item_id").val() !== "") {
             $("#OrdemServicoItem_item_id").select2('data', null);
         }

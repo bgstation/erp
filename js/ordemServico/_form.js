@@ -83,7 +83,7 @@ var adicionarItem = function (tipoItem, itemId, obj) {
 
 var adicionarItemNaoCadastrado = function (tipoItem) {
     var titulo = $('#LogItemNaoCadastrado_titulo').val();
-    var preco = parseFloat($('#LogItemNaoCadastrado_preco').val().replace('.','').replace(',', '.'));
+    var preco = parseFloat($('#LogItemNaoCadastrado_preco').val().replace('.', '').replace(',', '.'));
     var objTemp = new Object();
     objTemp.titulo = titulo;
     objTemp.preco = preco;
@@ -147,12 +147,15 @@ $(document).ready(function () {
         }
     }
 });
+
 $('#select2_cliente_id').click(function () {
     if ($("#OrdemServico_cliente_carro_id").val() !== "") {
         $("#OrdemServico_cliente_carro_id").select2('data', null);
     }
+    $("#resumo_nome_cliente").val($("#s2id_select2_cliente_id span").text());
     carregaSelect2Carros($(this).val());
 });
+
 $('#select2_tipo_item_id').click(function () {
     if ($("#OrdemServicoItem_item_id").val() !== "") {
         $("#OrdemServicoItem_item_id").select2('data', null);
@@ -161,4 +164,13 @@ $('#select2_tipo_item_id').click(function () {
     carregaItens($(this).val());
 });
 
+$("#OrdemServico_cliente_carro_id").click(function () {
+    $("#resumo_cliente_carro_placa").val($("#s2id_OrdemServico_cliente_carro_id span").text());
+});
+
 $('.preco').mask("#.##0,00", {reverse: true});
+
+var alterarTab = function (passo) {
+    console.log(passo);
+    $('#' + passo + '-tab').trigger("click");
+}

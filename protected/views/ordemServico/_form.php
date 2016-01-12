@@ -24,8 +24,11 @@
         <li role="presentation" class="">
             <a href="#servicos" role="tab" id="servicos-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Serviços</a>
         </li>
+        <li role="presentation" class="">
+            <a href="#resumo" role="tab" id="resumo-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Resumo</a>
+        </li>
     </ul>
-    <div id="myTabContent" class="tab-content" style="min-height: 500px">
+    <div id="myTabContent" class="tab-content" style="min-height: 300px">
         <div role="tabpanel" class="tab-pane fade active in" id="cliente" aria-labelledby="cliente-tab">
             <div class="row">
                 <?php echo $form->labelEx($model, 'cliente_id'); ?>
@@ -62,6 +65,20 @@
                 <?php echo $form->labelEx($model, 'excluido'); ?>
                 <?php echo $form->checkBox($model, 'excluido'); ?>
                 <?php echo $form->error($model, 'excluido'); ?>
+            </div>
+            <div class="row buttons">
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type' => 'primary',
+                    'size' => 'medium',
+                    'buttonType' => 'button',
+                    'label' => 'Continuar',
+                    'htmlOptions' => array(
+                        'onclick' => 'alterarTab("servicos")'
+                    ),
+                        )
+                );
+                ?>
             </div>
         </div>
         <div role="tabpanel" class="tab-pane fade" id="servicos" aria-labelledby="servicos-tab">
@@ -142,46 +159,59 @@
                 </table>
             </div>
             <p id="valor_total" total="<?= $valor_total ?>">Total: R$<span><?= number_format($valor_total, 2, ',', '.') ?></span></p>
-        </div> 
+            <div class="row buttons">
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type' => 'danger',
+                    'size' => 'medium',
+                    'buttonType' => 'button',
+                    'label' => 'Voltar',
+                    'htmlOptions' => array(
+                        'onclick' => 'alterarTab("cliente")'
+                    ),
+                        )
+                );
+                ?>
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type' => 'primary',
+                    'size' => 'medium',
+                    'buttonType' => 'button',
+                    'label' => 'Continuar',
+                    'htmlOptions' => array(
+                        'onclick' => 'alterarTab("resumo")'
+                    ),
+                        )
+                );
+                ?>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane fade" id="resumo" aria-labelledby="resumo-tab">
+            <div class="row">
+                <input type="text" disabled="disabled" id="resumo_nome_cliente" value=""/>
+            </div>
+            <div class="row">
+                <input type="text" disabled="disabled" id="resumo_cliente_carro_placa" value=""/>
+            </div>
+
+            <div class="row buttons">
+                <?php
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type' => 'success',
+                    'size' => 'medium',
+                    'buttonType' => 'submit',
+                    'label' => $model->isNewRecord ? 'Abrir ordem de serviço' : 'Atualizar',
+                    'htmlOptions' => array(
+                        'onclick' => 'acoesFinalizar()'
+                    ),
+                        )
+                );
+                ?>
+            </div>
+        </div>
     </div>
 
     <?php echo $form->errorSummary($model); ?>
-
-
-
-    <!--    <div class="row">
-            <//?php echo $form->labelEx($model, 'forma_pagamento_id'); ?>
-            <//?php
-            $this->widget('ext.select2.ESelect2', array(
-                'model' => $model,
-                'attribute' => 'forma_pagamento_id',
-                'data' => $model->aFormasPagemento,
-                'options' => array(
-                    'placeholder' => 'Forma de pagamento',
-                    'allowClear' => false,
-                ),
-                'htmlOptions' => array(
-                    'id' => 'select2_forma_pagamento_id',
-                ),
-            ));
-            ?>
-    <//?php echo $form->error($model, 'forma_pagamento_id'); ?>
-        </div>-->
-
-    <div class="row buttons">
-        <?php
-        $this->widget('bootstrap.widgets.TbButton', array(
-            'type' => 'success',
-            'size' => 'medium',
-            'buttonType' => 'submit',
-            'label' => $model->isNewRecord ? 'Abrir ordem de serviço' : 'Atualizar',
-            'htmlOptions' => array(
-                'onclick' => 'acoesFinalizar()'
-            ),
-                )
-        );
-        ?>
-    </div>
 
     <?php $this->endWidget(); ?>
 
@@ -212,6 +242,7 @@
 
         var carregaItens = function (tipoItemId) {
             $("#OrdemServicoItem_item_id").parents('div').css('display', '');
+            $('.itens_nao_cadastrados input').css('display', 'none');
             $.ajax({
                 url: "<?= Yii::app()->createUrl('ordemServico/getItensPorTipoJson') ?>",
                 type: "POST",

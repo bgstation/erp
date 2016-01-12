@@ -95,6 +95,7 @@ class OrdemServicoItem extends CActiveRecord {
         $criteria->compare('item_id', $this->item_id);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
+        
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -111,6 +112,14 @@ class OrdemServicoItem extends CActiveRecord {
         return parent::model($className);
     }
 
+    public function removerItens() {
+        if (!empty($this->ordem_servico_id)) {
+            $oModels = self::model()->deleteAllByAttributes(array(
+                'ordem_servico_id' => $this->ordem_servico_id,
+            ));
+        }
+    }
+
     public function salvarItemPorTipo($tipoItem, $itemId) {
         $model = new self;
         $model->ordem_servico_id = $this->ordem_servico_id;
@@ -121,23 +130,22 @@ class OrdemServicoItem extends CActiveRecord {
 
     public function salvarItens($post) {
         if (!empty($post)) {
+            self::removerItens();
             $aItens = explode(',', $post['Produto']);
             if (!empty($aItens)) {
                 foreach ($aItens as $item) {
-                    $this->salvarItemPorTipo(1, $item);
+                    if (!empty($item))
+                        $this->salvarItemPorTipo(1, $item);
                 }
             }
             $aItens = explode(',', $post['Servico']);
             if (!empty($aItens)) {
                 foreach ($aItens as $item) {
-                    $this->salvarItemPorTipo(2, $item);
+                    if (!empty($item))
+                        $this->salvarItemPorTipo(2, $item);
                 }
             }
         }
-    }
-
-    public function getItens() {
-        
     }
 
 }

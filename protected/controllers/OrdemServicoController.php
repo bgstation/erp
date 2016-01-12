@@ -59,18 +59,23 @@ class OrdemServicoController extends Controller {
      */
     public function actionCreate() {
         $model = new OrdemServico;
+        if (!empty($_GET['clienteId']))
+            $model->cliente_id = $_GET['clienteId'];
+        if (!empty($_GET['clienteCarroId']))
+            $model->cliente_carro_id = $_GET['clienteCarroId'];
 
+        
         $oClientes = Cliente::model()->ordemNome()->findAll();
         $oOrdemServicoItem = new OrdemServicoItem;
 
         if (isset($_POST['OrdemServico'])) {
             $model->attributes = $_POST['OrdemServico'];
-            if ($model->save()){
+            if ($model->save()) {
                 $oLogOrdemServico = new LogOrdemServico;
                 $oLogOrdemServico->status = 1;
                 $oLogOrdemServico->ordem_servico_id = $model->id;
                 $oLogOrdemServico->salvarLog();
-                if(!empty($_POST['OrdemServicoItem'])){
+                if (!empty($_POST['OrdemServicoItem'])) {
                     $oOrdemServicoItem->ordem_servico_id = $model->id;
                     $oOrdemServicoItem->salvarItens($_POST['OrdemServicoItem']);
                 }
@@ -82,6 +87,7 @@ class OrdemServicoController extends Controller {
             'model' => $model,
             'oClientes' => $oClientes,
             'oOrdemServicoItem' => $oOrdemServicoItem,
+            'valor_total' => $model->getValorTotal(),
         ));
     }
 
@@ -92,20 +98,26 @@ class OrdemServicoController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
-        
+
         $oClientes = Cliente::model()->ordemNome()->findAll();
         $oOrdemServicoItem = new OrdemServicoItem;
-        
+
         if (isset($_POST['OrdemServico'])) {
             $model->attributes = $_POST['OrdemServico'];
-            if ($model->save())
+            if ($model->save()){
+                if (!empty($_POST['OrdemServicoItem'])) {
+                    $oOrdemServicoItem->ordem_servico_id = $model->id;
+                    $oOrdemServicoItem->salvarItens($_POST['OrdemServicoItem']);
+                }
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('update', array(
             'model' => $model,
             'oClientes' => $oClientes,
             'oOrdemServicoItem' => $oOrdemServicoItem,
+            'valor_total' => $model->getValorTotal(),
         ));
     }
 
@@ -170,14 +182,14 @@ class OrdemServicoController extends Controller {
             Yii::app()->end();
         }
     }
-    
-    public function actionGetItensPorTipoJson(){
-        if(!empty($_POST['tipoItemId'])){
-            if(!empty($_POST['tipoItemId']) && $_POST['tipoItemId'] == 1){
+
+    public function actionGetItensPorTipoJson() {
+        if (!empty($_POST['tipoItemId'])) {
+            if (!empty($_POST['tipoItemId']) && $_POST['tipoItemId'] == 1) {
                 $oProduto = new Produto;
                 echo CJSON::encode($oProduto->getDataJson());
             }
-            if(!empty($_POST['tipoItemId']) && $_POST['tipoItemId'] == 2){
+            if (!empty($_POST['tipoItemId']) && $_POST['tipoItemId'] == 2) {
                 $oServico = new Servico;
                 echo CJSON::encode($oServico->getDataJson());
             }

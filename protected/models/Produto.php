@@ -40,14 +40,14 @@ class Produto extends CActiveRecord {
             array('id, titulo, codigo_barra, marca_id, modelo_id, preco, observacao, quantidade, excluido', 'safe', 'on' => 'search'),
         );
     }
-    
+
     public function tratarPreco() {
         if (!empty($this->preco)) {
             $preco = str_replace('.', '', $this->preco);
             $this->preco = str_replace(',', '.', $preco);
         }
     }
-    
+
     public function scopes() {
         return array(
             'naoExcluido' => array(
@@ -127,19 +127,23 @@ class Produto extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-    
-    public function getDataJson(){
+
+    public function getDataJson() {
         $aModels = array();
         $oModels = self::model()->naoExcluido()->ordenarTitulo()->findAll();
-        if(!empty($oModels)){
-            $i=0;
-            foreach ($oModels as $model){
+        if (!empty($oModels)) {
+            $i = 0;
+            foreach ($oModels as $model) {
                 $aModels[$i]['id'] = $model->id;
                 $aModels[$i]['text'] = $model->titulo;
                 $aModels[$i]['preco'] = $model->preco;
-                $aModels[$i]['tipoItem'] = 'produto';
+                $aModels[$i]['tipoItem'] = 1;
                 $i++;
             }
+            $aModels[$i]['id'] = 0;
+            $aModels[$i]['text'] = "Não cadastrado";
+            $aModels[$i]['preco'] = 0.00;
+            $aModels[$i]['tipoItem'] = 1;
         }
         return $aModels;
     }

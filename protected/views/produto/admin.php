@@ -15,18 +15,17 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 
 <?php
 if (Yii::app()->user->checkAccess('produto/create')) {
-    
+    $this->widget('bootstrap.widgets.TbButton', array(
+        'type' => 'success',
+        'size' => 'medium',
+        'label' => 'Cadastrar',
+        'url' => Yii::app()->createUrl('produto/create'),
+        'htmlOptions' => array(
+            'class' => 'pull-left',
+        ),
+            )
+    );
 }
-$this->widget('bootstrap.widgets.TbButton', array(
-    'type' => 'success',
-    'size' => 'medium',
-    'label' => 'Cadastrar',
-    'url' => Yii::app()->createUrl('produto/create'),
-    'htmlOptions' => array(
-        'class' => 'pull-left',
-    ),
-        )
-);
 ?>
 <br>
 

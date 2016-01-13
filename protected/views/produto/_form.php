@@ -4,8 +4,6 @@
 /* @var $form CActiveForm */
 ?>
 
-
-
 <div class="form">
 
     <?php

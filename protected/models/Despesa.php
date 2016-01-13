@@ -1,44 +1,43 @@
 <?php
 
 /**
- * This is the model class for table "produtos".
+ * This is the model class for table "despesas".
  *
- * The followings are the available columns in table 'produtos':
+ * The followings are the available columns in table 'despesas':
  * @property integer $id
- * @property string $titulo
- * @property string $codigo_barra
- * @property integer $marca_id
- * @property integer $modelo_id
+ * @property integer $tipo_despesas_id
  * @property string $preco
  * @property string $observacao
  * @property integer $quantidade
+ * @property string $data_hora
+ * @property integer $usuario_id
  * @property integer $excluido
  */
-class Produto extends CActiveRecord {
+class Despesa extends CActiveRecord {
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'produtos';
+        return 'despesas';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
     public function rules() {
+        // NOTE: you should only define rules for those attributes that
+        // will receive user inputs.
         return array(
-            array('marca_id, modelo_id, quantidade, excluido', 'numerical', 'integerOnly' => true),
-            array('titulo', 'length', 'max' => 200),
-            array('codigo_barra', 'length', 'max' => 300),
+            array('tipo_despesas_id, quantidade, usuario_id, excluido', 'numerical', 'integerOnly' => true),
             array('preco', 'length', 'max' => 10),
-            array('observacao', 'safe'),
-            array('titulo', 'required'),
+            array('observacao, data_hora', 'safe'),
+            array('preco, tipo_despesas_id, quantidade', 'required'),
             array('preco', 'tratarPreco'),
-            array('id, titulo, codigo_barra, marca_id, modelo_id, preco, observacao, quantidade, excluido', 'safe', 'on' => 'search'),
+            array('id, tipo_despesas_id, preco, observacao, quantidade, data_hora, usuario_id, excluido', 'safe', 'on' => 'search'),
         );
     }
-
+    
     public function tratarPreco() {
         if (!empty($this->preco)) {
             $preco = str_replace('.', '', $this->preco);
@@ -46,24 +45,12 @@ class Produto extends CActiveRecord {
         }
     }
 
-    public function scopes() {
-        return array(
-            'naoExcluido' => array(
-                'condition' => 't.excluido = false',
-            ),
-            'ordenarTitulo' => array(
-                'order' => 't.titulo ASC',
-            ),
-        );
-    }
-
     /**
      * @return array relational rules.
      */
     public function relations() {
         return array(
-            'marca' => array(self::BELONGS_TO, 'Marca', 'marca_id'),
-            'modelo' => array(self::BELONGS_TO, 'Modelo', 'modelo_id'),
+            'tipoDespesa' => array(self::BELONGS_TO, 'TipoDespesa', 'tipo_despesa_id'),
         );
     }
 
@@ -73,14 +60,13 @@ class Produto extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'Código',
-            'titulo' => 'Titulo',
-            'codigo_barra' => 'Codigo de barra',
-            'marca_id' => 'Marca',
-            'modelo_id' => 'Modelo',
-            'preco' => 'Preco',
-            'observacao' => 'Observacao',
+            'tipo_despesas_id' => 'Tipo de despesa',
+            'preco' => 'Preço',
+            'observacao' => 'Observação',
             'quantidade' => 'Quantidade',
-            'excluido' => 'Excluido',
+            'data_hora' => 'Data',
+            'usuario_id' => 'Usuário',
+            'excluido' => 'Excluído',
         );
     }
 
@@ -102,13 +88,12 @@ class Produto extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('titulo', $this->titulo, true);
-        $criteria->compare('codigo_barra', $this->codigo_barra, true);
-        $criteria->compare('marca_id', $this->marca_id);
-        $criteria->compare('modelo_id', $this->modelo_id);
+        $criteria->compare('tipo_despesas_id', $this->tipo_despesas_id);
         $criteria->compare('preco', $this->preco, true);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('quantidade', $this->quantidade);
+        $criteria->compare('data_hora', $this->data_hora, true);
+        $criteria->compare('usuario_id', $this->usuario_id);
         $criteria->compare('excluido', $this->excluido);
 
         return new CActiveDataProvider($this, array(
@@ -120,30 +105,10 @@ class Produto extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Produto the static model class
+     * @return Despesa the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
-    }
-
-    public function getDataJson() {
-        $aModels = array();
-        $oModels = self::model()->naoExcluido()->ordenarTitulo()->findAll();
-        if (!empty($oModels)) {
-            $i = 0;
-            foreach ($oModels as $model) {
-                $aModels[$i]['id'] = $model->id;
-                $aModels[$i]['text'] = $model->titulo;
-                $aModels[$i]['preco'] = $model->preco;
-                $aModels[$i]['tipoItem'] = 1;
-                $i++;
-            }
-            $aModels[$i]['id'] = 0;
-            $aModels[$i]['text'] = "Não cadastrado";
-            $aModels[$i]['preco'] = 0.00;
-            $aModels[$i]['tipoItem'] = 1;
-        }
-        return $aModels;
     }
 
 }

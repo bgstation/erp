@@ -1,21 +1,21 @@
 <?php
-/* @var $this ClienteController */
-/* @var $model Cliente */
+/* @var $this CompraController */
+/* @var $model Compra */
 
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
-        'Clientes' => Yii::app()->createUrl('cliente/admin'),
+        'Compras' => Yii::app()->createUrl('compra/admin'),
         'Atualizar',
     ),
 ));
 ?>
 
-<h1>Atualizar Cliente: <?= $model->nome ?></h1>
+<h1>Compra: <?php echo $model->id; ?></h1>
 
 <?php
 $this->renderPartial('_form', array(
     'model' => $model,
-    
+    'oProdutos' => $oProdutos,
 ));
 ?>

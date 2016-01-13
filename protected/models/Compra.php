@@ -16,6 +16,8 @@
  */
 class Compra extends CActiveRecord {
 
+    private $qntAntigaTmp = 0;
+
     /**
      * @return string the associated database table name
      */
@@ -51,15 +53,29 @@ class Compra extends CActiveRecord {
         $this->usuario_id = Yii::app()->user->getId();
         if ($this->isNewRecord) {
             $this->data_hora = date('Y-m-d H:i:s');
+        } else {
+            $this->qntAntigaTmp = self::model()->findByPk($this->id)->quantidade;
         }
         return parent::beforeSave();
     }
-    
+
     public function afterSave() {
+        $oProduto = Produto::model()->findByPk($this->produto_id);
+        $oProduto->scenario = 'alteracaoCompra';
         if ($this->isNewRecord) {
-            $oProduto = Produto::model()->findByPk($this->produto_id);
             $oProduto->quantidade = $oProduto->quantidade + $this->quantidade;
             $oProduto->save();
+        } else {
+            if ($this->qntAntigaTmp != $this->quantidade) {
+                if ($this->qntAntigaTmp < $this->quantidade) {
+                    $diffQuantidade = $this->quantidade - $this->qntAntigaTmp;
+                    $oProduto->quantidade = $oProduto->quantidade + $diffQuantidade;
+                } else {
+                    $diffQuantidade = $this->qntAntigaTmp - $this->quantidade;
+                    $oProduto->quantidade = $oProduto->quantidade - $diffQuantidade;
+                }
+                $oProduto->save();
+            }
         }
         return parent::afterSave();
     }

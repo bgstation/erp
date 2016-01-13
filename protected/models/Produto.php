@@ -34,7 +34,7 @@ class Produto extends CActiveRecord {
             array('preco', 'length', 'max' => 10),
             array('observacao', 'safe'),
             array('titulo', 'required'),
-            array('preco', 'tratarPreco'),
+            array('preco', 'tratarPreco', 'except' => 'alteracaoCompra'),
             array('id, titulo, codigo_barra, marca_id, modelo_id, preco, observacao, quantidade, excluido', 'safe', 'on' => 'search'),
         );
     }

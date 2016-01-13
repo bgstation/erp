@@ -53,7 +53,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'quantidade'); ?>
-		<?php echo $form->numberField($model,'quantidade', array('readonly' => $model->isNewRecord ? '' : 'readonly')); ?>
+		<?php echo $form->numberField($model,'quantidade'); ?>
 		<?php echo $form->error($model,'quantidade'); ?>
 	</div>
 

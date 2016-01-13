@@ -22,10 +22,10 @@
             <a href="#cliente" id="cliente-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Cliente</a>
         </li> 
         <li role="presentation" class="">
-            <a href="#servicos" role="tab" id="servicos-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Serviços</a>
+            <a href="javascript:void(0)" role="tab" id="servicos-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Serviços</a>
         </li>
         <li role="presentation" class="">
-            <a href="#resumo" role="tab" id="resumo-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Resumo</a>
+            <a href="javascript:void(0)" disabled="disabled" role="tab" id="resumo-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Resumo</a>
         </li>
     </ul>
     <div id="myTabContent" class="tab-content" style="min-height: 300px">
@@ -74,7 +74,7 @@
                     'buttonType' => 'button',
                     'label' => 'Continuar',
                     'htmlOptions' => array(
-                        'onclick' => 'alterarTab("servicos")'
+                        'onclick' => 'alterarTab("cliente", "servicos")'
                     ),
                         )
                 );
@@ -179,7 +179,7 @@
                     'buttonType' => 'button',
                     'label' => 'Continuar',
                     'htmlOptions' => array(
-                        'onclick' => 'alterarTab("resumo")'
+                        'onclick' => 'alterarTab("servicos", "resumo")'
                     ),
                         )
                 );
@@ -192,6 +192,33 @@
             </div>
             <div class="row">
                 <input type="text" disabled="disabled" id="resumo_cliente_carro_placa" value=""/>
+            </div>
+
+            <div>
+                <table class="acl_section">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Preço</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tipo_item_1_adicionados" class="resumo">
+                        <?= OrdemServicoHelper::renderItens(1, $model->ordemServicoItens) ?>
+                    </tbody>
+                </table>
+            </div>
+            <div>
+                <table class="acl_section">
+                    <thead>
+                        <tr>
+                            <th>Serviço</th>
+                            <th>Preço</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tipo_item_2_adicionados" class="resumo">
+                        <?= OrdemServicoHelper::renderItens(2, $model->ordemServicoItens) ?>
+                    </tbody>
+                </table>
             </div>
 
             <div class="row buttons">

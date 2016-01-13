@@ -45,16 +45,18 @@ var removerItem = function (tipoItem, itemId, identificador, preco) {
     atualizaValor(novoValor);
 }
 
-var getCodigoHtml = function (obj) {
+var getCodigoHtml = function (obj, colunaRemover) {
     var html = '';
     html += '<tr identificador="' + obj.tipoItem + '_' + obj.identificador + '">';
     html += '<td>' + obj.titulo + '</td>';
     html += '<td> R$' + number_format(obj.preco, 2, ',', '.') + '</td>';
-    html += '<td>';
-    html += '<a href="javascript:void(0)" class="remove" onclick="removerItem(' + obj.tipoItem + ', ' + obj.itemId + ', ' + obj.identificador + ', ' + obj.preco + ')">';
-    html += '<i class="fa fa-times"></i>';
-    html += '</a>';
-    html += '</td>';
+    if (colunaRemover) {
+        html += '<td>';
+        html += '<a href="javascript:void(0)" class="remove" onclick="removerItem(' + obj.tipoItem + ', ' + obj.itemId + ', ' + obj.identificador + ', ' + obj.preco + ')">';
+        html += '<i class="fa fa-times"></i>';
+        html += '</a>';
+        html += '</td>';
+    }
     html += '</tr>';
     return html;
 }
@@ -74,7 +76,8 @@ var adicionarItem = function (tipoItem, itemId, obj) {
             aProdutos.push(parseInt(obj.itemId));
         if (tipoItem == 2)
             aServicos.push(parseInt(obj.itemId));
-        $('#tipo_item_' + tipoItem + '_adicionados').append(getCodigoHtml(obj));
+        $('#tipo_item_' + tipoItem + '_adicionados').append(getCodigoHtml(obj, true));
+        $('#tipo_item_' + tipoItem + '_adicionados.resumo').append(getCodigoHtml(obj, false));
         var novoValor = parseFloat($("#valor_total").attr('total')) + parseFloat(obj.preco);
         atualizaValor(novoValor);
         identificador++;
@@ -170,7 +173,18 @@ $("#OrdemServico_cliente_carro_id").click(function () {
 
 $('.preco').mask("#.##0,00", {reverse: true});
 
-var alterarTab = function (passo) {
-    console.log(passo);
-    $('#' + passo + '-tab').trigger("click");
+var alterarTab = function (atual, passoEscolhido) {
+    if (atual == "cliente") {
+        if ($('#select2_cliente_id').val() === "" || $("#OrdemServico_cliente_carro_id").val() === "") {
+            alert("Favor escolher o cliente e o carro!");
+            return false;
+        }
+    } else if (atual == 'servicos') {
+        if (aProdutos.length <= 0 && aServicos.length <= 0 && aItensNaoCadastrados <= 0) {
+            alert("Favor adicionar ao menos um item!");
+            return false;
+        }
+    }
+    $('#' + passoEscolhido + '-tab').attr("href", "#" + passoEscolhido);
+    $('#' + passoEscolhido + '-tab').trigger("click");
 }

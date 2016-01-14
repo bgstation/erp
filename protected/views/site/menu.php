@@ -2,7 +2,7 @@
 $this->widget('bootstrap.widgets.TbNavbar', array(
     'type' => 'inverse',
     'brand' => CHtml::image(Yii::app()->params['diretorioImagens'] . 'logo.png', 'fashion car'),
-    'brandUrl' => '#',
+    'brandUrl' => Yii::app()->createUrl(Yii::app()->defaultController),
     'collapse' => true,
     'items' => array(
         array(

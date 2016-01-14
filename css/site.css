@@ -32,7 +32,7 @@
     left:0px;
     bottom:0px;
     width:100%;
-    height:10px;
+    height:35px;
     padding: 10px;
     margin: 10px 0;
     font-size: 0.8em;
@@ -77,16 +77,15 @@ input {
     color: #FFF;
     border-color: #d9534f;
 }
-.dashboard-card {
-    height: 130px;
-}
-.dashboard-card > .panel {
-    height: 107px;
-}
-.panel-heading {
-    height: 105px!important;
+.panel-heading span {
+    font-size: 23px;
 }
 @media (max-width: 979px) {
+    #header {
+        height: 60px!important;
+    }
+}
+@media (max-width: 500px) {
     #header {
         height: 60px!important;
     }

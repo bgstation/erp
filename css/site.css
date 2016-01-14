@@ -50,3 +50,7 @@
     background-image: none!important;
     color: #FFF!important;
 }
+.navbar .brand {
+    padding: 5px!important;
+    margin: 0!important;
+}

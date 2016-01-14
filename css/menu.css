@@ -1,0 +1,56 @@
+/* 
+    Document   : site.css
+    Created on : 14/01/2016, 16:20:00
+    Author     : pedro
+    Description:
+        Purpose of the stylesheet follows.
+*/
+.dropdown-menu > .active > a {
+    background-color: #999!important;
+    background-image: none!important;
+    color: #FFF!important;
+}
+.dropdown-menu>li>a {
+    font-size: 16px;
+}
+.dropdown-menu>li>a:hover {
+    background-color: #999!important;
+    background-image: none!important;
+    color: #FFF!important;
+}
+.collapse {
+    display:block!important;
+}
+.navbar,
+.navbar-inner,
+.navbar-inner > .container,
+.nav-collapse {
+    background-color:#000!important;
+}
+.nav-collapse {
+    font-size: 17px;
+}
+.brand img {
+    max-height: 40px;
+}
+.navbar .brand {
+    padding: 5px!important;
+    margin: 0!important;
+}
+.navbar-inner {
+    border: transparent;
+}
+@media (max-width: 979px) {
+    .btn-navbar {
+        margin-right: 30px!important;
+    }
+    .brand img {
+        margin-left: 20px!important;
+    }
+    .navbar .nav-collapse .nav.pull-right {
+        float:none!important;
+    }
+    .nav-collapse {
+        margin-left: 30px!important;
+    }
+}

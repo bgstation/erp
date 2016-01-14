@@ -16,31 +16,35 @@
 
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/form.css" />
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/site.css" />
-        <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/menu.css" />
+        <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/bower_components/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/produto/_form.css" />
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/font-awesome-4.5.0/css/font-awesome.min.css" />
-        
+
         <?php Yii::app()->bootstrap->register() ?>
     </head>
 
     <body>
         <div class="container" id="page">
-            <?php if (!Yii::app()->user->isGuest) { ?>
-                <div id="mainmenu">
-                    <?php $this->renderPartial('/site/menu') ?>
-                </div>
-                <?php if (isset($this->breadcrumbs)): ?>
-                    <?php
-                    $this->widget('zii.widgets.CBreadcrumbs', array(
-                        'links' => $this->breadcrumbs,
-                    ));
-                    ?>
-                <?php endif ?>
-            <?php } else { ?>
-                <div style="margin-top:20px;">
-                    <?= CHtml::image(Yii::app()->params['diretorioImagens'] . 'logo.png', 'fashion car', array('style' => 'text-align:center')) ?>
-                </div>
-            <?php } ?>
+            <div id="header">
+                <?php if (!Yii::app()->user->isGuest) { ?>
+                    <div id="mainmenu">
+                        <?php $this->renderPartial('/site/menu') ?>
+                    </div>
+                    <?php if (isset($this->breadcrumbs)): ?>
+                        <?php
+                        $this->widget('zii.widgets.CBreadcrumbs', array(
+                            'links' => $this->breadcrumbs,
+                        ));
+                        ?>
+                    <?php endif ?>
+                <?php } else { ?>
+                    <div style="margin-top:20px;">
+                        <?= CHtml::image(Yii::app()->params['diretorioImagens'] . 'logo.png', 'fashion car', array('style' => 'text-align:center')) ?>
+                    </div>
+                <?php } ?>
+            </div>
+
             <?= $content ?>
 
             <div class="clear"></div>

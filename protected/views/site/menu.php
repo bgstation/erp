@@ -1,7 +1,7 @@
 <?php
 $this->widget('bootstrap.widgets.TbNavbar', array(
     'type' => 'inverse',
-    'brand' => CHtml::image(Yii::app()->params['diretorioImagens'] . 'logo.png', 'fashion car'),
+    'brand' => '',//CHtml::image(Yii::app()->params['diretorioImagens'] . 'logo.png', 'fashion car'),
     'brandUrl' => '#',
     'collapse' => true,
     'items' => array(

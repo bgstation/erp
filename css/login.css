@@ -1,3 +1,6 @@
 .container, #logo {
     text-align: center;
 }
+#footer {
+    position: fixed;
+}

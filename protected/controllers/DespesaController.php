@@ -1,6 +1,6 @@
 <?php
 
-class ProdutoController extends Controller {
+class DespesaController extends Controller {
 
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -58,23 +58,19 @@ class ProdutoController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new Produto;
+        $model = new Despesa;
 
-        $oModelos = Modelo::model()->ordenarTitulo()->naoExcluido()->findAll();
-        $oMarcas = Marca::model()->ordenarTitulo()->naoExcluido()->findAll();
-        $oTiposProduto = TipoProduto::model()->ordenarTitulo()->naoExcluido()->findAll();
-                
-        if (isset($_POST['Produto'])) {
-            $model->attributes = $_POST['Produto'];
+        $oTiposDespesa = TipoDespesa::model()->ordenarTitulo()->findAll();
+
+        if (isset($_POST['Despesa'])) {
+            $model->attributes = $_POST['Despesa'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
         $this->render('create', array(
             'model' => $model,
-            'oModelos' => $oModelos,
-            'oMarcas' => $oMarcas,
-            'oTiposProduto' => $oTiposProduto,
+            'oTiposDespesa' => $oTiposDespesa,
         ));
     }
 
@@ -86,21 +82,17 @@ class ProdutoController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
 
-        $oModelos = Modelo::model()->ordenarTitulo()->naoExcluido()->findAll();
-        $oMarcas = Marca::model()->ordenarTitulo()->naoExcluido()->findAll();
-        $oTiposProduto = TipoProduto::model()->ordenarTitulo()->naoExcluido()->findAll();
+        $oTiposDespesa = TipoDespesa::model()->ordenarTitulo()->findAll();
 
-        if (isset($_POST['Produto'])) {
-            $model->attributes = $_POST['Produto'];
+        if (isset($_POST['Despesa'])) {
+            $model->attributes = $_POST['Despesa'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
         $this->render('update', array(
             'model' => $model,
-            'oModelos' => $oModelos,
-            'oMarcas' => $oMarcas,
-            'oTiposProduto' => $oTiposProduto,
+            'oTiposDespesa' => $oTiposDespesa,
         ));
     }
 
@@ -121,7 +113,7 @@ class ProdutoController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('Produto');
+        $dataProvider = new CActiveDataProvider('Despesa');
         $this->render('index', array(
             'dataProvider' => $dataProvider,
         ));
@@ -131,10 +123,10 @@ class ProdutoController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
-        $model = new Produto('search');
+        $model = new Despesa('search');
         $model->unsetAttributes();  // clear any default values
-        if (isset($_GET['Produto']))
-            $model->attributes = $_GET['Produto'];
+        if (isset($_GET['Despesa']))
+            $model->attributes = $_GET['Despesa'];
 
         $this->render('admin', array(
             'model' => $model,
@@ -145,11 +137,11 @@ class ProdutoController extends Controller {
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Produto the loaded model
+     * @return Despesa the loaded model
      * @throws CHttpException
      */
     public function loadModel($id) {
-        $model = Produto::model()->findByPk($id);
+        $model = Despesa::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -157,10 +149,10 @@ class ProdutoController extends Controller {
 
     /**
      * Performs the AJAX validation.
-     * @param Produto $model the model to be validated
+     * @param Despesa $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'produto-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'despesa-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

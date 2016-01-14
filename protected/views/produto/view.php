@@ -21,6 +21,10 @@ $this->widget('zii.widgets.CDetailView', array(
         'titulo',
         'codigo_barra',
         array(
+            'name' => 'tipo_produto_id',
+            'value' => !empty($model->tipo_produto_id) ? $model->tipoProduto->titulo : '',
+        ),
+        array(
             'name' => 'marca_id',
             'value' => !empty($model->marca_id) ? $model->marca->titulo : '',
         ),

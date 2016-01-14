@@ -58,6 +58,9 @@ class OrdemServicoController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
+//        echo '<pre>';
+//        die(var_dump($_POST));
+        
         $model = new OrdemServico;
         if (!empty($_GET['clienteId']))
             $model->cliente_id = $_GET['clienteId'];
@@ -67,6 +70,7 @@ class OrdemServicoController extends Controller {
         
         $oClientes = Cliente::model()->ordemNome()->findAll();
         $oOrdemServicoItem = new OrdemServicoItem;
+        $oLogItemNaoCadastrador = new LogItemNaoCadastrado;
 
         if (isset($_POST['OrdemServico'])) {
             $model->attributes = $_POST['OrdemServico'];
@@ -78,6 +82,9 @@ class OrdemServicoController extends Controller {
                 if (!empty($_POST['OrdemServicoItem'])) {
                     $oOrdemServicoItem->ordem_servico_id = $model->id;
                     $oOrdemServicoItem->salvarItens($_POST['OrdemServicoItem']);
+                    if(!empty($_POST['LogItemNaoCadastrado'])){
+                        $oOrdemServicoItem->salvarItensNaoCadastrados($_POST['LogItemNaoCadastrado']);
+                    }
                 }
                 $this->redirect(array('view', 'id' => $model->id));
             }
@@ -88,6 +95,7 @@ class OrdemServicoController extends Controller {
             'oClientes' => $oClientes,
             'oOrdemServicoItem' => $oOrdemServicoItem,
             'valor_total' => $model->getValorTotal(),
+            'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
         ));
     }
 

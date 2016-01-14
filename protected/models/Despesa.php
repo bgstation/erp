@@ -1,21 +1,25 @@
 <?php
 
 /**
- * This is the model class for table "servicos".
+ * This is the model class for table "despesas".
  *
- * The followings are the available columns in table 'servicos':
+ * The followings are the available columns in table 'despesas':
  * @property integer $id
- * @property string $titulo
+ * @property integer $tipo_despesa_id
  * @property string $preco
  * @property string $observacao
+ * @property integer $quantidade
+ * @property string $data_hora
+ * @property integer $usuario_id
+ * @property integer $excluido
  */
-class Servico extends CActiveRecord {
+class Despesa extends CActiveRecord {
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'servicos';
+        return 'despesas';
     }
 
     /**
@@ -25,32 +29,28 @@ class Servico extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('excluido', 'numerical', 'integerOnly' => true),
-            array('titulo', 'length', 'max' => 200),
+            array('tipo_despesa_id, quantidade, usuario_id, excluido', 'numerical', 'integerOnly' => true),
             array('preco', 'length', 'max' => 10),
-            array('observacao', 'safe'),
+            array('observacao, data_hora', 'safe'),
+            array('preco, tipo_despesa_id, quantidade', 'required'),
             array('preco', 'tratarPreco'),
-            array('titulo', 'required'),
-            array('id, titulo, preco, observacao, excluido', 'safe', 'on' => 'search'),
+            array('id, tipo_despesa_id, preco, observacao, quantidade, data_hora, usuario_id, excluido', 'safe', 'on' => 'search'),
         );
     }
-
+    
     public function tratarPreco() {
         if (!empty($this->preco)) {
             $preco = str_replace('.', '', $this->preco);
             $this->preco = str_replace(',', '.', $preco);
         }
     }
-
-    public function scopes() {
-        return array(
-            'naoExcluido' => array(
-                'condition' => 't.excluido = false',
-            ),
-            'ordenarTitulo' => array(
-                'order' => 't.titulo ASC',
-            ),
-        );
+    
+    public function beforeSave() {
+        $this->usuario_id = Yii::app()->user->getId();
+        if ($this->isNewRecord) {
+            $this->data_hora = date('Y-m-d H:i:s');
+        }
+        return parent::beforeSave();
     }
 
     /**
@@ -58,6 +58,8 @@ class Servico extends CActiveRecord {
      */
     public function relations() {
         return array(
+            'tipoDespesa' => array(self::BELONGS_TO, 'TipoDespesa', 'tipo_despesa_id'),
+            'usuario' => array(self::BELONGS_TO, 'Usuario', 'usuario_id'),
         );
     }
 
@@ -67,10 +69,13 @@ class Servico extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'Código',
-            'titulo' => 'Titulo',
-            'preco' => 'Preço R$',
+            'tipo_despesa_id' => 'Tipo de despesa',
+            'preco' => 'Preço',
             'observacao' => 'Observação',
-            'excluido' => 'Excluido',
+            'quantidade' => 'Quantidade',
+            'data_hora' => 'Data',
+            'usuario_id' => 'Usuário',
+            'excluido' => 'Excluído',
         );
     }
 
@@ -92,9 +97,12 @@ class Servico extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('titulo', $this->titulo, true);
+        $criteria->compare('tipo_despesa_id', $this->tipo_despesa_id);
         $criteria->compare('preco', $this->preco, true);
         $criteria->compare('observacao', $this->observacao, true);
+        $criteria->compare('quantidade', $this->quantidade);
+        $criteria->compare('data_hora', $this->data_hora, true);
+        $criteria->compare('usuario_id', $this->usuario_id);
         $criteria->compare('excluido', $this->excluido);
 
         return new CActiveDataProvider($this, array(
@@ -106,30 +114,10 @@ class Servico extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Servico the static model class
+     * @return Despesa the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
-    }
-
-    public function getDataJson() {
-        $aModels = array();
-        $oModels = self::model()->naoExcluido()->ordenarTitulo()->findAll();
-        if (!empty($oModels)) {
-            $i = 0;
-            foreach ($oModels as $model) {
-                $aModels[$i]['id'] = $model->id;
-                $aModels[$i]['text'] = $model->titulo;
-                $aModels[$i]['preco'] = $model->preco;
-                $aModels[$i]['tipoItem'] = 2;
-                $i++;
-            }
-            $aModels[$i]['id'] = 0;
-            $aModels[$i]['text'] = "Não cadastrado";
-            $aModels[$i]['preco'] = 0.00;
-            $aModels[$i]['tipoItem'] = 2;
-        }
-        return $aModels;
     }
 
 }

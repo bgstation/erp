@@ -95,7 +95,7 @@ class OrdemServicoItem extends CActiveRecord {
         $criteria->compare('item_id', $this->item_id);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
-        
+
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -120,12 +120,18 @@ class OrdemServicoItem extends CActiveRecord {
         }
     }
 
-    public function salvarItemPorTipo($tipoItem, $itemId) {
+    public function salvarItemPorTipo($tipoItem, $itemId, $aDados = null) {
         $model = new self;
         $model->ordem_servico_id = $this->ordem_servico_id;
         $model->tipo_item_id = $tipoItem;
         $model->item_id = $itemId;
-        $model->save();
+        if ($model->save() && $itemId == 0 && !empty($aDados)) {
+            $oLogItemNaoCadastrado = new LogItemNaoCadastrado;
+            $oLogItemNaoCadastrado->ordem_servico_item_id = $model->id;
+            $oLogItemNaoCadastrado->titulo = $aDados['titulo'];
+            $oLogItemNaoCadastrado->preco = $aDados['preco'];
+            $oLogItemNaoCadastrado->save();
+        }
     }
 
     public function salvarItens($post) {
@@ -143,6 +149,16 @@ class OrdemServicoItem extends CActiveRecord {
                 foreach ($aItens as $item) {
                     if (!empty($item))
                         $this->salvarItemPorTipo(2, $item);
+                }
+            }
+        }
+    }
+
+    public function salvarItensNaoCadastrados($post) {
+        if (!empty($post)) {
+            foreach ($post as $tipoItem => $aDados) {
+                foreach ($aDados as $dados) {
+                    $this->salvarItemPorTipo($tipoItem, 0, $dados);
                 }
             }
         }

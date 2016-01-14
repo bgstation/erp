@@ -18,6 +18,11 @@
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/produto/_form.css" />
 
+        <<<<<<< HEAD
+        =======
+        <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/biblioteca.js"></script>
+
+        >>>>>>> 1922592df044c7d7fa46ae204754ad2d2a42949f
         <!-- Font-Awesome -->
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/font-awesome-4.5.0/css/font-awesome.min.css" />
         <?php Yii::app()->bootstrap->register() ?>
@@ -46,7 +51,6 @@
                         </a>
                     </div>
                 </div>
-
                 <div id="mainmenu">
                     <?php
                     $this->widget('bootstrap.widgets.TbMenu', array(
@@ -55,14 +59,18 @@
                         'items' => array(
                             array('label' => 'Home', 'url' => array('/site/index')),
                             array('label' => 'Cadastro', 'items' => array(
-                                    array('label' => 'Cores', 'url' => array('cor/admin'), 'visible' => Yii::app()->user->checkAccess('cor/admin')),
                                     array('label' => 'Clientes', 'url' => array('cliente/admin'), 'visible' => Yii::app()->user->checkAccess('cliente/admin')),
+                                    array('label' => 'Compras', 'url' => array('compra/admin'), 'visible' => Yii::app()->user->checkAccess('compra/admin')),
+                                    array('label' => 'Cores', 'url' => array('cor/admin'), 'visible' => Yii::app()->user->checkAccess('cor/admin')),
+                                    array('label' => 'Despesas', 'url' => array('despesa/admin'), 'visible' => Yii::app()->user->checkAccess('despesa/admin')),
                                     array('label' => 'Marcas', 'url' => array('marca/admin'), 'visible' => Yii::app()->user->checkAccess('marca/admin')),
                                     array('label' => 'Modelos', 'url' => array('modelo/admin'), 'visible' => Yii::app()->user->checkAccess('modelo/admin')),
                                     array('label' => 'Ordens de serviço', 'url' => array('ordemServico/admin'), 'visible' => Yii::app()->user->checkAccess('ordemServico/admin')),
                                     array('label' => 'Produtos', 'url' => array('produto/admin'), 'visible' => Yii::app()->user->checkAccess('produto/admin')),
                                     array('label' => 'Serviços', 'url' => array('servico/admin'), 'visible' => Yii::app()->user->checkAccess('servico/admin')),
-                                    array('label' => 'Tipos de Usuários', 'url' => array('aclTipoUsuario/admin'), 'visible' => Yii::app()->user->checkAccess('aclTipoUsuario/admin')),
+                                    array('label' => 'Tipos de despesa', 'url' => array('tipoDespesa/admin'), 'visible' => Yii::app()->user->checkAccess('tipoDespesa/admin')),
+                                    array('label' => 'Tipos de produto', 'url' => array('tipoProduto/admin'), 'visible' => Yii::app()->user->checkAccess('tipoProduto/admin')),
+                                    array('label' => 'Tipos de usuário', 'url' => array('aclTipoUsuario/admin'), 'visible' => Yii::app()->user->checkAccess('aclTipoUsuario/admin')),
                                     array('label' => 'Usuários', 'url' => array('usuario/admin'), 'visible' => Yii::app()->user->checkAccess('usuario/admin')),
                                 ), 'visible' => !Yii::app()->user->isGuest),
                             array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
@@ -83,7 +91,6 @@
                     <?= CHtml::image(Yii::app()->params['diretorioImagens'] . 'logo.png', 'fashion car', array('style' => 'text-align:center')) ?>
                 </div>
             <?php } ?>
-
             <?= $content ?>
 
             <div class="clear"></div>

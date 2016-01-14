@@ -1,21 +1,20 @@
 <?php
 
 /**
- * This is the model class for table "servicos".
+ * This is the model class for table "tipos_produto".
  *
- * The followings are the available columns in table 'servicos':
+ * The followings are the available columns in table 'tipos_produto':
  * @property integer $id
  * @property string $titulo
- * @property string $preco
- * @property string $observacao
+ * @property integer $excluido
  */
-class Servico extends CActiveRecord {
+class TipoProduto extends CActiveRecord {
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'servicos';
+        return 'tipos_produto';
     }
 
     /**
@@ -27,29 +26,10 @@ class Servico extends CActiveRecord {
         return array(
             array('excluido', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
-            array('preco', 'length', 'max' => 10),
-            array('observacao', 'safe'),
-            array('preco', 'tratarPreco'),
             array('titulo', 'required'),
-            array('id, titulo, preco, observacao, excluido', 'safe', 'on' => 'search'),
-        );
-    }
-
-    public function tratarPreco() {
-        if (!empty($this->preco)) {
-            $preco = str_replace('.', '', $this->preco);
-            $this->preco = str_replace(',', '.', $preco);
-        }
-    }
-
-    public function scopes() {
-        return array(
-            'naoExcluido' => array(
-                'condition' => 't.excluido = false',
-            ),
-            'ordenarTitulo' => array(
-                'order' => 't.titulo ASC',
-            ),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('id, titulo, excluido', 'safe', 'on' => 'search'),
         );
     }
 
@@ -61,16 +41,25 @@ class Servico extends CActiveRecord {
         );
     }
 
+    public function scopes() {
+        return array(
+            'naoExcluido' => array(
+                'condition' => 't.excluido = false'
+            ),
+            'ordenarTitulo' => array(
+                'order' => 't.titulo ASC'
+            ),
+        );
+    }
+
     /**
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels() {
         return array(
             'id' => 'Código',
-            'titulo' => 'Titulo',
-            'preco' => 'Preço R$',
-            'observacao' => 'Observação',
-            'excluido' => 'Excluido',
+            'titulo' => 'Título',
+            'excluido' => 'Excluído',
         );
     }
 
@@ -93,8 +82,6 @@ class Servico extends CActiveRecord {
 
         $criteria->compare('id', $this->id);
         $criteria->compare('titulo', $this->titulo, true);
-        $criteria->compare('preco', $this->preco, true);
-        $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
 
         return new CActiveDataProvider($this, array(
@@ -106,30 +93,10 @@ class Servico extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Servico the static model class
+     * @return TipoProduto the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
-    }
-
-    public function getDataJson() {
-        $aModels = array();
-        $oModels = self::model()->naoExcluido()->ordenarTitulo()->findAll();
-        if (!empty($oModels)) {
-            $i = 0;
-            foreach ($oModels as $model) {
-                $aModels[$i]['id'] = $model->id;
-                $aModels[$i]['text'] = $model->titulo;
-                $aModels[$i]['preco'] = $model->preco;
-                $aModels[$i]['tipoItem'] = 2;
-                $i++;
-            }
-            $aModels[$i]['id'] = 0;
-            $aModels[$i]['text'] = "Não cadastrado";
-            $aModels[$i]['preco'] = 0.00;
-            $aModels[$i]['tipoItem'] = 2;
-        }
-        return $aModels;
     }
 
 }

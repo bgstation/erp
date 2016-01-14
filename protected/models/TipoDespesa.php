@@ -1,21 +1,19 @@
 <?php
 
 /**
- * This is the model class for table "servicos".
+ * This is the model class for table "tipo_despesas".
  *
- * The followings are the available columns in table 'servicos':
+ * The followings are the available columns in table 'tipo_despesas':
  * @property integer $id
  * @property string $titulo
- * @property string $preco
- * @property string $observacao
  */
-class Servico extends CActiveRecord {
+class TipoDespesa extends CActiveRecord {
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'servicos';
+        return 'tipo_despesas';
     }
 
     /**
@@ -25,31 +23,9 @@ class Servico extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('excluido', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
-            array('preco', 'length', 'max' => 10),
-            array('observacao', 'safe'),
-            array('preco', 'tratarPreco'),
             array('titulo', 'required'),
-            array('id, titulo, preco, observacao, excluido', 'safe', 'on' => 'search'),
-        );
-    }
-
-    public function tratarPreco() {
-        if (!empty($this->preco)) {
-            $preco = str_replace('.', '', $this->preco);
-            $this->preco = str_replace(',', '.', $preco);
-        }
-    }
-
-    public function scopes() {
-        return array(
-            'naoExcluido' => array(
-                'condition' => 't.excluido = false',
-            ),
-            'ordenarTitulo' => array(
-                'order' => 't.titulo ASC',
-            ),
+            array('id, titulo', 'safe', 'on' => 'search'),
         );
     }
 
@@ -60,6 +36,14 @@ class Servico extends CActiveRecord {
         return array(
         );
     }
+    
+    public function scopes() {
+        return array(
+            'ordenarTitulo' => array(
+                'order' => 't.titulo ASC',
+            ),
+        );
+    }
 
     /**
      * @return array customized attribute labels (name=>label)
@@ -68,9 +52,6 @@ class Servico extends CActiveRecord {
         return array(
             'id' => 'Código',
             'titulo' => 'Titulo',
-            'preco' => 'Preço R$',
-            'observacao' => 'Observação',
-            'excluido' => 'Excluido',
         );
     }
 
@@ -93,9 +74,6 @@ class Servico extends CActiveRecord {
 
         $criteria->compare('id', $this->id);
         $criteria->compare('titulo', $this->titulo, true);
-        $criteria->compare('preco', $this->preco, true);
-        $criteria->compare('observacao', $this->observacao, true);
-        $criteria->compare('excluido', $this->excluido);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -106,30 +84,10 @@ class Servico extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return Servico the static model class
+     * @return TipoDespesa the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
-    }
-
-    public function getDataJson() {
-        $aModels = array();
-        $oModels = self::model()->naoExcluido()->ordenarTitulo()->findAll();
-        if (!empty($oModels)) {
-            $i = 0;
-            foreach ($oModels as $model) {
-                $aModels[$i]['id'] = $model->id;
-                $aModels[$i]['text'] = $model->titulo;
-                $aModels[$i]['preco'] = $model->preco;
-                $aModels[$i]['tipoItem'] = 2;
-                $i++;
-            }
-            $aModels[$i]['id'] = 0;
-            $aModels[$i]['text'] = "Não cadastrado";
-            $aModels[$i]['preco'] = 0.00;
-            $aModels[$i]['tipoItem'] = 2;
-        }
-        return $aModels;
     }
 
 }

@@ -6,6 +6,9 @@
         Purpose of the stylesheet follows.
 */
 
+.container {
+    width: 100%!important;
+}
 .textarea_texto {
     width: 670px;
 }
@@ -18,4 +21,32 @@
 #btn_adicionar_projeto {
     margin-top:-10px;
     margin-left:10px;
+}
+#footer {
+    position:fixed;
+    left:0px;
+    bottom:0px;
+    height:10px;
+    width:100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 0.8em;
+    text-align: center;
+    border-top: 1px solid #C9E0ED;
+}
+.span-19 {
+    width:95%;
+}
+.brand img {
+    max-height: 30px;
+}
+.dropdown-menu > .active > a {
+    background-color: #999!important;
+    background-image: none!important;
+    color: #FFF!important;
+}
+.dropdown-menu>li>a:hover {
+    background-color: #999!important;
+    background-image: none!important;
+    color: #FFF!important;
 }

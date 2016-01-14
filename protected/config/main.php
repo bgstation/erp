@@ -1,6 +1,7 @@
 <?php
 
 Yii::setPathOfAlias('bootstrap', dirname(__FILE__) . '/../extensions/bootstrap');
+Yii::setPathOfAlias('booster', dirname(__FILE__) . '/../extensions/yiibooster');
 
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
@@ -14,6 +15,9 @@ return array(
         'application.helpers.*',
         'application.extensions.bootstrap.widgets.*',
         'application.extensions.bootstrap.helpers.*',
+        'application.extensions.yiibooster.helpers.*',
+        'application.extensions.yiibooster.views.*',
+        'application.extensions.yiibooster.widgets.*',
     ),
     'modules' => array(
         'gii' => array(
@@ -25,6 +29,9 @@ return array(
     'components' => array(
         'bootstrap' => array(
             'class' => 'bootstrap.components.Bootstrap',
+        ),
+        'booster' => array(
+            'class' => 'booster.components.Booster',
         ),
         'authManager' => array(
             'class' => 'application.components.UserRole',

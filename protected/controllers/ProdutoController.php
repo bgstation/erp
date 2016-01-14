@@ -62,6 +62,7 @@ class ProdutoController extends Controller {
 
         $oModelos = Modelo::model()->ordenarTitulo()->naoExcluido()->findAll();
         $oMarcas = Marca::model()->ordenarTitulo()->naoExcluido()->findAll();
+        $oTiposProduto = TipoProduto::model()->ordenarTitulo()->naoExcluido()->findAll();
                 
         if (isset($_POST['Produto'])) {
             $model->attributes = $_POST['Produto'];
@@ -73,6 +74,7 @@ class ProdutoController extends Controller {
             'model' => $model,
             'oModelos' => $oModelos,
             'oMarcas' => $oMarcas,
+            'oTiposProduto' => $oTiposProduto,
         ));
     }
 
@@ -86,6 +88,7 @@ class ProdutoController extends Controller {
 
         $oModelos = Modelo::model()->ordenarTitulo()->naoExcluido()->findAll();
         $oMarcas = Marca::model()->ordenarTitulo()->naoExcluido()->findAll();
+        $oTiposProduto = TipoProduto::model()->ordenarTitulo()->naoExcluido()->findAll();
 
         if (isset($_POST['Produto'])) {
             $model->attributes = $_POST['Produto'];
@@ -97,6 +100,7 @@ class ProdutoController extends Controller {
             'model' => $model,
             'oModelos' => $oModelos,
             'oMarcas' => $oMarcas,
+            'oTiposProduto' => $oTiposProduto,
         ));
     }
 

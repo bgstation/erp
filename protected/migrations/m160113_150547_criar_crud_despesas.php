@@ -3,9 +3,15 @@
 class m160113_150547_criar_crud_despesas extends CDbMigration {
 
     public function safeUp() {
-        $this->createTable('tipo_despesas', array(
+        $this->createTable('despesas', array(
             'id' => 'pk not null auto_increment',
-            'titulo' => 'varchar(200)',
+            'tipo_despesas_id' => 'integer',
+            'preco' => 'decimal(10,2)',
+            'observacao' => 'text',
+            'quantidade' => 'integer',
+            'data_hora' => 'DATETIME',
+            'usuario_id' => 'integer',
+            'excluido' => 'boolean default false',
         ));
     }
 

@@ -36,7 +36,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'filter' => $model,
     'columns' => array(
         'id',
-        'tipo_despesas_id',
+        'tipo_despesa_id',
         'preco',
         'observacao',
         'quantidade',

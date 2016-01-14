@@ -1,16 +1,17 @@
 <?php
 
-class m160113_150540_criar_crud_tipo_despesas extends CDbMigration {
+class m160114_104938_criar_crud_tipos_produto extends CDbMigration {
 
     public function safeUp() {
-        $this->createTable('tipo_despesas', array(
+        $this->createTable('tipos_produto', array(
             'id' => 'pk not null auto_increment',
             'titulo' => 'varchar(200)',
+            'excluido' => 'boolean default false',
         ));
     }
 
     public function down() {
-        echo "m160113_150540_criar_crud_tipo_despesas does not support migration down.\n";
+        echo "m160114_104938_criar_crud_tipos_produto does not support migration down.\n";
         return false;
     }
 

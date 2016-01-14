@@ -1,19 +1,20 @@
 <?php
 
 /**
- * This is the model class for table "tipo_despesas".
+ * This is the model class for table "tipos_produto".
  *
- * The followings are the available columns in table 'tipo_despesas':
+ * The followings are the available columns in table 'tipos_produto':
  * @property integer $id
  * @property string $titulo
+ * @property integer $excluido
  */
-class TipoDespesa extends CActiveRecord {
+class TipoProduto extends CActiveRecord {
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'tipo_despesas';
+        return 'tipos_produto';
     }
 
     /**
@@ -23,9 +24,12 @@ class TipoDespesa extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
+            array('excluido', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
             array('titulo', 'required'),
-            array('id, titulo', 'safe', 'on' => 'search'),
+            // The following rule is used by search().
+            // @todo Please remove those attributes that should not be searched.
+            array('id, titulo, excluido', 'safe', 'on' => 'search'),
         );
     }
 
@@ -36,11 +40,14 @@ class TipoDespesa extends CActiveRecord {
         return array(
         );
     }
-    
+
     public function scopes() {
         return array(
+            'naoExcluido' => array(
+                'condition' => 't.excluido = false'
+            ),
             'ordenarTitulo' => array(
-                'order' => 't.titulo ASC',
+                'order' => 't.titulo ASC'
             ),
         );
     }
@@ -51,7 +58,8 @@ class TipoDespesa extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'Código',
-            'titulo' => 'Titulo',
+            'titulo' => 'Título',
+            'excluido' => 'Excluído',
         );
     }
 
@@ -74,6 +82,7 @@ class TipoDespesa extends CActiveRecord {
 
         $criteria->compare('id', $this->id);
         $criteria->compare('titulo', $this->titulo, true);
+        $criteria->compare('excluido', $this->excluido);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -84,7 +93,7 @@ class TipoDespesa extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return TipoDespesa the static model class
+     * @return TipoProduto the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);

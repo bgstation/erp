@@ -2,32 +2,56 @@
 /* @var $this DespesaController */
 /* @var $model Despesa */
 
-$this->breadcrumbs=array(
-	'Despesas'=>array('index'),
-	$model->id,
-);
-
-$this->menu=array(
-	array('label'=>'List Despesa', 'url'=>array('index')),
-	array('label'=>'Create Despesa', 'url'=>array('create')),
-	array('label'=>'Update Despesa', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete Despesa', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage Despesa', 'url'=>array('admin')),
-);
+$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+    'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
+    'links' => array(
+        'Despesas' => Yii::app()->createUrl('despesa/admin'),
+        $model->id
+    ),
+));
 ?>
 
-<h1>View Despesa #<?php echo $model->id; ?></h1>
+<h1>Despesa: #<?php echo $model->id; ?></h1>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'tipo_despesas_id',
-		'preco',
-		'observacao',
-		'quantidade',
-		'data_hora',
-		'usuario_id',
-		'excluido',
-	),
-)); ?>
+<?php
+$this->widget('zii.widgets.CDetailView', array(
+    'data' => $model,
+    'attributes' => array(
+        'id',
+        array(
+            'name' => 'tipoDespesa',
+            'value' => !empty($model->tipo_despesa_id) ? $model->tipoDespesa->titulo : '',
+        ),
+        array(
+            'name' => 'preco',
+            'value' => !empty($model->preco) ? number_format($model->preco, 2, ',', '.') : '',
+        ),
+        'observacao',
+        'quantidade',
+        array(
+            'name' => 'data_hora',
+            'value' => !empty($model->data_hora) ? date("d/m/Y H:i:s", strtotime($model->data_hora)) : '',
+        ),
+        array(
+            'name' => 'usuario_id',
+            'value' => !empty($model->usuario_id) ? $model->usuario->nome : '',
+        ),
+        array(
+            'name' => 'excluido',
+            'value' => $model->excluido == 0 ? 'Não' : 'Sim',
+        ),
+    ),
+));
+?>
+<h3><?= Yii::t('site', 'Opções alternativas') ?></h3>
+<ul class="nav_alter">
+    <?php if (Yii::app()->user->checkAccess('despesa/admin')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('admin') ?>"><?= Yii::t('site', 'Exibir despesas') ?></a></li>
+    <?php endif; ?>
+    <?php if (Yii::app()->user->checkAccess('despesa/update')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar despesa') ?></a></li>
+    <?php endif; ?>
+    <?php if (Yii::app()->user->checkAccess('despesa/create')) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar despesa') ?></a></li>
+    <?php endif; ?>
+</ul>

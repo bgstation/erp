@@ -16,20 +16,20 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'tipo_despesas_id'); ?>
+		<?php echo $form->labelEx($model,'tipo_despesa_id'); ?>
 		<?php $this->widget('ext.select2.ESelect2', array(
                     'model' => $model,
-                    'attribute' => 'tipo_despesas_id',
+                    'attribute' => 'tipo_despesa_id',
                     'data' => CHtml::listData($oTiposDespesa, 'id', 'titulo'),
                     'options' => array(
                         'placeholder' => 'Tipo de despesa',
                         'allowClear' => false,
                     ),
                     'htmlOptions' => array(
-                        'id' => 'select2_tipo_despesas_id',
+                        'id' => 'select2_tipo_despesa_id',
                     ),
                 )); ?>
-		<?php echo $form->error($model,'tipo_despesas_id'); ?>
+		<?php echo $form->error($model,'tipo_despesa_id'); ?>
 	</div>
 
 	<div class="row">

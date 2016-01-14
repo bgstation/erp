@@ -5,7 +5,7 @@
  *
  * The followings are the available columns in table 'despesas':
  * @property integer $id
- * @property integer $tipo_despesas_id
+ * @property integer $tipo_despesa_id
  * @property string $preco
  * @property string $observacao
  * @property integer $quantidade
@@ -29,12 +29,12 @@ class Despesa extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('tipo_despesas_id, quantidade, usuario_id, excluido', 'numerical', 'integerOnly' => true),
+            array('tipo_despesa_id, quantidade, usuario_id, excluido', 'numerical', 'integerOnly' => true),
             array('preco', 'length', 'max' => 10),
             array('observacao, data_hora', 'safe'),
-            array('preco, tipo_despesas_id, quantidade', 'required'),
+            array('preco, tipo_despesa_id, quantidade', 'required'),
             array('preco', 'tratarPreco'),
-            array('id, tipo_despesas_id, preco, observacao, quantidade, data_hora, usuario_id, excluido', 'safe', 'on' => 'search'),
+            array('id, tipo_despesa_id, preco, observacao, quantidade, data_hora, usuario_id, excluido', 'safe', 'on' => 'search'),
         );
     }
     
@@ -44,6 +44,14 @@ class Despesa extends CActiveRecord {
             $this->preco = str_replace(',', '.', $preco);
         }
     }
+    
+    public function beforeSave() {
+        $this->usuario_id = Yii::app()->user->getId();
+        if ($this->isNewRecord) {
+            $this->data_hora = date('Y-m-d H:i:s');
+        }
+        return parent::beforeSave();
+    }
 
     /**
      * @return array relational rules.
@@ -51,6 +59,7 @@ class Despesa extends CActiveRecord {
     public function relations() {
         return array(
             'tipoDespesa' => array(self::BELONGS_TO, 'TipoDespesa', 'tipo_despesa_id'),
+            'usuario' => array(self::BELONGS_TO, 'Usuario', 'usuario_id'),
         );
     }
 
@@ -60,7 +69,7 @@ class Despesa extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'Código',
-            'tipo_despesas_id' => 'Tipo de despesa',
+            'tipo_despesa_id' => 'Tipo de despesa',
             'preco' => 'Preço',
             'observacao' => 'Observação',
             'quantidade' => 'Quantidade',
@@ -88,7 +97,7 @@ class Despesa extends CActiveRecord {
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('tipo_despesas_id', $this->tipo_despesas_id);
+        $criteria->compare('tipo_despesa_id', $this->tipo_despesa_id);
         $criteria->compare('preco', $this->preco, true);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('quantidade', $this->quantidade);

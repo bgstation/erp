@@ -19,5 +19,6 @@ $this->renderPartial('_form', array(
     'model' => $model,
     'oModelos' => $oModelos,
     'oMarcas' => $oMarcas,
+    'oTiposProduto' => $oTiposProduto,
 ));
 ?>

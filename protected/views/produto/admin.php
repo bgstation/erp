@@ -26,6 +26,18 @@ if (Yii::app()->user->checkAccess('produto/create')) {
             )
     );
 }
+if (Yii::app()->user->checkAccess('tipoProduto/create')) {
+    $this->widget('bootstrap.widgets.TbButton', array(
+        'type' => 'success',
+        'size' => 'medium',
+        'label' => 'Cadastrar tipo de produto',
+        'url' => Yii::app()->createUrl('tipoProduto/create'),
+        'htmlOptions' => array(
+            'class' => 'pull-left',
+        ),
+            )
+    );
+}
 ?>
 <br>
 

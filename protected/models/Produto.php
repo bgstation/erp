@@ -28,14 +28,14 @@ class Produto extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('marca_id, modelo_id, quantidade, excluido', 'numerical', 'integerOnly' => true),
+            array('marca_id, modelo_id, quantidade, excluido, tipo_produto_id', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
             array('codigo_barra', 'length', 'max' => 300),
             array('preco', 'length', 'max' => 10),
             array('observacao', 'safe'),
             array('titulo', 'required'),
             array('preco', 'tratarPreco', 'except' => 'alteracaoCompra'),
-            array('id, titulo, codigo_barra, marca_id, modelo_id, preco, observacao, quantidade, excluido', 'safe', 'on' => 'search'),
+            array('id, titulo, codigo_barra, marca_id, modelo_id, preco, observacao, quantidade, excluido, tipo_produto_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -64,6 +64,7 @@ class Produto extends CActiveRecord {
         return array(
             'marca' => array(self::BELONGS_TO, 'Marca', 'marca_id'),
             'modelo' => array(self::BELONGS_TO, 'Modelo', 'modelo_id'),
+            'tipoProduto' => array(self::BELONGS_TO, 'TipoProduto', 'tipo_produto_id'),
         );
     }
 
@@ -73,14 +74,15 @@ class Produto extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'Código',
-            'titulo' => 'Titulo',
-            'codigo_barra' => 'Codigo de barra',
+            'titulo' => 'Título',
+            'codigo_barra' => 'Código de barra',
             'marca_id' => 'Marca',
             'modelo_id' => 'Modelo',
-            'preco' => 'Preco',
-            'observacao' => 'Observacao',
+            'preco' => 'Preço',
+            'observacao' => 'Observação',
             'quantidade' => 'Quantidade',
-            'excluido' => 'Excluido',
+            'excluido' => 'Excluído',
+            'tipo_produto_id' => 'Tipo do produto',
         );
     }
 
@@ -110,6 +112,7 @@ class Produto extends CActiveRecord {
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('quantidade', $this->quantidade);
         $criteria->compare('excluido', $this->excluido);
+        $criteria->compare('tipo_produto_id', $this->tipo_produto_id);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

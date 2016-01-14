@@ -28,6 +28,30 @@
         <?php echo $form->textField($model, 'codigo_barra', array('size' => 60, 'maxlength' => 300)); ?>
         <?php echo $form->error($model, 'codigo_barra'); ?>
     </div>
+    
+    <div class="row">
+        <?php echo $form->labelEx($model, 'tipo_produto_id'); ?>
+        <?php
+        $this->widget('ext.select2.ESelect2', array(
+            'model' => $model,
+            'attribute' => 'tipo_produto_id',
+            'data' => CHtml::listData($oTiposProduto, 'id', 'titulo'),
+            'options' => array(
+                'placeholder' => 'Tipo do produto',
+                'allowClear' => false,
+            ),
+            'htmlOptions' => array(
+                'id' => 'select2_tipo_produto_id',
+            ),
+        ));
+        ?>
+        <?php if (Yii::app()->user->checkAccess('tipoProduto/create')): ?>
+            <a href="<?= Yii::app()->createUrl('tipoProduto/create') ?>" title="Adicionar um tipo novo.">
+                <i class="fa fa-plus-square"></i>
+            </a>
+        <?php endif; ?>
+        <?php echo $form->error($model, 'tipo_produto_id'); ?>
+    </div>
 
     <div class="row">
         <?php echo $form->labelEx($model, 'marca_id'); ?>

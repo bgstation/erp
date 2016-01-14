@@ -5,6 +5,7 @@ Yii::setPathOfAlias('bootstrap', dirname(__FILE__) . '/../extensions/bootstrap')
 return array(
     'basePath' => dirname(__FILE__) . DIRECTORY_SEPARATOR . '..',
     'name' => 'Fashion Car',
+    'defaultController' => 'site/index',
     'preload' => array('log'),
     'language' => 'pt_br',
     'import' => array(

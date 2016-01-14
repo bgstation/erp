@@ -121,6 +121,7 @@ class ClienteController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
+        $this->layout = '//layouts/layout';
         $model = new Cliente('search');
         $model->unsetAttributes();
         if (isset($_GET['Cliente']))

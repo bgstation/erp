@@ -1,6 +1,8 @@
 <?php
 
 class SiteController extends Controller {
+    
+    public $layout = '//layouts/layout';
 
     /**
      * Declares class-based actions.
@@ -13,6 +15,28 @@ class SiteController extends Controller {
             ),
             'page' => array(
                 'class' => 'CViewAction',
+            ),
+        );
+    }
+
+    public function filters() {
+        return array(
+            'accessControl',
+        );
+    }
+
+    public function accessRules() {
+        return array(
+            array('allow',
+                'actions' => array('login'),
+                'users' => array('*'),
+            ),
+            array('allow',
+                'actions' => array('index', 'logout'),
+                'users' => array('@'),
+            ),
+            array('deny',
+                'users' => array('*'),
             ),
         );
     }
@@ -64,6 +88,8 @@ class SiteController extends Controller {
      * Displays the login page
      */
     public function actionLogin() {
+        $this->layout = '//layouts/main';
+
         $model = new LoginForm;
 
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'login-form') {

@@ -46,7 +46,7 @@
                     </tbody>
                 </table>
             </div>
-            <p><strong>R$ <?= number_format($valor_total, 2, ',', '.') ?></strong></p>
+            <p><strong id="valorTotal">R$ <?= number_format($valor_total, 2, ',', '.') ?></strong></p>
         </div>
     </div>
 
@@ -75,7 +75,7 @@
         ));
         ?>
         <?php echo $form->error($model, 'forma_pagamento_id'); ?>
-        <?php echo $form->textField($oOrdemServicoTipoPagamento, '[1]valor', array('readonly' => 'readonly', 'class' => 'preco', 'style' => 'margin-top: 0px; margin-left: 5px', 'value' => $valor_total)); ?>
+        <?php echo $form->textField($oOrdemServicoTipoPagamento, '[1]valor', array('readonly' => 'readonly', 'class' => 'preco monetario', 'style' => 'margin-top: 0px; margin-left: 5px', 'value' => $valor_total)); ?>
         <?php echo $form->textField($oOrdemServicoTipoPagamento, '[1]parcelas', array('style' => 'margin-top: 0px; margin-left: 5px; display: none')); ?>
         <br>
         <?php
@@ -94,8 +94,14 @@
         ));
         ?>
         <?php echo $form->error($model, 'forma_pagamento_id'); ?>
-        <?php echo $form->textField($oOrdemServicoTipoPagamento, '[2]valor', array('readonly' => 'readonly', 'class' => 'preco', 'style' => 'margin-top: 0px; margin-left: 5px', 'onchange' => 'atualizaValores()')); ?>
+        <?php echo $form->textField($oOrdemServicoTipoPagamento, '[2]valor', array('readonly' => 'readonly', 'class' => 'preco monetario', 'style' => 'margin-top: 0px; margin-left: 5px', 'onchange' => 'atualizaValores()')); ?>
         <?php echo $form->textField($oOrdemServicoTipoPagamento, '[2]parcelas', array('style' => 'margin-top: 0px; margin-left: 5px; display: none')); ?>
+    </div>
+
+    <div class="row">
+        <?php echo $form->labelEx($model, 'desconto'); ?>
+        <?php echo $form->textField($model, 'desconto', array('class' => 'monetario')); ?>
+        <?php echo $form->error($model, 'desconto'); ?>
     </div>
 
     <div class="row">
@@ -126,7 +132,9 @@
 </div>
 
 <script>
+    var valorTotalOri = <?= $valor_total ?>;
     var valorTotal = <?= $valor_total ?>;
+    var desconto = 0;
 
     $("#select2_forma_pagamento_id_1").val(1);
 
@@ -162,6 +170,30 @@
                 return false;
             } else {
                 $("#OrdemServicoTipoPagamento_1_valor").val(number_format(valorTotal - valorTmp, 2, ',', '.'));
+            }
+        }
+    });
+
+    $('#OrdemServico_desconto').blur(function () {
+        if ($(this).val() !== desconto) {
+            var valorTmp = parseFloat($(this).val().replace('.', '').replace(',', '.'));
+            var pag1 = $("#OrdemServicoTipoPagamento_1_valor");
+            var pag2 = $("#OrdemServicoTipoPagamento_2_valor");
+            var valorPag1 = parseFloat(pag1.val().replace('.', '').replace(',', '.'));
+            var valorPag2 = parseFloat(pag2.val().replace('.', '').replace(',', '.'));
+            if ($(this).val() !== "") {
+                desconto = parseFloat($(this).val().replace('.', '').replace(',', '.'));
+                if (valorTmp > valorTotalOri) {
+                    alert('Valor inválido!');
+                    $(this).val(null);
+                    return false;
+                } else {
+                    valorTotal = valorTotalOri - valorTmp;
+                    $("#valorTotal").text('R$ ' + number_format(valorTotal, 2, ',', '.'));
+                    if (valorPag1 > valorTmp) {
+                        pag1.val(number_format(valorPag1 - valorTmp, 2, ',', '.'));
+                    }
+                }
             }
         }
     });

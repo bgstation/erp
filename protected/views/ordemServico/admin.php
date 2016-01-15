@@ -14,7 +14,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 <h3>Ordens de serviços</h3>
 
 <?php
-//if (Yii::app()->user->checkAccess('ordemServico/create')) {
+if (Yii::app()->user->checkAccess('ordemServico/create')) {
     $this->widget('bootstrap.widgets.TbButton', array(
         'type' => 'success',
         'size' => 'medium',
@@ -25,13 +25,13 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
         ),
             )
     );
-//}
+}
 ?>
 <br>
 
 <?php
-$this->widget('zii.widgets.grid.CGridView', array(
-    'id' => 'ordem-servico-grid',
+$this->widget('bootstrap.widgets.TbGridView', array(
+    'id' => 'modelo-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
@@ -42,7 +42,23 @@ $this->widget('zii.widgets.grid.CGridView', array(
         'observacao',
         'excluido',
         array(
-            'class' => 'CButtonColumn',
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'template' => '{finalizar}{view}{update}{delete}',
+            'buttons' => array(
+                'finalizar' => array(
+                    'url' => 'Yii::app()->createUrl("ordemServico/finalizar", array("id" => $data->id))',
+//                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/finalizar")',
+                ),
+                'view' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/view")',
+                ),
+                'update' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/update")',
+                ),
+                'delete' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/delete")',
+                ),
+            ),
         ),
     ),
 ));

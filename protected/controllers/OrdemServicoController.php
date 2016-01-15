@@ -30,7 +30,7 @@ class OrdemServicoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update', 'getItensPorTipoJson'),
+                'actions' => array('create', 'update', 'getItensPorTipoJson', 'finalizar'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -58,16 +58,13 @@ class OrdemServicoController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-//        echo '<pre>';
-//        die(var_dump($_POST));
-        
         $model = new OrdemServico;
         if (!empty($_GET['clienteId']))
             $model->cliente_id = $_GET['clienteId'];
         if (!empty($_GET['clienteCarroId']))
             $model->cliente_carro_id = $_GET['clienteCarroId'];
 
-        
+
         $oClientes = Cliente::model()->ordemNome()->findAll();
         $oOrdemServicoItem = new OrdemServicoItem;
         $oLogItemNaoCadastrador = new LogItemNaoCadastrado;
@@ -78,11 +75,12 @@ class OrdemServicoController extends Controller {
                 $oLogOrdemServico = new LogOrdemServico;
                 $oLogOrdemServico->status = 1;
                 $oLogOrdemServico->ordem_servico_id = $model->id;
+                $oLogOrdemServico->observacao = $_POST['OrdemServico']['observacao'];
                 $oLogOrdemServico->salvarLog();
                 if (!empty($_POST['OrdemServicoItem'])) {
                     $oOrdemServicoItem->ordem_servico_id = $model->id;
                     $oOrdemServicoItem->salvarItens($_POST['OrdemServicoItem']);
-                    if(!empty($_POST['LogItemNaoCadastrado'])){
+                    if (!empty($_POST['LogItemNaoCadastrado'])) {
                         $oOrdemServicoItem->salvarItensNaoCadastrados($_POST['LogItemNaoCadastrado']);
                     }
                 }
@@ -112,7 +110,7 @@ class OrdemServicoController extends Controller {
 
         if (isset($_POST['OrdemServico'])) {
             $model->attributes = $_POST['OrdemServico'];
-            if ($model->save()){
+            if ($model->save()) {
                 if (!empty($_POST['OrdemServicoItem'])) {
                     $oOrdemServicoItem->ordem_servico_id = $model->id;
                     $oOrdemServicoItem->salvarItens($_POST['OrdemServicoItem']);
@@ -202,6 +200,36 @@ class OrdemServicoController extends Controller {
                 echo CJSON::encode($oServico->getDataJson());
             }
         }
+    }
+
+    public function actionFinalizar($id) {
+        $model = $this->loadModel($id);
+
+        $oClientes = Cliente::model()->ordemNome()->findAll();
+        $oOrdemServicoItem = new OrdemServicoItem;
+        $oLogItemNaoCadastrador = new LogItemNaoCadastrado;
+        $oLogOrdemServico = LogOrdemServico::model()->aberta()->findByAttributes(array(
+            'ordem_servico_id' => $id,
+        ));
+        $oOrdemServicoTipoPagamento = new OrdemServicoTipoPagamento;
+
+        if (isset($_POST['OrdemServicoTipoPagamento'])) {
+//            echo '<pre>';
+//            die(var_dump($_POST));
+            if ($model->finalizarOS()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
+        }
+
+        $this->render('finalizar', array(
+            'model' => $model,
+            'oClientes' => $oClientes,
+            'oOrdemServicoItem' => $oOrdemServicoItem,
+            'valor_total' => $model->getValorTotal(),
+            'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
+            'oLogOrdemServico' => $oLogOrdemServico,
+            'oOrdemServicoTipoPagamento' => $oOrdemServicoTipoPagamento,
+        ));
     }
 
 }

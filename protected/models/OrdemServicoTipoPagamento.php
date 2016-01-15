@@ -1,23 +1,28 @@
 <?php
 
 /**
- * This is the model class for table "log_ordens_servico".
+ * This is the model class for table "ordens_servico_tipos_pagamento".
  *
- * The followings are the available columns in table 'log_ordens_servico':
+ * The followings are the available columns in table 'ordens_servico_tipos_pagamento':
  * @property integer $id
  * @property integer $ordem_servico_id
- * @property integer $status
- * @property string $data_hora
- * @property string $ip
- * @property integer $usuario_id
+ * @property integer $forma_pagamento_id
+ * @property integer $parcelas
+ * @property string $valor
  */
-class LogOrdemServico extends CActiveRecord {
+class OrdemServicoTipoPagamento extends CActiveRecord {
+
+    public $aFormasPagamento = array(
+        1 => 'Dinheiro',
+        2 => 'Débito',
+        3 => 'Crédito',
+    );
 
     /**
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'log_ordens_servico';
+        return 'ordens_servico_tipos_pagamento';
     }
 
     /**
@@ -27,10 +32,9 @@ class LogOrdemServico extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('ordem_servico_id, status, usuario_id', 'numerical', 'integerOnly' => true),
-            array('ip', 'length', 'max' => 20),
-            array('data_hora, observacao', 'safe'),
-            array('id, ordem_servico_id, status, data_hora, ip, usuario_id, observacao', 'safe', 'on' => 'search'),
+            array('ordem_servico_id, forma_pagamento_id, parcelas', 'numerical', 'integerOnly' => true),
+            array('valor', 'length', 'max' => 10),
+            array('id, ordem_servico_id, forma_pagamento_id, parcelas, valor', 'safe', 'on' => 'search'),
         );
     }
 
@@ -38,20 +42,7 @@ class LogOrdemServico extends CActiveRecord {
      * @return array relational rules.
      */
     public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
-        );
-    }
-    
-    public function scopes() {
-        return array(
-            'aberta' => array(
-                'condition' => 't.status = 1',
-            ),
-            'finalizada' => array(
-                'condition' => 't.status = 2',
-            ),
         );
     }
 
@@ -61,12 +52,10 @@ class LogOrdemServico extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'ordem_servico_id' => 'Ordem de servico',
-            'status' => 'Status',
-            'data_hora' => 'Data',
-            'ip' => 'Ip',
-            'usuario_id' => 'Usuário',
-            'observacao' => 'Observação',
+            'ordem_servico_id' => 'Ordem de serviço',
+            'forma_pagamento_id' => 'Forma de pagamento',
+            'parcelas' => 'Parcelas',
+            'valor' => 'Valor',
         );
     }
 
@@ -89,11 +78,9 @@ class LogOrdemServico extends CActiveRecord {
 
         $criteria->compare('id', $this->id);
         $criteria->compare('ordem_servico_id', $this->ordem_servico_id);
-        $criteria->compare('status', $this->status);
-        $criteria->compare('data_hora', $this->data_hora, true);
-        $criteria->compare('ip', $this->ip, true);
-        $criteria->compare('usuario_id', $this->usuario_id);
-        $criteria->compare('observacao', $this->observacao);
+        $criteria->compare('forma_pagamento_id', $this->forma_pagamento_id);
+        $criteria->compare('parcelas', $this->parcelas);
+        $criteria->compare('valor', $this->valor, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -104,20 +91,10 @@ class LogOrdemServico extends CActiveRecord {
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
      * @param string $className active record class name.
-     * @return LogOrdemServico the static model class
+     * @return OrdemServicoTipoPagamento the static model class
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
-    }
-    
-    public function salvarLog(){
-        $this->data_hora = date('Y-m-d H:i:s');
-        $this->ip = $_SERVER['REMOTE_ADDR'];
-        $this->usuario_id = Yii::app()->user->getId();
-        if($this->save()){
-            return true;
-        }
-        return false;
     }
 
 }

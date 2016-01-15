@@ -13,7 +13,7 @@
  */
 class OrdemServico extends CActiveRecord {
 
-    public $aFormasPagemento = array(
+    public $aFormasPagamento = array(
         1 => 'Dinheiro',
         2 => 'Débito',
         3 => 'Crédito',
@@ -46,6 +46,8 @@ class OrdemServico extends CActiveRecord {
     public function relations() {
         return array(
             'ordemServicoItens' => array(self::HAS_MANY, 'OrdemServicoItem', 'ordem_servico_id'),
+            'cliente' => array(self::BELONGS_TO, 'Cliente', 'cliente_id'),
+            'clienteCarro' => array(self::BELONGS_TO, 'ClienteCarro', 'cliente_carro_id'),
         );
     }
 
@@ -112,17 +114,47 @@ class OrdemServico extends CActiveRecord {
 
     public function getValorTotal() {
         $valor_total = 0;
-        if(!empty($this->ordemServicoItens)){
-            foreach ($this->ordemServicoItens as $item){
-                if($item->tipo_item_id == 1){
-                    $valor_total = $valor_total + $item->produto->preco;
-                }
-                if($item->tipo_item_id == 2){
-                    $valor_total = $valor_total + $item->servico->preco;
+        if (!empty($this->ordemServicoItens)) {
+            foreach ($this->ordemServicoItens as $item) {
+                if ($item->item_id != 0) {
+                    if ($item->tipo_item_id == 1) {
+                        $valor_total = $valor_total + $item->produto->preco;
+                    }
+                    if ($item->tipo_item_id == 2) {
+                        $valor_total = $valor_total + $item->servico->preco;
+                    }
+                } else {
+                    $oLogItemNaoCadastrado = LogItemNaoCadastrado::model()->findByAttributes(array(
+                        'ordem_servico_item_id' => $item->id,
+                    ));
+                    $valor_total = $valor_total + $oLogItemNaoCadastrado->preco;
                 }
             }
         }
         return $valor_total;
+    }
+
+    public function finalizarOS() {
+        if (!empty($_POST['OrdemServicoTipoPagamento'])) {
+            $oLogOrdemServico = new LogOrdemServico;
+            $oLogOrdemServico->status = 2;
+            $oLogOrdemServico->ordem_servico_id = $this->id;
+            $oLogOrdemServico->observacao = $_POST['LogOrdemServico']['observacao'];
+            if ($oLogOrdemServico->salvarLog()) {
+                foreach ($_POST['OrdemServicoTipoPagamento'] as $post) {
+                    if (!empty($post['forma_pagamento_id'])) {
+                        $oOrdemServicoTipPagamento = new OrdemServicoTipoPagamento;
+                        $oOrdemServicoTipPagamento->ordem_servico_id = $this->id;
+                        $oOrdemServicoTipPagamento->forma_pagamento_id = $post['forma_pagamento_id'];
+                        $oOrdemServicoTipPagamento->valor = $post['valor'];
+                        $oOrdemServicoTipPagamento->parcelas = $post['parcelas'];
+                        $oOrdemServicoTipPagamento->save();
+                    }
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
 }

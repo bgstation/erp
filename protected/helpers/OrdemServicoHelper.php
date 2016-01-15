@@ -2,42 +2,67 @@
 
 class OrdemServicoHelper {
 
-    public static function renderItens($tipoItem, $oOrdemServicoItens) {
+    public static function getHtml($obj, $remover = true) {
+        $return = '';
+        $return .= '<tr identificador="' . $obj->tipoItem . '_' . $obj->identificador . '">';
+        $return .= '<td>';
+        $return .= $obj->titulo;
+        $return .= '</td>';
+        $return .= '<td>';
+        $return .= 'R$' . number_format($obj->preco, 2, ',', '.');
+        $return .= '</td>';
+        if ($remover) {
+            $return .= '<td>';
+            $return .= '<a href="javascript:void(0)" class="remove" onclick="removerItem(' . $obj->tipoItem . ', ' . $obj->item_id . ', ' . $obj->identificador . ', ' . $obj->preco . ')">';
+            $return .= '<i class="fa fa-times"></i>';
+            $return .= '</a>';
+            $return .= '</td>';
+        }
+        $return .= '</tr>';
+        return $return;
+    }
+
+    public static function renderItens($tipoItem, $oOrdemServicoItens, $remover = true) {
         $return = '';
 
         if (!empty($oOrdemServicoItens)) {
             $identificador = 1400;
             foreach ($oOrdemServicoItens as $model) {
+                $oLogItemNaoCadastrado = LogItemNaoCadastrado::model()->findByAttributes(array(
+                    'ordem_servico_item_id' => $model->id,
+                ));
+                $obj = new stdClass();
+                $obj->tipoItem = $tipoItem;
+                $obj->identificador = $identificador;
                 if ($tipoItem == 1 && $model->tipo_item_id == 1) {
-                    $return .= '<tr identificador="' . $tipoItem . '_' . $identificador . '">';
-                    $return .= '<td>';
-                    $return .= $model->produto->titulo;
-                    $return .= '</td>';
-                    $return .= '<td>';
-                    $return .= 'R$' . number_format($model->produto->preco, 2, ',', '.');
-                    $return .= '</td>';
-                    $return .= '<td>';
-                    $return .= '<a href="javascript:void(0)" class="remove" onclick="removerItem(' . $tipoItem . ', ' . $model->item_id . ', ' . $identificador . ', ' . $model->produto->preco . ')">';
-                    $return .= '<i class="fa fa-times"></i>';
-                    $return .= '</a>';
-                    $return .= '</td>';
-                    $return .= '</tr>';
+                    if ($model->item_id != 0) {
+                        $obj->titulo = $model->produto->titulo;
+                        $obj->preco = $model->produto->preco;
+                        $obj->item_id = $model->item_id;
+                        $return .= self::getHtml($obj, $remover);
+                    } else {
+                        $obj->titulo = $oLogItemNaoCadastrado->titulo;
+                        $obj->preco = $oLogItemNaoCadastrado->preco;
+                        $obj->item_id = $identificador;
+                        $return .= self::getHtml($obj, $remover);
+                    }
                 }
                 if ($tipoItem == 2 && $model->tipo_item_id == 2) {
-                    $return .= '<tr identificador="' . $tipoItem . '_' . $identificador . '">';
-                    $return .= '<td>';
-                    $return .= $model->servico->titulo;
-                    $return .= '</td>';
-                    $return .= '<td>';
-                    $return .= 'R$' . number_format($model->servico->preco, 2, ',', '.');
-                    $return .= '</td>';
-                    $return .= '<td>';
-                    $return .= '<a href="javascript:void(0)" class="remove" onclick="removerItem(' . $tipoItem . ', ' . $model->item_id . ', ' . $identificador . ', ' . $model->servico->preco . ')">';
-                    $return .= '<i class="fa fa-times"></i>';
-                    $return .= '</a>';
-                    $return .= '</td>';
-                    $return .= '</tr>';
+                    if ($model->item_id != 0) {
+                        $obj->titulo = $model->servico->titulo;
+                        $obj->preco = $model->servico->preco;
+                        $obj->item_id = $model->item_id;
+                        $return .= self::getHtml($obj, $remover);
+                    } else {
+                        $obj->titulo = $oLogItemNaoCadastrado->titulo;
+                        $obj->preco = $oLogItemNaoCadastrado->preco;
+                        $obj->item_id = $identificador;
+                        $return .= self::getHtml($obj, $remover);
+                    }
                 }
+
+
+
                 $identificador++;
             }
         }

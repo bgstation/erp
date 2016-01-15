@@ -20,6 +20,8 @@
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/bower_components/bootstrap/dist/css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/produto/_form.css" />
         <link rel="stylesheet" type="text/css" href="<?= Yii::app()->request->baseUrl ?>/css/font-awesome-4.5.0/css/font-awesome.min.css" />
+        
+        <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/biblioteca.js"></script>
 
         <?php Yii::app()->bootstrap->register() ?>
     </head>

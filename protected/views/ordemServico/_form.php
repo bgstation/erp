@@ -2,8 +2,7 @@
 /* @var $this OrdemServicoController */
 /* @var $model OrdemServico */
 /* @var $form CActiveForm */
-//echo '<pre>';
-//    die(var_dump($model->ordemServicoItens));
+
 ?>
 
 <div class="form">
@@ -167,7 +166,7 @@
                     'buttonType' => 'button',
                     'label' => 'Voltar',
                     'htmlOptions' => array(
-                        'onclick' => 'alterarTab("cliente")'
+                        'onclick' => 'alterarTab("servicos", "cliente")'
                     ),
                         )
                 );

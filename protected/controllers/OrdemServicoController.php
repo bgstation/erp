@@ -50,6 +50,7 @@ class OrdemServicoController extends Controller {
     public function actionView($id) {
         $this->render('view', array(
             'model' => $this->loadModel($id),
+            'oOrdemServicoFormaPagamento' => new OrdemServicoTipoPagamento,
         ));
     }
 
@@ -214,8 +215,6 @@ class OrdemServicoController extends Controller {
         $oOrdemServicoTipoPagamento = new OrdemServicoTipoPagamento;
 
         if (isset($_POST['OrdemServicoTipoPagamento'])) {
-//            echo '<pre>';
-//            die(var_dump($_POST));
             if ($model->finalizarOS()) {
                 $this->redirect(array('view', 'id' => $model->id));
             }

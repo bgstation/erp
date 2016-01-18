@@ -138,6 +138,18 @@
 
     $("#select2_forma_pagamento_id_1").val(1);
 
+    var resetarValor = function (tudo) {
+        if (tudo) {
+            $("#select2_forma_pagamento_id_1").val(1);
+            $("#OrdemServicoTipoPagamento_1_valor").val(number_format(valorTotalOri - desconto, 2, ',', '.'));
+            $("#select2_forma_pagamento_id_2").select2('val','');
+        }
+        $("#OrdemServicoTipoPagamento_2_valor").val(null);
+        $("#OrdemServicoTipoPagamento_2_valor").attr('readonly', 'readonly');
+        $('#OrdemServicoTipoPagamento_2_parcelas').css('display', 'none');
+        $('#OrdemServicoTipoPagamento_2_parcelas').val(null);
+    }
+
     var addFormaPagamento = function (indentificador, id) {
         if (id !== "" && indentificador == 2) {
             $('#OrdemServicoTipoPagamento_' + indentificador + '_valor').removeAttr('readonly');
@@ -152,10 +164,7 @@
 
     $("#select2_forma_pagamento_id_2").change(function () {
         if ($(this).val() === "") {
-            $("#OrdemServicoTipoPagamento_2_valor").val(null);
-            $("#OrdemServicoTipoPagamento_2_valor").attr('readonly', 'readonly');
-            $('#OrdemServicoTipoPagamento_2_parcelas').css('display', 'none');
-            $('#OrdemServicoTipoPagamento_2_parcelas').val(null);
+            resetarValor(false);
         }
     })
 
@@ -175,12 +184,8 @@
     });
 
     $('#OrdemServico_desconto').blur(function () {
-        if ($(this).val() !== desconto) {
-            var valorTmp = parseFloat($(this).val().replace('.', '').replace(',', '.'));
-            var pag1 = $("#OrdemServicoTipoPagamento_1_valor");
-            var pag2 = $("#OrdemServicoTipoPagamento_2_valor");
-            var valorPag1 = parseFloat(pag1.val().replace('.', '').replace(',', '.'));
-            var valorPag2 = parseFloat(pag2.val().replace('.', '').replace(',', '.'));
+        var valorTmp = parseFloat($(this).val().replace('.', '').replace(',', '.'));
+        if (valorTmp !== desconto) {           
             if ($(this).val() !== "") {
                 desconto = parseFloat($(this).val().replace('.', '').replace(',', '.'));
                 if (valorTmp > valorTotalOri) {
@@ -190,9 +195,7 @@
                 } else {
                     valorTotal = valorTotalOri - valorTmp;
                     $("#valorTotal").text('R$ ' + number_format(valorTotal, 2, ',', '.'));
-                    if (valorPag1 > valorTmp) {
-                        pag1.val(number_format(valorPag1 - valorTmp, 2, ',', '.'));
-                    }
+                    resetarValor(true);
                 }
             }
         }

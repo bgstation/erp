@@ -75,7 +75,7 @@
         ));
         ?>
         <?php echo $form->error($model, 'forma_pagamento_id'); ?>
-        <?php echo $form->textField($oOrdemServicoTipoPagamento, '[1]valor', array('readonly' => 'readonly', 'class' => 'preco monetario', 'style' => 'margin-top: 0px; margin-left: 5px', 'value' => $valor_total)); ?>
+        <?php echo $form->textField($oOrdemServicoTipoPagamento, '[1]valor', array('readonly' => 'readonly', 'class' => 'preco monetario', 'style' => 'margin-top: 0px; margin-left: 5px', 'value' => number_format($valor_total, 2))); ?>
         <?php echo $form->textField($oOrdemServicoTipoPagamento, '[1]parcelas', array('style' => 'margin-top: 0px; margin-left: 5px; display: none')); ?>
         <br>
         <?php

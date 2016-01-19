@@ -157,8 +157,10 @@ class OrdemServicoItem extends CActiveRecord {
     public function salvarItensNaoCadastrados($post) {
         if (!empty($post)) {
             foreach ($post as $tipoItem => $aDados) {
-                foreach ($aDados as $dados) {
-                    $this->salvarItemPorTipo($tipoItem, 0, $dados);
+                if (!empty($aDados)) {
+                    foreach ($aDados as $dados) {
+                        $this->salvarItemPorTipo($tipoItem, 0, $dados);
+                    }
                 }
             }
         }

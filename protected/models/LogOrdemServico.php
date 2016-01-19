@@ -38,8 +38,12 @@ class LogOrdemServico extends CActiveRecord {
         if($this->status == 2 && $this->isNewRecord){
             $oFinanceiro = new Financeiro;
             $oFinanceiro->salvar(1, $this->ordemServico, $this->usuario->nome);
-//            $oProduto = new Produto;
-//            $oProduto->decrementarQuantidade();
+            foreach ($this->ordemServico->ordemServicoItens as $item){
+                if($item->tipo_item_id == 1){
+                    $oProduto = Produto::model()->findByPk($item->item_id);
+                    $oProduto->decrementarQuantidade();
+                }
+            }
         }
         parent::afterSave();
     }

@@ -86,6 +86,9 @@ class Usuario extends CActiveRecord {
             'naoExcluido' => array(
                 'condition' => 'excluido = false',
             ),
+            'ordenarNome' => array(
+                'order' => 't.nome ASC',
+            ),
         );
     }
 

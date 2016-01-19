@@ -36,11 +36,18 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
-        'id',
+        array(
+            'name' => 'id',
+            'value' => '$data->id',
+            'htmlOptions'=>array('width'=>'100px'),
+        ),
         'titulo',
-        'marca_id',
+        array(
+            'name' => 'marca_id',
+            'value' => '$data->marca->titulo'
+        ),
         'observacao',
-        'excluido',
+//        'excluido',
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{view}{update}{delete}',

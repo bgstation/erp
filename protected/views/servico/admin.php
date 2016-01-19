@@ -37,7 +37,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         'titulo',
         array(
             'name' => 'preco',
-            'value' => '!empty($data->preco) ? RPFormat::valorMonetario($data->preco) : ""',
+            'value' => '!empty($data->preco) ? "R$ ". RPFormat::valorMonetario($data->preco) : ""',
         ),
         'observacao',
         array(

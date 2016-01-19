@@ -68,7 +68,7 @@ class Servico extends CActiveRecord {
         return array(
             'id' => 'Código',
             'titulo' => 'Titulo',
-            'preco' => 'Preço R$',
+            'preco' => 'Preço',
             'observacao' => 'Observação',
             'excluido' => 'Excluido',
         );

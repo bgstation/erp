@@ -94,6 +94,7 @@ class Compra extends CActiveRecord {
     public function relations() {
         return array(
             'produto' => array(self::BELONGS_TO, 'Produto', 'produto_id'),
+            'usuario' => array(self::BELONGS_TO, 'Usuario', 'usuario_id'),
         );
     }
 
@@ -102,8 +103,8 @@ class Compra extends CActiveRecord {
      */
     public function attributeLabels() {
         return array(
-            'id' => 'ID',
-            'nota_fiscal' => 'Nota Fiscal',
+            'id' => 'Código',
+            'nota_fiscal' => 'Nota fiscal',
             'produto_id' => 'Produto',
             'preco' => 'Preço',
             'observacao' => 'Observação',

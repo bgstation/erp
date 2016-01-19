@@ -47,12 +47,25 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
-        'id',
+        array(
+            'name' => 'id',
+            'value' => '$data->id',
+            'htmlOptions'=>array('width'=>'100px'),
+        ),
         'titulo',
         'codigo_barra',
-        'marca_id',
-        'modelo_id',
-        'preco',
+        array(
+            'name' => 'marca_id',
+            'value' => '$data->marca->titulo'
+        ),
+        array(
+            'name' => 'modelo_id',
+            'value' => '$data->modelo->titulo',
+        ),
+        array(
+            'name' => 'preco',
+            'value' => '!empty($data->preco) ? "R$ ". number_format($data->preco, 2, ",", ".") : ""'
+        ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{view}{update}{delete}',

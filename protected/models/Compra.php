@@ -65,6 +65,8 @@ class Compra extends CActiveRecord {
         if ($this->isNewRecord) {
             $oProduto->quantidade = $oProduto->quantidade + $this->quantidade;
             $oProduto->save();
+            $oFinanceiro = new Financeiro;
+            $oFinanceiro->salvar(2, $this);
         } else {
             if ($this->qntAntigaTmp != $this->quantidade) {
                 if ($this->qntAntigaTmp < $this->quantidade) {

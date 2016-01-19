@@ -148,5 +148,9 @@ class Produto extends CActiveRecord {
         }
         return $aModels;
     }
+    
+    public function decrementarQuantidade(){
+        
+    }
 
 }

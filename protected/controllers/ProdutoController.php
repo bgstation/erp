@@ -30,7 +30,7 @@ class ProdutoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update'),
+                'actions' => array('create', 'update', 'estoque'),
                 'users' => array('@'),
             ),
             array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -132,12 +132,18 @@ class ProdutoController extends Controller {
      */
     public function actionAdmin() {
         $model = new Produto('search');
-        $model->unsetAttributes();  // clear any default values
+        $model->unsetAttributes();
+        
+        $oTiposProdutos = TipoProduto::model()->ordenarTitulo()->findAll(array(
+            'condition' => 'id in ('.implode(",", CHtml::listData(Produto::model()->findAll(), 'tipo_produto_id', 'tipo_produto_id')).')',
+        ));
+        
         if (isset($_GET['Produto']))
             $model->attributes = $_GET['Produto'];
 
         $this->render('admin', array(
             'model' => $model,
+            'oTiposProdutos' => $oTiposProdutos,
         ));
     }
 
@@ -164,6 +170,10 @@ class ProdutoController extends Controller {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
+    }
+    
+    public function actionEstoque(){
+        
     }
 
 }

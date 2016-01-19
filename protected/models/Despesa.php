@@ -37,20 +37,28 @@ class Despesa extends CActiveRecord {
             array('id, tipo_despesa_id, preco, observacao, quantidade, data_hora, usuario_id, excluido', 'safe', 'on' => 'search'),
         );
     }
-    
+
     public function tratarPreco() {
         if (!empty($this->preco)) {
             $preco = str_replace('.', '', $this->preco);
             $this->preco = str_replace(',', '.', $preco);
         }
     }
-    
+
     public function beforeSave() {
         $this->usuario_id = Yii::app()->user->getId();
         if ($this->isNewRecord) {
             $this->data_hora = date('Y-m-d H:i:s');
         }
         return parent::beforeSave();
+    }
+
+    public function afterSave() {
+        if ($this->isNewRecord) {
+            $oFinanceiro = new Financeiro;
+            $oFinanceiro->salvar(3, $this);
+        }
+        parent::afterSave();
     }
 
     /**

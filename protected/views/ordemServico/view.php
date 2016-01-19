@@ -32,6 +32,10 @@ $this->widget('zii.widgets.CDetailView', array(
             'value' => !empty($model->desconto) ? 'R$ '.number_format($model->desconto, 2, ',', '.') : '',
         ),
         array(
+            'label' => 'Valor pago',
+            'value' => "R$ " . number_format($model->getValorTotal() - $model->desconto, 2, ",", "."),
+        ),
+        array(
             'name' => 'excluido',
             'value' => $model->excluido == 0 ? 'Não' : 'Sim',
         ),

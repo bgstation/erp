@@ -7,12 +7,12 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'links' => array(
         'Clientes' => Yii::app()->createUrl('cliente/admin'),
         $oCliente->nome => Yii::app()->createUrl('cliente/view', array('id' => $oCliente->id)),
-        'Cadastro de carro'
+        'Cadastrar Carro'
     ),
 ));
 ?>
 
-<h1>Cadastro de carro</h1>
+<h1>Cadastrar Carro</h1>
 
 <?php
 $this->renderPartial('_form', array(

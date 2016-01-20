@@ -5,13 +5,13 @@
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
-        'Ordens de serviço' => Yii::app()->createUrl('ordemServico/admin'),
+        'Ordens de Serviço' => Yii::app()->createUrl('ordemServico/admin'),
         $model->id
     ),
 ));
 ?>
 
-<h1>Ordem de serviço: <?php echo $model->id; ?></h1>
+<h1>Ordem de Serviço: <?= $model->id ?></h1>
 
 <?php
 $this->widget('zii.widgets.CDetailView', array(
@@ -29,11 +29,11 @@ $this->widget('zii.widgets.CDetailView', array(
         'observacao',
         array(
             'name' => 'desconto',
-            'value' => !empty($model->desconto) ? 'R$ '.number_format($model->desconto, 2, ',', '.') : '',
+            'value' => !empty($model->desconto) ? 'R$ ' . FormatHelper::valorMonetario($model->desconto) : '',
         ),
         array(
             'label' => 'Valor pago',
-            'value' => "R$ " . number_format($model->getValorTotal() - $model->desconto, 2, ",", "."),
+            'value' => "R$ " . FormatHelper::valorMonetario($model->getValorTotal() - $model->desconto),
         ),
         array(
             'name' => 'excluido',
@@ -82,16 +82,16 @@ $this->widget('zii.widgets.CDetailView', array(
         </thead>
         <tbody id="tipo_item_2_adicionados">
             <?php
-            foreach ($model->ordemServicoTipoPagamento as $formaPagamento){
+            foreach ($model->ordemServicoTipoPagamento as $formaPagamento) {
                 echo '<tr>';
                 echo '<td>';
                 echo $oOrdemServicoFormaPagamento->aFormasPagamento[$formaPagamento->forma_pagamento_id];
                 echo '</td>';
                 echo '<td>';
-                echo 'R$ '.number_format($formaPagamento->valor, 2, ',', '.');
+                echo 'R$ ' . number_format($formaPagamento->valor, 2, ',', '.');
                 echo '</td>';
                 echo '<td>';
-                echo !empty($formaPagamento->parcelas) ? $formaPagamento->parcelas.'x' : 'À vista';
+                echo!empty($formaPagamento->parcelas) ? $formaPagamento->parcelas . 'x' : 'À vista';
                 echo '</td>';
                 echo '</tr>';
             }

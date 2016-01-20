@@ -6,15 +6,15 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Cadastro' => '',
-        'Tipos de despesa'
+        'Tipos de Despesas'
     ),
 ));
 ?>
 
-<h3>Tipos de despesas</h3>
+<h1>Tipos de Despesas</h1>
 
 <?php
-//if (Yii::app()->user->checkAccess('tipoDespesa/create')) {
+if (Yii::app()->user->checkAccess('tipoDespesa/create')) {
     $this->widget('bootstrap.widgets.TbButton', array(
         'type' => 'success',
         'size' => 'medium',
@@ -25,9 +25,8 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
         ),
             )
     );
-//}
+}
 ?>
-<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -35,10 +34,25 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
-        'id',
         'titulo',
         array(
-            'class' => 'CButtonColumn',
+            'name' => 'excluido',
+            'value' => '$data->excluido? \'Sim\' : \'Não\''
+        ),
+        array(
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'template' => '{view}{update}{delete}',
+            'buttons' => array(
+                'view' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("tipoDespesa/view")',
+                ),
+                'update' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("tipoDespesa/update")',
+                ),
+                'delete' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("tipoDespesa/delete")',
+                ),
+            ),
         ),
     ),
 ));

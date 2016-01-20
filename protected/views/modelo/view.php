@@ -11,7 +11,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 ));
 ?>
 
-<h3>Modelo: <?php echo $model->titulo ?></h3>
+<h3>Modelo: <?= $model->titulo ?></h3>
 
 <?php
 $this->widget('zii.widgets.CDetailView', array(
@@ -42,5 +42,5 @@ $this->widget('zii.widgets.CDetailView', array(
     <?php endif; ?>
     <?php if (Yii::app()->user->checkAccess('modelo/create')) : ?>
         <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar modelo') ?></a></li>
-    <?php endif; ?>
+        <?php endif; ?>
 </ul>

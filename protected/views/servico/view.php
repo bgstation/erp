@@ -6,13 +6,13 @@
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
-        'Servicos' => Yii::app()->createUrl('servico/admin'),
+        'Serviços' => Yii::app()->createUrl('servico/admin'),
         $model->titulo,
     ),
 ));
 ?>
 
-<h1><?php echo $model->titulo; ?></h1>
+<h1>Serviço: <?= $model->titulo ?></h1>
 
 <?php
 $this->widget('zii.widgets.CDetailView', array(
@@ -22,7 +22,7 @@ $this->widget('zii.widgets.CDetailView', array(
         'titulo',
         array(
             'name' => 'preco',
-            'value' => !empty($model->preco) ? number_format($model->preco, 2, ',', '.') : '',
+            'value' => !empty($model->preco) ? FormatHelper::valorMonetario($model->preco) : '',
         ),
         'observacao',
     ),
@@ -39,6 +39,6 @@ $this->widget('zii.widgets.CDetailView', array(
     <?php endif; ?>
     <?php if (Yii::app()->user->checkAccess('servico/create')) : ?>
         <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar itens') ?></a></li>
-    <?php endif; ?>
+        <?php endif; ?>
 </ul>
 

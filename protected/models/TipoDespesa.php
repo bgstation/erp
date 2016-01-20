@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'tipo_despesas':
  * @property integer $id
  * @property string $titulo
+ * @property string $excluido
  */
 class TipoDespesa extends CActiveRecord {
 
@@ -13,19 +14,17 @@ class TipoDespesa extends CActiveRecord {
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'tipo_despesas';
+        return 'tipos_despesas';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('titulo', 'length', 'max' => 200),
             array('titulo', 'required'),
-            array('id, titulo', 'safe', 'on' => 'search'),
+            array('id, titulo, excluido', 'safe', 'on' => 'search'),
         );
     }
 
@@ -52,6 +51,7 @@ class TipoDespesa extends CActiveRecord {
         return array(
             'id' => 'Código',
             'titulo' => 'Titulo',
+            'excluido' => 'Excluído'
         );
     }
 
@@ -74,6 +74,7 @@ class TipoDespesa extends CActiveRecord {
 
         $criteria->compare('id', $this->id);
         $criteria->compare('titulo', $this->titulo, true);
+        $criteria->compare('excluido', $this->excluido, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

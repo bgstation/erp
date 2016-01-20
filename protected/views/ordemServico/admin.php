@@ -6,12 +6,12 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Cadastro' => '',
-        'Ordens de serviço'
+        'Ordens de Serviços'
     ),
 ));
 ?>
 
-<h3>Ordens de serviços</h3>
+<h1>Ordens de Serviços</h1>
 
 <?php
 if (Yii::app()->user->checkAccess('ordemServico/create')) {
@@ -27,7 +27,6 @@ if (Yii::app()->user->checkAccess('ordemServico/create')) {
     );
 }
 ?>
-<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -54,14 +53,13 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                 'empty' => '',
             )),
         ),
-        'observacao',
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{finalizar}{view}{update}{delete}',
             'buttons' => array(
                 'finalizar' => array(
                     'url' => 'Yii::app()->createUrl("ordemServico/finalizar", array("id" => $data->id))',
-//                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/finalizar")',
+                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/finalizar")',
                 ),
                 'view' => array(
                     'visible' => 'Yii::app()->user->checkAccess("ordemServico/view")',

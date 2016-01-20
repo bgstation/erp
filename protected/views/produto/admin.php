@@ -11,7 +11,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 ));
 ?>
 
-<h3>Produtos</h3>
+<h1>Produtos</h1>
 
 <?php
 if (Yii::app()->user->checkAccess('produto/create')) {
@@ -26,20 +26,7 @@ if (Yii::app()->user->checkAccess('produto/create')) {
             )
     );
 }
-if (Yii::app()->user->checkAccess('tipoProduto/create')) {
-    $this->widget('bootstrap.widgets.TbButton', array(
-        'type' => 'success',
-        'size' => 'medium',
-        'label' => 'Cadastrar tipo de produto',
-        'url' => Yii::app()->createUrl('tipoProduto/create'),
-        'htmlOptions' => array(
-            'class' => 'pull-left',
-        ),
-            )
-    );
-}
 ?>
-<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -47,10 +34,10 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
+        'titulo',
         array(
-            'name' => 'id',
-            'value' => '$data->id',
-            'htmlOptions'=>array('width'=>'100px'),
+            'name' => 'marca_id',
+            'value' => '!empty($data->marca_id) ? $data->marca->titulo : ""'
         ),
         array(
             'name' => 'tipo_produto_id',
@@ -58,16 +45,6 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'filter' => CHtml::activeDropDownList($model, 'tipo_produto_id', CHtml::listData($oTiposProdutos, 'id', 'titulo'), array(
                 'empty' => '',
             )),
-        ),
-        'titulo',
-        'codigo_barra',
-        array(
-            'name' => 'marca_id',
-            'value' => '!empty($data->marca_id) ? $data->marca->titulo : ""'
-        ),
-        array(
-            'name' => 'modelo_id',
-            'value' => '!empty($data->modelo_id) ? $data->modelo->titulo : ""',
         ),
         array(
             'name' => 'preco',

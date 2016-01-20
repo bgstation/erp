@@ -6,12 +6,12 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Cadastro' => '',
-        'Tipos de produto'
+        'Tipos de Produtos'
     ),
 ));
 ?>
 
-<h1>Tipos de produto</h1>
+<h1>Tipos de Produtos</h1>
 
 
 <?php
@@ -35,11 +35,25 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
-        'id',
         'titulo',
-        'excluido',
         array(
-            'class' => 'CButtonColumn',
+            'name' => 'excluido',
+            'value' => '$data->excluido? \'Sim\' : \'Não\''
+        ),
+        array(
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'template' => '{view}{update}{delete}',
+            'buttons' => array(
+                'view' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("tipoProduto/view")',
+                ),
+                'update' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("tipoProduto/update")',
+                ),
+                'delete' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("tipoProduto/delete")',
+                ),
+            ),
         ),
     ),
 ));

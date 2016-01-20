@@ -22,13 +22,16 @@ $this->widget('zii.widgets.CDetailView', array(
         'login',
         array(
             'name' => 'acl_tipo_usuario_id',
-            'value' => !empty($model->acl_tipo_usuario_id) ? $model->acl_tipo_usuario->titulo : '',
+            'value' => !empty($model->acl_tipo_usuario_id) ? $model->tipoUsuario->titulo : '',
         ),
         array(
             'name' => 'excluido',
             'value' => $model->excluido == 0 ? 'Não' : 'Sim',
         ),
-        'data_cadastro',
+        array(
+            'name' => 'data_cadastro',
+            'value' => FormatHelper::dataHora($model->data_cadastro),
+        ),
     ),
 ));
 ?>

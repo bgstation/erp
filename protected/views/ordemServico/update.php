@@ -5,14 +5,14 @@
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
-        'Ordens de serviço' => Yii::app()->createUrl('ordemServico/admin'),
-        $model->id => Yii::app()->createUrl('ordemServico/view', array('id' => $model->id)),
+        'Cadastro' => '',
+        'Ordens de Serviços' => Yii::app()->createUrl('ordemServico/admin'),
         'Atualizar',
     ),
 ));
 ?>
 
-<h3>Atualizar ordem de serviço <?php echo $model->id; ?></h3>
+<h1>Atualizar Ordem de Serviço <?= $model->id ?></h1>
 
 <?php
 $this->renderPartial('_form', array(

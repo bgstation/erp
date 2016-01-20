@@ -80,6 +80,9 @@ input {
 .panel-heading span {
     font-size: 23px;
 }
+.important {
+    color: red;
+}
 @media (max-width: 979px) {
     #header {
         height: 60px!important;

@@ -41,7 +41,7 @@ class Cliente extends CActiveRecord {
             array('cpf', 'length', 'max' => 14),
             array('sexo', 'length', 'max' => 1),
             array('telefone_fixo, celular, complemento', 'length', 'max' => 20),
-            array('nome, sexo', 'required'),
+            array('nome, cpf, email, sexo', 'required'),
             array('cpf, email', 'unique'),
             array('id, email, nome, cpf, sexo, telefone_fixo, celular, endereco, numero, complemento, data_cadastro', 'safe', 'on' => 'search'),
         );

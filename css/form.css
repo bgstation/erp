@@ -162,5 +162,12 @@ div.wide.form .buttons, div.wide.form .hint, div.wide.form .errorMessage
     clear: left;
     padding-left: 110px;
 }
-
-
+input, .select2-container, textarea {
+    width: 300px;
+}
+#ClienteCarro_placa {
+    text-transform:uppercase
+}
+.row a:hover {
+    text-decoration: none;
+}

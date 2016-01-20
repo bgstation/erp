@@ -10,7 +10,7 @@ class UserRole extends CPhpAuthManager {
 
         $oUsuario = Usuario::model()->findByPk(Yii::app()->user->getId());
 
-        $role = $this->createRole($oUsuario->acl_tipo_usuario->titulo);
+        $role = $this->createRole($oUsuario->tipoUsuario->titulo);
 
         if (empty($_SESSION[base64_encode(Yii::app()->params['projeto'] . '_PermissoesAcesso')][base64_encode('PermissoesAcessoUsuario')])) {
             $_aPermissoes = Yii::app()->user->getState('__' . base64_encode(Yii::app()->params['projeto'] . '_PermissoesAcessoUsuario'));

@@ -49,7 +49,7 @@ class WebUser extends CWebUser {
 
             if (empty($rolesDesignadas)) {
                 Yii::app()->authManager->assign(
-                        $oUsuario->acl_tipo_usuario->titulo, $this->id
+                        $oUsuario->tipoUsuario->titulo, $this->id
                 );
             }
 
@@ -57,7 +57,7 @@ class WebUser extends CWebUser {
                 return true;
             }
 
-            $ret = $this->roleHasChild($oUsuario->acl_tipo_usuario->titulo, $operation);
+            $ret = $this->roleHasChild($oUsuario->tipoUsuario->titulo, $operation);
 
             if ($ret) {
                 return true;

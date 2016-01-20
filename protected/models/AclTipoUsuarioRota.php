@@ -30,6 +30,19 @@ class AclTipoUsuarioRota extends CActiveRecord {
             array('id, acl_rota_id, acl_tipo_usuario_id, excluido, data_insercao, data_ultima_atualizacao', 'safe', 'on' => 'search'),
         );
     }
+    
+    public function beforeSave() {
+        if ($this->isNewRecord) {
+            $oAclTipoUsuarioRota = AclTipoUsuarioRota::model()->findByAttributes(array(
+                'acl_rota_id' => $this->acl_rota_id,
+                'acl_tipo_usuario_id' => $this->acl_tipo_usuario_id,
+            ));
+            if (!empty($oAclTipoUsuarioRota)) {
+                return false;
+            }
+        }
+        return parent::beforeSave();
+    }
 
     /**
      * @return array relational rules.

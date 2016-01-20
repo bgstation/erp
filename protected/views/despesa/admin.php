@@ -11,7 +11,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 ));
 ?>
 
-<h3>Despesas</h3>
+<h1>Despesas</h1>
 
 <?php
 if (Yii::app()->user->checkAccess('despesa/create')) {
@@ -27,7 +27,6 @@ if (Yii::app()->user->checkAccess('despesa/create')) {
     );
 }
 ?>
-<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -35,7 +34,6 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
-        'id',
         array(
             'name' => 'tipo_despesa_id',
             'value' => '!empty($data->tipo_despesa_id) ? $data->tipoDespesa->titulo : ""',
@@ -47,19 +45,18 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'name' => 'preco',
             'value' => '!empty($data->preco) ? "R$ ". number_format($data->preco, 2, ",", ".") : ""'
         ),
-        'observacao',
         'quantidade',
         array(
             'name' => 'data_hora',
             'value' => '!empty($data->data_hora) ? date("d/m/Y H:i:s", strtotime($data->data_hora)) : ""'
         ),
-        array(
-            'name' => 'usuario_id',
-            'value' => '!empty($data->usuario_id) ? $data->usuario->nome : ""',
-            'filter' => CHtml::activeDropDownList($model, 'usuario_id', CHtml::listData($oUsuarios, 'id', 'nome'), array(
-                'empty' => '',
-            )),
-        ),
+//        array(
+//            'name' => 'usuario_id',
+//            'value' => '!empty($data->usuario_id) ? $data->usuario->nome : ""',
+//            'filter' => CHtml::activeDropDownList($model, 'usuario_id', CHtml::listData($oUsuarios, 'id', 'nome'), array(
+//                'empty' => '',
+//            )),
+//        ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{view}{update}{delete}',

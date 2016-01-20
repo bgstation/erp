@@ -5,12 +5,13 @@
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
-        'Servicos' => Yii::app()->createUrl('servico/admin'),
+        'Cadastro' => '',
+        'Serviços' => Yii::app()->createUrl('servico/admin'),
         'Atualizar',
     ),
 ));
 ?>
 
-<h3>Atualizar servico <?php echo $model->titulo; ?></h3>
+<h1>Atualizar Serviço: <?= $model->titulo ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

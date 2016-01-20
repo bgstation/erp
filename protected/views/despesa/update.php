@@ -5,14 +5,14 @@
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
+        'Cadastro' => '',
         'Despesas' => $this->createUrl('admin'),
-        $model->id => $this->createUrl('view', array('id' => $model->id)),
         'Atualizar',
     ),
 ));
 ?>
 
-<h1>Despesa: <?php echo $model->id; ?></h1>
+<h1>Atualizar Despesa: <?= $model->tipoDespesa->titulo ?></h1>
 
 <?php
 $this->renderPartial('_form', array(

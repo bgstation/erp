@@ -11,7 +11,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 ));
 ?>
 
-<h2><?= $model->nome ?></h2>
+<h1>Cliente: <?= $model->nome ?></h1>
 
 <?php
 $this->widget('zii.widgets.CDetailView', array(
@@ -27,7 +27,10 @@ $this->widget('zii.widgets.CDetailView', array(
         'endereco',
         'numero',
         'complemento',
-        'data_cadastro',
+        array(
+            'name' => 'data_cadastro',
+            'value' => FormatHelper::dataHora($model->data_cadastro),
+        ),
     ),
 ));
 ?>

@@ -26,8 +26,6 @@ class Despesa extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('tipo_despesa_id, quantidade, usuario_id, excluido', 'numerical', 'integerOnly' => true),
             array('preco', 'length', 'max' => 10),

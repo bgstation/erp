@@ -13,12 +13,6 @@
  */
 class OrdemServico extends CActiveRecord {
 
-    public $aFormasPagamento = array(
-        1 => 'Dinheiro',
-        2 => 'Débito',
-        3 => 'Crédito',
-    );
-
     /**
      * @return string the associated database table name
      */
@@ -46,6 +40,7 @@ class OrdemServico extends CActiveRecord {
     public function relations() {
         return array(
             'ordemServicoItens' => array(self::HAS_MANY, 'OrdemServicoItem', 'ordem_servico_id'),
+            'ordemServicoTipoPagamento' => array(self::HAS_MANY, 'OrdemServicoTipoPagamento', 'ordem_servico_id'),
             'cliente' => array(self::BELONGS_TO, 'Cliente', 'cliente_id'),
             'clienteCarro' => array(self::BELONGS_TO, 'ClienteCarro', 'cliente_carro_id'),
         );
@@ -136,6 +131,10 @@ class OrdemServico extends CActiveRecord {
 
     public function finalizarOS() {
         if (!empty($_POST['OrdemServicoTipoPagamento'])) {
+            if(!empty($_POST['OrdemServico']['desconto'])){
+                $this->desconto = $_POST['OrdemServico']['desconto'];
+                $this->save();
+            }
             $oLogOrdemServico = new LogOrdemServico;
             $oLogOrdemServico->status = 2;
             $oLogOrdemServico->ordem_servico_id = $this->id;

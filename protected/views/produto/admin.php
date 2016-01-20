@@ -47,12 +47,33 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
-        'id',
+        array(
+            'name' => 'id',
+            'value' => '$data->id',
+            'htmlOptions'=>array('width'=>'100px'),
+        ),
+        array(
+            'name' => 'tipo_produto_id',
+            'value' => '!empty($data->tipo_produto_id) ? $data->tipoProduto->titulo : ""',
+            'filter' => CHtml::activeDropDownList($model, 'tipo_produto_id', CHtml::listData($oTiposProdutos, 'id', 'titulo'), array(
+                'empty' => '',
+            )),
+        ),
         'titulo',
         'codigo_barra',
-        'marca_id',
-        'modelo_id',
-        'preco',
+        array(
+            'name' => 'marca_id',
+            'value' => '!empty($data->marca_id) ? $data->marca->titulo : ""'
+        ),
+        array(
+            'name' => 'modelo_id',
+            'value' => '!empty($data->modelo_id) ? $data->modelo->titulo : ""',
+        ),
+        array(
+            'name' => 'preco',
+            'value' => '!empty($data->preco) ? "R$ ". number_format($data->preco, 2, ",", ".") : ""'
+        ),
+        'quantidade',
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{view}{update}{delete}',

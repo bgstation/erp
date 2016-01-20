@@ -119,12 +119,19 @@ class DespesaController extends Controller {
      */
     public function actionAdmin() {
         $model = new Despesa('search');
+
         $model->unsetAttributes();
+        
+        $oTiposDespesa = TipoDespesa::model()->ordenarTitulo()->findAll();
+        $oUsuarios = Usuario::model()->ordenarNome()->findAll();
+        
         if (isset($_GET['Despesa']))
             $model->attributes = $_GET['Despesa'];
 
         $this->render('admin', array(
             'model' => $model,
+            'oTiposDespesa' => $oTiposDespesa,
+            'oUsuarios' => $oUsuarios,
         ));
     }
 

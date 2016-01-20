@@ -120,11 +120,22 @@ class CompraController extends Controller {
     public function actionAdmin() {
         $model = new Compra('search');
         $model->unsetAttributes();  
+
+        $oProdutos = Produto::model()->naoExcluido()->ordenarTitulo()->findAll(array(
+            'condition' => 'id in ('.implode(",", CHtml::listData(Compra::model()->findAll(), 'produto_id', 'produto_id')).')',
+        ));
+
+        $oUsuarios = Usuario::model()->ordenarNome()->findAll(array(
+            'condition' => 'id in ('.implode(",", CHtml::listData(Compra::model()->findAll(), 'usuario_id', 'usuario_id')).')',
+        ));
+
         if (isset($_GET['Compra']))
             $model->attributes = $_GET['Compra'];
 
         $this->render('admin', array(
             'model' => $model,
+            'oProdutos' => $oProdutos,
+            'oUsuarios' => $oUsuarios,
         ));
     }
 

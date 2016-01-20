@@ -33,14 +33,28 @@ class LogOrdemServico extends CActiveRecord {
             array('id, ordem_servico_id, status, data_hora, ip, usuario_id, observacao', 'safe', 'on' => 'search'),
         );
     }
+    
+    public function afterSave() {
+        if($this->status == 2 && $this->isNewRecord){
+            $oFinanceiro = new Financeiro;
+            $oFinanceiro->salvar(1, $this->ordemServico, $this->usuario->nome);
+            foreach ($this->ordemServico->ordemServicoItens as $item){
+                if($item->tipo_item_id == 1){
+                    $oProduto = Produto::model()->findByPk($item->item_id);
+                    $oProduto->decrementarQuantidade();
+                }
+            }
+        }
+        parent::afterSave();
+    }
 
     /**
      * @return array relational rules.
      */
     public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
+            'ordemServico' => array(self::BELONGS_TO, 'OrdemServico', 'ordem_servico_id'),
+            'usuario' => array(self::BELONGS_TO, 'Usuario', 'usuario_id'),
         );
     }
     

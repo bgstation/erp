@@ -24,6 +24,10 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
                         array('label' => 'Tipos de usuário', 'url' => array('aclTipoUsuario/admin'), 'visible' => Yii::app()->user->checkAccess('aclTipoUsuario/admin')),
                         array('label' => 'Usuários', 'url' => array('usuario/admin'), 'visible' => Yii::app()->user->checkAccess('usuario/admin')),
                     ), 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Relatórios', 'items' => array(
+                        array('label' => 'Financeiro', 'url' => array('financeiro/admin')),
+                        array('label' => 'Estoque', 'url' => array('produto/estoque')),
+                    ), 'visible' => !Yii::app()->user->isGuest),
             ),
         ),
         array(

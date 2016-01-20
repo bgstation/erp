@@ -46,6 +46,7 @@ class OrdemServicoController extends Controller {
     public function actionView($id) {
         $this->render('view', array(
             'model' => $this->loadModel($id),
+            'oOrdemServicoFormaPagamento' => new OrdemServicoTipoPagamento,
         ));
     }
 
@@ -151,11 +152,22 @@ class OrdemServicoController extends Controller {
     public function actionAdmin() {
         $model = new OrdemServico('search');
         $model->unsetAttributes();
+
+        $oClientes = Cliente::model()->findAll(array(
+            'condition' => 'id in ('.implode(",", CHtml::listData(OrdemServico::model()->findAll(), 'cliente_id', 'cliente_id')).')',
+        ));
+
+        $oClientesCarros = ClienteCarro::model()->findAll(array(
+            'condition' => 'id in ('.implode(",", CHtml::listData(OrdemServico::model()->findAll(), 'cliente_carro_id', 'cliente_carro_id')).')',
+        ));
+
         if (isset($_GET['OrdemServico']))
             $model->attributes = $_GET['OrdemServico'];
 
         $this->render('admin', array(
             'model' => $model,
+            'oClientes' => $oClientes,
+            'oClientesCarros' => $oClientesCarros,
         ));
     }
 

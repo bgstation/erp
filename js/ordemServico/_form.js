@@ -183,7 +183,13 @@ var alterarTab = function (atual, passoEscolhido) {
         if (aProdutos.length <= 0 && aServicos.length <= 0 && aItensNaoCadastrados <= 0) {
             alert("Favor adicionar ao menos um item!");
             return false;
+        } else {
+            if (passoEscolhido == 'resumo') {
+                $("#resumo_nome_cliente").val($("#s2id_select2_cliente_id span").text());
+                $("#resumo_cliente_carro_placa").val($("#s2id_OrdemServico_cliente_carro_id span").text());
+            }
         }
+
     }
     $('#' + passoEscolhido + '-tab').attr("href", "#" + passoEscolhido);
     $('#' + passoEscolhido + '-tab').trigger("click");

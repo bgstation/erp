@@ -149,4 +149,13 @@ class Produto extends CActiveRecord {
         return $aModels;
     }
 
+    public function decrementarQuantidade($quantidade = null) {
+        if (!empty($quantidade)) {
+            $this->quantidade = $this->quantidade - $quantidade;
+        } else {
+            $this->quantidade = $this->quantidade - 1;
+        }
+        $this->save();
+    }
+
 }

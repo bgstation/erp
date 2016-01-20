@@ -35,12 +35,26 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
-        'id',
-        'cliente_id',
-        'cliente_carro_id',
-        'forma_pagamento_id',
+        array(
+            'name' => 'id',
+            'value' => '$data->id',
+            'htmlOptions'=>array('width'=>'100px'),
+        ),
+        array(
+            'name' => 'cliente_id',
+            'value' => '!empty($data->cliente_id) ? $data->cliente->nome : "" ',
+            'filter' => CHtml::activeDropDownList($model, 'cliente_id', CHtml::listData($oClientes, 'id', 'nome'), array(
+                'empty' => '',
+            )),
+        ),
+        array(
+            'name' => 'cliente_carro_id',
+            'value' => '!empty($data->cliente_carro_id) ? $data->clienteCarro->placa : "" ',
+            'filter' => CHtml::activeDropDownList($model, 'cliente_carro_id', CHtml::listData($oClientesCarros, 'id', 'placa'), array(
+                'empty' => '',
+            )),
+        ),
         'observacao',
-        'excluido',
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{finalizar}{view}{update}{delete}',

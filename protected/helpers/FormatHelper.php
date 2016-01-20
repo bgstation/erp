@@ -6,7 +6,7 @@ class FormatHelper {
         if (empty($valor)) {
             return $valor;
         }
-        return 'R$ ' . number_format($valor, 2, ',', '.');
+        return number_format($valor, 2, ',', '.');
     }
     
     public static function data($valor) {

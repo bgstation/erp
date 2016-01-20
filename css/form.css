@@ -171,3 +171,26 @@ input, .select2-container, textarea {
 .row a:hover {
     text-decoration: none;
 }
+.oculta {
+    display:none!important;
+}
+#myTabContent {
+    min-height: 300px;
+}
+.os-escolher-formas-pagamento .preco, .os-escolher-formas-pagamento .parcelas {
+    margin-top: 0px; 
+    margin-left: 5px;
+}
+
+@media (max-width: 650px) {
+    #header {
+        height: 60px!important;
+    }
+    .os-escolher-formas-pagamento .preco, .os-escolher-formas-pagamento .parcelas {
+        margin-top: 5px;
+        margin-left: 0;
+    }
+    .os-escolher-formas-pagamento .select2-container:last-of-type {
+        margin-top: 10px;
+    }
+}

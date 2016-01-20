@@ -21,7 +21,10 @@ $this->widget('zii.widgets.CDetailView', array(
         'email',
         'nome',
         'cpf',
-        'sexo',
+        array(
+            'name' => 'sexo',
+            'value' => $model->aSexo[$model->sexo],
+        ),
         'telefone_fixo',
         'celular',
         'endereco',

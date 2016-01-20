@@ -19,8 +19,8 @@
 class Cliente extends CActiveRecord {
 
     public $aSexo = array(
-        'F' => 'F',
-        'M' => 'M',
+        'f' => 'Feminino',
+        'm' => 'Masculino',
     );
 
     /**

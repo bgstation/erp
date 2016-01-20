@@ -5,6 +5,7 @@
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
+        'Cadastro' => '',
         'Ordens de Serviço' => Yii::app()->createUrl('ordemServico/admin'),
         $model->id
     ),
@@ -88,7 +89,7 @@ $this->widget('zii.widgets.CDetailView', array(
                 echo $oOrdemServicoFormaPagamento->aFormasPagamento[$formaPagamento->forma_pagamento_id];
                 echo '</td>';
                 echo '<td>';
-                echo 'R$ ' . number_format($formaPagamento->valor, 2, ',', '.');
+                echo 'R$ ' . FormatHelper::valorMonetario($formaPagamento->valor);
                 echo '</td>';
                 echo '<td>';
                 echo!empty($formaPagamento->parcelas) ? $formaPagamento->parcelas . 'x' : 'À vista';
@@ -106,10 +107,13 @@ $this->widget('zii.widgets.CDetailView', array(
     <?php if (Yii::app()->user->checkAccess('ordemServico/admin')) : ?>
         <li><a class="btn" href="<?= $this->createUrl('admin') ?>"><?= Yii::t('site', 'Exibir todas') ?></a></li>
     <?php endif; ?>
-    <?php if (Yii::app()->user->checkAccess('ordemServico/update')) : ?>
-        <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar ordem de serviço') ?></a></li>
+    <?php if (Yii::app()->user->checkAccess('ordemServico/update') && $model->getStatus() == 1) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar Ordem de Serviço') ?></a></li>
+    <?php endif; ?>
+    <?php if (Yii::app()->user->checkAccess('ordemServico/finalizar') && $model->getStatus() == 1) : ?>
+        <li><a class="btn" href="<?= $this->createUrl('finalizar', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Finalizar Ordem de Serviço') ?></a></li>
     <?php endif; ?>
     <?php if (Yii::app()->user->checkAccess('ordemServico/create')) : ?>
-        <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Abrir nova ordem de serviço') ?></a></li>
+        <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Abrir Nova Ordem de Serviço') ?></a></li>
         <?php endif; ?>
 </ul>

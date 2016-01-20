@@ -58,17 +58,19 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'template' => '{finalizar}{view}{update}{delete}',
             'buttons' => array(
                 'finalizar' => array(
+                    'label'=>'<i class="fa fa-check-circle"></i>',
+                    'options'=>array('title'=>'Finalizar OS', 'style' => 'margin:0 5px 0 0;color:#313131;'),
                     'url' => 'Yii::app()->createUrl("ordemServico/finalizar", array("id" => $data->id))',
-                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/finalizar")',
+                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/finalizar") && $data->getStatus() == 1',
                 ),
                 'view' => array(
                     'visible' => 'Yii::app()->user->checkAccess("ordemServico/view")',
                 ),
                 'update' => array(
-                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/update")',
+                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/update") && $data->getStatus() == 1',
                 ),
                 'delete' => array(
-                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/delete")',
+                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/delete") && $data->getStatus() == 1',
                 ),
             ),
         ),

@@ -103,7 +103,8 @@ class OrdemServicoController extends Controller {
         $model = $this->loadModel($id);
 
         $oClientes = Cliente::model()->ordemNome()->findAll();
-        $oOrdemServicoItem = new OrdemServicoItem;
+        $oLogItemNaoCadastrador = new LogItemNaoCadastrado();
+        $oOrdemServicoItem = new OrdemServicoItem();
 
         if (isset($_POST['OrdemServico'])) {
             $model->attributes = $_POST['OrdemServico'];
@@ -121,6 +122,7 @@ class OrdemServicoController extends Controller {
             'oClientes' => $oClientes,
             'oOrdemServicoItem' => $oOrdemServicoItem,
             'valor_total' => $model->getValorTotal(),
+            'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
         ));
     }
 
@@ -220,12 +222,12 @@ class OrdemServicoController extends Controller {
         $model = $this->loadModel($id);
 
         $oClientes = Cliente::model()->ordemNome()->findAll();
-        $oOrdemServicoItem = new OrdemServicoItem;
-        $oLogItemNaoCadastrador = new LogItemNaoCadastrado;
+        $oOrdemServicoItem = new OrdemServicoItem();
+        $oLogItemNaoCadastrador = new LogItemNaoCadastrado();
         $oLogOrdemServico = LogOrdemServico::model()->aberta()->findByAttributes(array(
             'ordem_servico_id' => $id,
         ));
-        $oOrdemServicoTipoPagamento = new OrdemServicoTipoPagamento;
+        $oOrdemServicoTipoPagamento = new OrdemServicoTipoPagamento();
 
         if (isset($_POST['OrdemServicoTipoPagamento'])) {
             if ($model->finalizarOS()) {

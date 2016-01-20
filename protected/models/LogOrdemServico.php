@@ -12,6 +12,11 @@
  * @property integer $usuario_id
  */
 class LogOrdemServico extends CActiveRecord {
+    
+    public $aStatus = array(
+        1 => 'Aberta',
+        2 => 'Fechada'
+    );
 
     /**
      * @return string the associated database table name
@@ -24,8 +29,6 @@ class LogOrdemServico extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('ordem_servico_id, status, usuario_id', 'numerical', 'integerOnly' => true),
             array('ip', 'length', 'max' => 20),
@@ -65,6 +68,10 @@ class LogOrdemServico extends CActiveRecord {
             ),
             'finalizada' => array(
                 'condition' => 't.status = 2',
+            ),
+            'ultimoRegistro' => array(
+                'order' => 'data_hora DESC',
+                'limit' => '1'
             ),
         );
     }

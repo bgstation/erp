@@ -124,11 +124,14 @@ class ClienteController extends Controller {
         $model = new Cliente('search');
         $model->unsetAttributes();
         
-        $exibeFormularioBusca = false;
-        if (isset($_GET['Cliente'])) {
+        if (!empty($_GET['Cliente'])) {
             $exibeFormularioBusca = true;
             $model->attributes = $_GET['Cliente'];
         }
+        
+        $oSearchForm = new SearchForm();
+        $oSearchForm->request = $_GET['Cliente'];
+        $exibeFormularioBusca = $oSearchForm->checaRequisicaoVazia();
 
         $this->render('admin', array(
             'model' => $model,

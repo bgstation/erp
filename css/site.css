@@ -83,13 +83,9 @@ input {
 .important {
     color: red;
 }
-@media (max-width: 979px) {
-    #header {
-        height: 60px!important;
-    }
+.search_form {
+    margin-top: 20px;
 }
-@media (max-width: 500px) {
-    #header {
-        height: 60px!important;
-    }
+.search-buttons button:last-child {
+    margin-left: 5px;
 }

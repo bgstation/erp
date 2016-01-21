@@ -123,11 +123,16 @@ class ClienteController extends Controller {
     public function actionAdmin() {
         $model = new Cliente('search');
         $model->unsetAttributes();
-        if (isset($_GET['Cliente']))
+        
+        $exibeFormularioBusca = false;
+        if (isset($_GET['Cliente'])) {
+            $exibeFormularioBusca = true;
             $model->attributes = $_GET['Cliente'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
+            'exibeFormularioBusca' => $exibeFormularioBusca,
         ));
     }
 

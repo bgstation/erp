@@ -1,0 +1,15 @@
+@media (max-width: 979px) {
+    #header {
+        height: 60px!important;
+    }
+}
+@media (max-width: 500px) {
+    #header {
+        height: 60px!important;
+    }
+}
+@media (max-width: 450px) {
+    .grid-view .summary {
+        text-align: left;
+    }
+}

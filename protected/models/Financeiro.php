@@ -12,6 +12,7 @@
  * @property integer $parcelas
  * @property string $usuario
  * @property string $data_hora
+ * @property integer $status
  */
 class Financeiro extends CActiveRecord {
 
@@ -35,11 +36,11 @@ class Financeiro extends CActiveRecord {
         // NOTE: you should only define rules for those attributes that
         // will receive user inputs.
         return array(
-            array('tipo_item, tipo_item_id, parcelas', 'numerical', 'integerOnly' => true),
+            array('tipo_item, tipo_item_id, parcelas, status', 'numerical', 'integerOnly' => true),
             array('descricao, usuario', 'length', 'max' => 200),
             array('valor', 'length', 'max' => 10),
             array('data_hora', 'safe'),
-            array('id, tipo_item, tipo_item_id, descricao, valor, parcelas, usuario, data_hora', 'safe', 'on' => 'search'),
+            array('id, tipo_item, tipo_item_id, descricao, valor, parcelas, usuario, data_hora, status', 'safe', 'on' => 'search'),
         );
     }
 
@@ -66,6 +67,7 @@ class Financeiro extends CActiveRecord {
             'parcelas' => 'Parcelas',
             'usuario' => 'Usuário',
             'data_hora' => 'Data',
+            'status' => 'Status',
         );
     }
 
@@ -89,6 +91,7 @@ class Financeiro extends CActiveRecord {
         $criteria->compare('id', $this->id);
         $criteria->compare('tipo_item', $this->tipo_item);
         $criteria->compare('tipo_item_id', $this->tipo_item_id);
+        $criteria->compare('status', $this->status);
         $criteria->compare('descricao', $this->descricao, true);
         $criteria->compare('valor', $this->valor, true);
         $criteria->compare('parcelas', $this->parcelas);
@@ -110,7 +113,7 @@ class Financeiro extends CActiveRecord {
         return parent::model($className);
     }
 
-    public function salvar($tipoItem, $obj, $usuarioNome = null) {
+    public function salvar($tipoItem, $obj, $usuarioNome = null, $status = null) {
         $this->tipo_item = $tipoItem;
         $this->tipo_item_id = $obj->id;
         switch ($tipoItem) {
@@ -130,8 +133,13 @@ class Financeiro extends CActiveRecord {
                 $this->valor = $obj->preco;
                 break;
         }
+        if(!empty($status)){
+            $this->status = $status;
+        }
         $this->data_hora = date("Y-m-d H:i:s");
-        $this->save();
+        if(!$this->save()){
+            die(var_dump($this->getErrors()));
+        }
     }
 
     public function getLink($tipoItem, $tipoItemId) {

@@ -35,7 +35,7 @@ class Compra extends CActiveRecord {
             array('preco', 'length', 'max' => 10),
             array('observacao, data_hora', 'safe'),
             array('produto_id', 'required'),
-            array('preco', 'tratarPreco'),
+            array('preco', 'tratarPreco', 'except' => 'alteracaoCompra'),
             array('id, nota_fiscal, produto_id, preco, observacao, quantidade, data_hora, usuario_id, excluido', 'safe', 'on' => 'search'),
         );
     }
@@ -52,7 +52,23 @@ class Compra extends CActiveRecord {
         if ($this->isNewRecord) {
             $this->data_hora = date('Y-m-d H:i:s');
         } else {
-            $this->qntAntigaTmp = self::model()->findByPk($this->id)->quantidade;
+            if ($this->excluido == 1) {
+                $oProduto = Produto::model()->findByPk($this->produto_id);
+                $oProduto->scenario = 'alteracaoCompra';
+                $this->qntAntigaTmp = self::model()->findByPk($this->id)->quantidade;
+                if ($this->quantidade <= $oProduto->quantidade) {
+                    $oProduto->quantidade = $oProduto->quantidade - $this->quantidade;
+                    $oProduto->save();
+                    $oFinanceiro = Financeiro::model()->findByAttributes(array(
+                        'tipo_item' => 2,
+                        'tipo_item_id' => $this->id,
+                    ));
+                    $oFinanceiro->salvar(2, $this, null, 1);
+                } else {
+                    $this->addError('quantidade', 'Esta compra não pode mais ser cancelada, os produtos não estão mais disponíveis!');
+                    return false;
+                }
+            }
         }
         return parent::beforeSave();
     }
@@ -66,16 +82,18 @@ class Compra extends CActiveRecord {
             $oFinanceiro = new Financeiro;
             $oFinanceiro->salvar(2, $this);
         } else {
-            if ($this->qntAntigaTmp != $this->quantidade) {
-                if ($this->qntAntigaTmp < $this->quantidade) {
-                    $diffQuantidade = $this->quantidade - $this->qntAntigaTmp;
-                    $oProduto->quantidade = $oProduto->quantidade + $diffQuantidade;
-                } else {
-                    $diffQuantidade = $this->qntAntigaTmp - $this->quantidade;
-                    $oProduto->quantidade = $oProduto->quantidade - $diffQuantidade;
-                }
-                $oProduto->save();
-            }
+//            $oProduto->quantidade = $oProduto->quantidade - $this->quantidade;
+//            $oProduto->save();
+//            if ($this->qntAntigaTmp != $this->quantidade) {
+//                if ($this->qntAntigaTmp < $this->quantidade) {
+//                    $diffQuantidade = $this->quantidade - $this->qntAntigaTmp;
+//                    $oProduto->quantidade = $oProduto->quantidade + $diffQuantidade;
+//                } else {
+//                    $diffQuantidade = $this->qntAntigaTmp - $this->quantidade;
+//                    $oProduto->quantidade = $oProduto->quantidade - $diffQuantidade;
+//                }
+//                $oProduto->save();
+//            }
         }
         return parent::afterSave();
     }
@@ -106,7 +124,7 @@ class Compra extends CActiveRecord {
             'excluido' => 'Excluído',
         );
     }
-    
+
     public function scopes() {
         return array(
             'naoExcluido' => array(
@@ -155,6 +173,22 @@ class Compra extends CActiveRecord {
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
+    }
+
+    public function getColor($tipoItem) {
+        switch ($tipoItem) {
+            case 1:
+                return 'alert-danger';
+                break;
+        }
+    }
+    
+    public function checaCancelado(){
+        if($this->excluido == 1){
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }

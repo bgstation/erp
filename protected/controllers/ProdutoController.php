@@ -132,10 +132,18 @@ class ProdutoController extends Controller {
     public function actionAdmin() {
         $model = new Produto('search');
         $model->unsetAttributes();
+        
+        $aCriteria = array();
+        $aProdutos = array();
+        $oProdutos = Produto::model()->findAll();
+        if(!empty($oProdutos)){
+            foreach ($oProdutos as $produto){
+                $aProdutos['tipo_produto_id'][] = $produto->tipo_produto_id;
+            }
+            $aCriteria['condition'] = 'id in (' . implode(",", $aProdutos['tipo_produto_id']) . ')';
+        }
 
-        $oTiposProdutos = TipoProduto::model()->ordenarTitulo()->findAll(array(
-            'condition' => 'id in (' . implode(",", CHtml::listData(Produto::model()->findAll(), 'tipo_produto_id', 'tipo_produto_id')) . ')',
-        ));
+        $oTiposProdutos = TipoProduto::model()->ordenarTitulo()->findAll($aCriteria);
 
         if (isset($_GET['Produto']))
             $model->attributes = $_GET['Produto'];

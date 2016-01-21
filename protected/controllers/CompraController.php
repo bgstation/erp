@@ -30,7 +30,7 @@ class CompraController extends Controller {
                 'users' => array('*'),
             ),
             array('allow',
-                'actions' => array('create', 'update', 'admin', 'delete'),
+                'actions' => array('create', 'update', 'admin', 'delete', 'cancelar'),
                 'users' => array('@'),
             ),
             array('deny',
@@ -141,8 +141,6 @@ class CompraController extends Controller {
             $oUsuarios = Usuario::model()->ordenarNome()->findAll();
         }
 
-
-
         if (isset($_GET['Compra']))
             $model->attributes = $_GET['Compra'];
 
@@ -176,6 +174,22 @@ class CompraController extends Controller {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
+    }
+
+    public function actionCancelar() {
+        $aRetorno = array();
+        $aRetorno['status'] = 'error';
+        if (!empty($_GET['id'])) {
+            $model = $this->loadModel($_GET['id']);
+            $model->scenario = 'alteracaoCompra';
+            $model->excluido = 1;
+            if ($model->save()) {
+                $aRetorno['status'] = 'success';
+            } else {
+                $aRetorno['errors'] = $model->getErrors();
+            }
+        }
+        die(CJSON::encode($aRetorno));
     }
 
 }

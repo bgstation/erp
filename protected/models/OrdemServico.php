@@ -140,12 +140,12 @@ class OrdemServico extends CActiveRecord {
             if ($oLogOrdemServico->salvarLog()) {
                 foreach ($_POST['OrdemServicoTipoPagamento'] as $post) {
                     if (!empty($post['forma_pagamento_id'])) {
-                        $oOrdemServicoTipPagamento = new OrdemServicoTipoPagamento;
-                        $oOrdemServicoTipPagamento->ordem_servico_id = $this->id;
-                        $oOrdemServicoTipPagamento->forma_pagamento_id = $post['forma_pagamento_id'];
-                        $oOrdemServicoTipPagamento->valor = $post['valor'];
-                        $oOrdemServicoTipPagamento->parcelas = $post['parcelas'];
-                        $oOrdemServicoTipPagamento->save();
+                        $oOrdemServicoTipoPagamento = new OrdemServicoTipoPagamento;
+                        $oOrdemServicoTipoPagamento->ordem_servico_id = $this->id;
+                        $oOrdemServicoTipoPagamento->forma_pagamento_id = $post['forma_pagamento_id'];
+                        $oOrdemServicoTipoPagamento->valor = $post['valor'];
+                        $oOrdemServicoTipoPagamento->parcelas = $post['parcelas'];
+                        $oOrdemServicoTipoPagamento->save();
                     }
                 }
                 return true;

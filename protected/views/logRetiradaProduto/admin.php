@@ -6,7 +6,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Relatório' => '',
-        'Financeiro'
+        'Retirada de produtos'
     ),
 ));
 ?>
@@ -41,7 +41,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
-            'template' => '{view}{update}{delete}',
+            'template' => '{view}',
             'buttons' => array(
                 'view' => array(
                     'visible' => 'Yii::app()->user->checkAccess("logRetiradaProduto/view")',

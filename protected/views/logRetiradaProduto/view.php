@@ -2,30 +2,36 @@
 /* @var $this LogRetiradaProdutoController */
 /* @var $model LogRetiradaProduto */
 
-$this->breadcrumbs=array(
-	'Log Retirada Produtos'=>array('index'),
-	$model->id,
-);
-
-$this->menu=array(
-	array('label'=>'List LogRetiradaProduto', 'url'=>array('index')),
-	array('label'=>'Create LogRetiradaProduto', 'url'=>array('create')),
-	array('label'=>'Update LogRetiradaProduto', 'url'=>array('update', 'id'=>$model->id)),
-	array('label'=>'Delete LogRetiradaProduto', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-	array('label'=>'Manage LogRetiradaProduto', 'url'=>array('admin')),
-);
+$this->widget('bootstrap.widgets.TbBreadcrumbs', array(
+    'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
+    'links' => array(
+        'Retirada de produtos' => Yii::app()->createUrl('logRetiradaProduto/admin'),
+        $model->id
+    ),
+));
 ?>
 
-<h1>View LogRetiradaProduto #<?php echo $model->id; ?></h1>
+<h1>Retirada de produto: <?php echo $model->id; ?></h1>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'produto_id',
-		'quantidade',
-		'usuario_id',
-		'observacao',
-		'data_hora',
-	),
-)); ?>
+<?php
+$this->widget('zii.widgets.CDetailView', array(
+    'data' => $model,
+    'attributes' => array(
+        'id',
+        array(
+            'name' => 'produto_id',
+            'value' => !empty($model->produto_id) ? $model->produto->titulo : '',
+        ),
+        'quantidade',
+        array(
+            'name' => 'usuario_id',
+            'value' => !empty($model->usuario_id) ? $model->usuario->nome : '',
+        ),
+        'observacao',
+        array(
+            'name' => 'data_hora',
+            'value' => !empty($model->data_hora) ? date("d/m/Y H:i:s", strtotime($model->data_hora)) : '',
+        ),
+    ),
+));
+?>

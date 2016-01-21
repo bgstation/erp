@@ -103,6 +103,23 @@ class Financeiro extends CActiveRecord {
         ));
     }
 
+    public function scopes() {
+        return array(
+            'ordemServico' => array(
+                'condition' => 't.tipo_item = 1',
+            ),
+            'compras' => array(
+                'condition' => 't.tipo_item = 2',
+            ),
+            'despesas' => array(
+                'condition' => 't.tipo_item = 3',
+            ),
+            'ativas' => array(
+                'condition' => 't.status = 0',
+            ),
+        );
+    }
+
     /**
      * Returns the static model of the specified AR class.
      * Please note that you should have this exact method in all your CActiveRecord descendants!
@@ -124,20 +141,20 @@ class Financeiro extends CActiveRecord {
                 break;
             case 2:
                 $this->descricao = $obj->produto->titulo;
+                $this->usuario = $obj->usuario->nome;
+                $this->valor = $obj->preco;
                 break;
             case 3:
                 $this->descricao = $obj->tipoDespesa->titulo;
-                break;
-            default:
                 $this->usuario = $obj->usuario->nome;
                 $this->valor = $obj->preco;
                 break;
         }
-        if(!empty($status)){
+        if (!empty($status)) {
             $this->status = $status;
         }
         $this->data_hora = date("Y-m-d H:i:s");
-        if(!$this->save()){
+        if (!$this->save()) {
             die(var_dump($this->getErrors()));
         }
     }
@@ -168,6 +185,31 @@ class Financeiro extends CActiveRecord {
                 return 'alert-danger';
                 break;
         }
+    }
+
+    public function getTotais($dataInicio = null, $dataFinal = null) {
+        $aRetorno = array();
+        $aRetorno['ordem_servico'] = 0;
+        $aRetorno['compra'] = 0;
+        $aRetorno['despesa'] = 0;
+        $aCriteria = array();
+        if (!empty($dataInicio) && !empty($dataFinal)) {
+            $aCriteria['condition'] = ' date(data_hora) beteween "' . $dataInicio . '" AND "' . $dataFinal . '"';
+        } else if (!empty($dataInicio)) {
+            $aCriteria['condition'] = ' date(data_hora) beteween "' . $dataInicio . '" AND "' . date("Y-m-d") . '"';
+        }
+        $oFinanceiros = self::model()->ativas()->findAll($aCriteria);
+        if (!empty($oFinanceiros)) {
+            foreach ($oFinanceiros as $financeiro) {
+                if ($financeiro->tipo_item == 1)
+                    $aRetorno['ordem_servico'] += $financeiro->valor;
+                if ($financeiro->tipo_item == 2)
+                    $aRetorno['compra'] += $financeiro->valor;
+                if ($financeiro->tipo_item == 3)
+                    $aRetorno['despesa'] += $financeiro->valor;
+            }
+        }
+        return $aRetorno;
     }
 
 }

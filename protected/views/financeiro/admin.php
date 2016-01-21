@@ -13,6 +13,9 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 
 <h1>Financeiro</h1>
 
+<p>Ordens de Serviço: R$ <?= number_format($aTotais['ordem_servico'], 2, ",", ".") ?></p>
+<p>Compras: R$ <?= number_format($aTotais['compra'], 2, ",", ".") ?></p>
+<p>Despesas: R$ <?= number_format($aTotais['despesa'], 2, ",", ".") ?></p>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(

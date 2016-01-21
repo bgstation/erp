@@ -3,6 +3,18 @@ var aProdutos = new Array;
 var aServicos = new Array;
 var aItensNaoCadastrados = [];
 
+$(document).ready(function () {
+    $('.preco').mask("#.##0,00", {reverse: true});
+
+    if (clienteId !== "") {
+        $("#OrdemServico_cliente_carro_id").parents('div').css('display', '');
+        carregaSelect2Carros(clienteId);
+        if (clienteCarroId !== "") {
+            $("#OrdemServico_cliente_carro_id").val(clienteCarroId);
+        }
+    }
+});
+
 var acoesFinalizar = function () {
     $('#OrdemServicoItem_produtos').val(aProdutos);
     $('#OrdemServicoItem_servicos').val(aServicos);
@@ -99,79 +111,22 @@ var adicionarItemNaoCadastrado = function (tipoItem) {
 }
 
 var checarNaoCadastrado = function (itemId) {
-    var tituloElem = $('#LogItemNaoCadastrado_titulo');
-    var precoElem = $('#LogItemNaoCadastrado_preco');
-    tituloElem.val(null);
-    precoElem.val(null);
+//    var tituloElem = $('#LogItemNaoCadastrado_titulo');
+//    var precoElem = $('#LogItemNaoCadastrado_preco');
+//    tituloElem.val(null);
+//    precoElem.val(null);
+    $('#LogItemNaoCadastrado_titulo').val(null);
+    $('#LogItemNaoCadastrado_preco').val(null);
     if (itemId == 0) {
-        tituloElem.css('display', '');
-        precoElem.css('display', '');
+//        tituloElem.removeClass('oculta');
+//        precoElem.removeClass('oculta');
+        $('.itens_nao_cadastrados').removeClass('oculta');
     } else {
-        tituloElem.css('display', 'none');
-        precoElem.css('display', 'none');
+//        tituloElem.addClass('oculta');
+//        precoElem.addClass('oculta');
+        $('.itens_nao_cadastrados').addClass('oculta');
     }
 }
-
-$('#btn_add_item').click(function () {
-    var tipoItemId = $('#select2_tipo_item_id').val();
-    var itemId = $("#OrdemServicoItem_item_id").val();
-    if (tipoItemId !== "" && itemId !== "") {
-        if (itemId == 0) {
-            adicionarItemNaoCadastrado(tipoItemId);
-        } else {
-            adicionarItem(tipoItemId, itemId);
-        }
-    } else {
-        alert('Favor selecionar um item.');
-    }
-});
-function format(data) {
-    if (!data.id) {
-        return data.text;
-    }
-    var state = $('<span>' + data.text + '</span><span objId="' + data.id + '" text="' + data.text + '"  id="' + data.tipoItem + '_' + data.id + '" preco=' + data.preco + ' style="float: right">R$' + number_format(data.preco, 2, ',', '.') + '</span>');
-    return state;
-}
-
-function format2(item) {
-    if (!item.id) {
-        return item.text;
-    }
-    var state = $('<span objId="' + item.id + '" text="' + item.text + '"  id="' + item.tipoItem + '_' + item.id + '" preco=' + item.preco + '>' + item.text + '</span>');
-    return state;
-}
-
-$(document).ready(function () {
-    if (clienteId !== "") {
-        $("#OrdemServico_cliente_carro_id").parents('div').css('display', '');
-        carregaSelect2Carros(clienteId);
-        if (clienteCarroId !== "") {
-            $("#OrdemServico_cliente_carro_id").val(clienteCarroId);
-        }
-    }
-});
-
-$('#select2_cliente_id').click(function () {
-    if ($("#OrdemServico_cliente_carro_id").val() !== "") {
-        $("#OrdemServico_cliente_carro_id").select2('data', null);
-    }
-    $("#resumo_nome_cliente").val($("#s2id_select2_cliente_id span").text());
-    carregaSelect2Carros($(this).val());
-});
-
-$('#select2_tipo_item_id').click(function () {
-    if ($("#OrdemServicoItem_item_id").val() !== "") {
-        $("#OrdemServicoItem_item_id").select2('data', null);
-    }
-    $('#add_item').css('display', 'none');
-    carregaItens($(this).val());
-});
-
-$("#OrdemServico_cliente_carro_id").click(function () {
-    $("#resumo_cliente_carro_placa").val($("#s2id_OrdemServico_cliente_carro_id span").text());
-});
-
-$('.preco').mask("#.##0,00", {reverse: true});
 
 var alterarTab = function (atual, passoEscolhido) {
     if (atual == "cliente") {
@@ -189,8 +144,101 @@ var alterarTab = function (atual, passoEscolhido) {
                 $("#resumo_cliente_carro_placa").val($("#s2id_OrdemServico_cliente_carro_id span").text());
             }
         }
-
     }
     $('#' + passoEscolhido + '-tab').attr("href", "#" + passoEscolhido);
     $('#' + passoEscolhido + '-tab').trigger("click");
 }
+
+var carregaSelect2Carros = function (clienteId) {
+    $('#OrdemServico_cliente_carro_id').parents('div').removeClass('oculta');
+    $.ajax({
+        url: urlGetJsonClienteCarros,
+        type: 'POST',
+        data: {
+            clienteId: clienteId,
+        },
+        success: function (data) {
+            $('#OrdemServico_cliente_carro_id').select2({
+                data: $.parseJSON(data)
+            });
+        }
+    });
+}
+
+var carregaItens = function (tipoItemId) {
+    $('#OrdemServicoItem_item_id').parents('div').removeClass('oculta');
+    $('.itens_nao_cadastrados input').addClass('oculta');
+    $.ajax({
+        url: urlGetJsonItensPorTipo,
+        type: 'POST',
+        data: {
+            tipoItemId: tipoItemId
+        },
+        success: function (data) {
+            $('#OrdemServicoItem_item_id').select2({
+                formatResult: format,
+                formatSelection: format2,
+                data: $.parseJSON(data),
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+            $('#add_item').removeClass('oculta');
+        }
+    });
+}
+
+function format(data) {
+    if (!data.id) {
+        return data.text;
+    }
+    var state = $('<span>' + data.text + '</span><span objId="' + data.id + '" text="' + data.text + '"  id="' + data.tipoItem + '_' + data.id + '" preco=' + data.preco + ' style="float: right">R$' + number_format(data.preco, 2, ',', '.') + '</span>');
+    return state;
+}
+
+function format2(item) {
+    if (!item.id) {
+        return item.text;
+    }
+    var state = $('<span objId="' + item.id + '" text="' + item.text + '"  id="' + item.tipoItem + '_' + item.id + '" preco=' + item.preco + '>' + item.text + '</span>');
+    return state;
+}
+
+$('#btn_add_item').click(function () {
+    var tipoItemId = $('#select2_tipo_item_id').val();
+    var itemId = $("#OrdemServicoItem_item_id").val();
+    if (tipoItemId !== "" && itemId !== "") {
+        if (itemId == 0) {
+            adicionarItemNaoCadastrado(tipoItemId);
+        } else {
+            adicionarItem(tipoItemId, itemId);
+        }
+    } else {
+        alert('Favor selecionar um item.');
+    }
+});
+
+$('#select2_cliente_id').click(function () {
+    if ($("#OrdemServico_cliente_carro_id").val() !== "") {
+        $("#OrdemServico_cliente_carro_id").select2('data', null);
+    }
+    $("#resumo_nome_cliente").val($("#s2id_select2_cliente_id span").text());
+    carregaSelect2Carros($(this).val())
+});
+
+$('#select2_tipo_item_id').click(function () {
+    if ($("#OrdemServicoItem_item_id").val() !== "") {
+        $("#OrdemServicoItem_item_id").select2('data', null);
+    }
+    $('#add_item').addClass('oculta');
+    $('.itens_nao_cadastrados').addClass('oculta');
+    carregaItens($(this).val());
+});
+
+$("#OrdemServico_cliente_carro_id").click(function () {
+    $("#resumo_cliente_carro_placa").val($("#s2id_OrdemServico_cliente_carro_id span").text());
+});
+
+$('#OrdemServicoItem_item_id').click(function () {
+    checarNaoCadastrado($(this).val());
+});

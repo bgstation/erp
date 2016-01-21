@@ -114,11 +114,13 @@ class FinanceiroController extends Controller {
     public function actionAdmin() {
         $model = new Financeiro('search');
         $model->unsetAttributes();
+
         if (isset($_GET['Financeiro']))
             $model->attributes = $_GET['Financeiro'];
 
         $this->render('admin', array(
             'model' => $model,
+            'aTotais' => $model->getTotais(),
         ));
     }
 

@@ -13,7 +13,7 @@ return array(
     ),
     'components' => array(
         'db' => array(
-            'connectionString' => 'mysql:host=localhost:8889;dbname=erp',
+            'connectionString' => 'mysql:host=localhost;dbname=erp',
             'emulatePrepare' => false,
             'enableProfiling' => false,
             'username' => 'root',

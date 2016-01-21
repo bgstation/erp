@@ -33,6 +33,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'compra-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
+    'rowCssClassExpression'=> '$data->getColor($data->excluido)',
     'columns' => array(
         'nota_fiscal',
         array(
@@ -49,11 +50,15 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'name' => 'quantidade',
             'value' => '$data->quantidade',
-            'htmlOptions'=>array('width'=>'100px'),
+            'htmlOptions' => array('width' => '100px'),
         ),
         array(
             'name' => 'data_hora',
             'value' => '!empty($data->data_hora) ? date("d/m/Y H:i:s", strtotime($data->data_hora)) : ""'
+        ),
+        array(
+            'name' => 'excluido',
+            'value' => '!empty($data->excluido) && $data->excluido == 1 ? "Cancelada" : "Ativa"'
         ),
 //        array(
 //            'name' => 'usuario_id',
@@ -64,7 +69,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
 //        ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
-            'template' => '{view}{update}{delete}',
+            'template' => '{view}{update}{cancelar}',
             'buttons' => array(
                 'view' => array(
                     'visible' => 'Yii::app()->user->checkAccess("compra/view")',
@@ -72,11 +77,39 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                 'update' => array(
                     'visible' => 'Yii::app()->user->checkAccess("compra/update")',
                 ),
-                'delete' => array(
-                    'visible' => 'Yii::app()->user->checkAccess("compra/delete")',
+                'cancelar' => array(
+                    'label' => '<i class="fa fa-times"></i>',
+                    'options' => array(
+                        'ajax' => array(
+                            'type' => 'GET',
+                            'url' => "js:$(this).attr('href')",
+                            'beforeSend' => 'function(){
+                                    var confirma = confirm("Deseja cancelar esta compra ?");
+                                    if (!confirma) {
+                                        alert("Nenhuma ação realizada!");
+                                        return false;
+                                    }
+                                }',
+                            'success' => 'function(data) {
+                                            var obj = $.parseJSON(data);
+                                            if(obj.status == "success"){
+                                                alert("Compra cancelada com sucesso!");
+                                            } else {
+                                                alert(obj.errors["quantidade"]);
+                                            }
+                                        }'
+                        ),
+                        'title' => 'Cancelar compra', 'style' => 'margin:0 5px 0 0;color:#313131;'
+                    ),
+                    'url' => 'Yii::app()->createUrl("compra/cancelar", array("id" => $data->id))',
+//                    'visible' => 'Yii::app()->user->checkAccess("compra/cancelar") && $data->checaCancelado()',
                 ),
             ),
         ),
     ),
 ));
 ?>
+
+<script>
+//    $.parseJSON()
+</script>

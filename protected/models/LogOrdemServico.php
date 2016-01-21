@@ -12,7 +12,7 @@
  * @property integer $usuario_id
  */
 class LogOrdemServico extends CActiveRecord {
-    
+
     public $aStatus = array(
         1 => 'Aberta',
         2 => 'Fechada'
@@ -36,13 +36,22 @@ class LogOrdemServico extends CActiveRecord {
             array('id, ordem_servico_id, status, data_hora, ip, usuario_id, observacao', 'safe', 'on' => 'search'),
         );
     }
-    
+
     public function afterSave() {
-        if($this->status == 2 && $this->isNewRecord){
+        if ($this->status == 2 && $this->isNewRecord) {
             $oFinanceiro = new Financeiro;
             $oFinanceiro->salvar(1, $this->ordemServico, $this->usuario->nome);
-            foreach ($this->ordemServico->ordemServicoItens as $item){
-                if($item->tipo_item_id == 1){
+            foreach ($this->ordemServico->ordemServicoItens as $item) {
+                if ($item->tipo_item_id == 1) {
+                    $oLogRetiradaProduto = new LogRetiradaProduto;
+                    $oLogRetiradaProduto->produto_id = $item->item_id;
+                    $oLogRetiradaProduto->quantidade = 1;
+                    $oLogRetiradaProduto->observacao = 'Ordem de Serviço: ' . $this->ordem_servico_id;
+                    $oLogRetiradaProduto->data_hora = date("Y-m-d H:i:s");
+                    $oLogRetiradaProduto->usuario_id = Yii::app()->user->getId();
+                    if (!$oLogRetiradaProduto->save()) {
+                        die(var_dump($oLogRetiradaProduto->getErrors()));
+                    }
                     $oProduto = Produto::model()->findByPk($item->item_id);
                     $oProduto->decrementarQuantidade();
                 }
@@ -60,7 +69,7 @@ class LogOrdemServico extends CActiveRecord {
             'usuario' => array(self::BELONGS_TO, 'Usuario', 'usuario_id'),
         );
     }
-    
+
     public function scopes() {
         return array(
             'aberta' => array(
@@ -130,12 +139,12 @@ class LogOrdemServico extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-    
-    public function salvarLog(){
+
+    public function salvarLog() {
         $this->data_hora = date('Y-m-d H:i:s');
         $this->ip = $_SERVER['REMOTE_ADDR'];
         $this->usuario_id = Yii::app()->user->getId();
-        if($this->save()){
+        if ($this->save()) {
             return true;
         }
         return false;

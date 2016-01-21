@@ -88,6 +88,7 @@ var adicionarItem = function (tipoItem, itemId, obj) {
             aProdutos.push(parseInt(obj.itemId));
         if (tipoItem == 2)
             aServicos.push(parseInt(obj.itemId));
+        $('#tipo_item_' + tipoItem + '_adicionados .sem_item').remove();
         $('#tipo_item_' + tipoItem + '_adicionados').append(getCodigoHtml(obj, true));
         $('#tipo_item_' + tipoItem + '_adicionados.resumo').append(getCodigoHtml(obj, false));
         var novoValor = parseFloat($("#valor_total").attr('total')) + parseFloat(obj.preco);
@@ -111,19 +112,11 @@ var adicionarItemNaoCadastrado = function (tipoItem) {
 }
 
 var checarNaoCadastrado = function (itemId) {
-//    var tituloElem = $('#LogItemNaoCadastrado_titulo');
-//    var precoElem = $('#LogItemNaoCadastrado_preco');
-//    tituloElem.val(null);
-//    precoElem.val(null);
     $('#LogItemNaoCadastrado_titulo').val(null);
     $('#LogItemNaoCadastrado_preco').val(null);
     if (itemId == 0) {
-//        tituloElem.removeClass('oculta');
-//        precoElem.removeClass('oculta');
         $('.itens_nao_cadastrados').removeClass('oculta');
     } else {
-//        tituloElem.addClass('oculta');
-//        precoElem.addClass('oculta');
         $('.itens_nao_cadastrados').addClass('oculta');
     }
 }
@@ -167,7 +160,7 @@ var carregaSelect2Carros = function (clienteId) {
 
 var carregaItens = function (tipoItemId) {
     $('#OrdemServicoItem_item_id').parents('div').removeClass('oculta');
-    $('.itens_nao_cadastrados input').addClass('oculta');
+    $('.itens_nao_cadastrados').addClass('oculta');
     $.ajax({
         url: urlGetJsonItensPorTipo,
         type: 'POST',

@@ -13,13 +13,16 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 
 <h1>Financeiro</h1>
 
+<p>Ordens de Serviço: R$ <?= number_format($aTotais['ordem_servico'], 2, ",", ".") ?></p>
+<p>Compras: R$ <?= number_format($aTotais['compra'], 2, ",", ".") ?></p>
+<p>Despesas: R$ <?= number_format($aTotais['despesa'], 2, ",", ".") ?></p>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'financeiro-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
-    'rowCssClassExpression'=> '$data->getColor($data->tipo_item)',
+    'rowCssClassExpression' => '$data->getColor($data->tipo_item)',
     'columns' => array(
         array(
             'name' => 'tipo_item',
@@ -30,7 +33,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
         array(
             'name' => 'tipo_item_id',
-            'type'=>'raw',
+            'type' => 'raw',
             'value' => '$data->getLink($data->tipo_item, $data->tipo_item_id)',
         ),
         'descricao',
@@ -41,6 +44,10 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'name' => 'data_hora',
             'value' => '!empty($data->data_hora) ? date("d/m/Y H:i:s", strtotime($data->data_hora)) : ""'
+        ),
+        array(
+            'name' => 'status',
+            'value' => '$data->status == 1 ? "Cancelada" : "Ativa"'
         ),
     ),
 ));

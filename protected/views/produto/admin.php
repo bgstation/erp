@@ -53,8 +53,14 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         'quantidade',
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
-            'template' => '{view}{update}{delete}',
+            'template' => '{retirada}{view}{update}{delete}',
             'buttons' => array(
+                'retirada' => array(
+                    'label'=>'<i class="fa fa-minus-circle"></i>',
+                    'options'=>array('title'=>'Retirar produto', 'style' => 'margin:0 5px 0 0;color:#313131;'),
+                    'url' => 'Yii::app()->createUrl("produto/retirar", array("id" => $data->id))',
+//                    'visible' => 'Yii::app()->user->checkAccess("produto/retirar")',
+                ),
                 'view' => array(
                     'visible' => 'Yii::app()->user->checkAccess("produto/view")',
                 ),

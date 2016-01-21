@@ -30,7 +30,7 @@ class ProdutoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow',
-                'actions' => array('create', 'update', 'estoque', 'admin', 'delete'),
+                'actions' => array('create', 'update', 'estoque', 'admin', 'delete', 'retirar'),
                 'users' => array('@'),
             ),
             array('allow',
@@ -63,7 +63,7 @@ class ProdutoController extends Controller {
         $oModelos = Modelo::model()->ordenarTitulo()->naoExcluido()->findAll();
         $oMarcas = Marca::model()->ordenarTitulo()->naoExcluido()->findAll();
         $oTiposProduto = TipoProduto::model()->ordenarTitulo()->naoExcluido()->findAll();
-                
+
         if (isset($_POST['Produto'])) {
             $model->attributes = $_POST['Produto'];
             if ($model->save())
@@ -133,10 +133,18 @@ class ProdutoController extends Controller {
         $model = new Produto('search');
         $model->unsetAttributes();
         
-        $oTiposProdutos = TipoProduto::model()->ordenarTitulo()->findAll(array(
-            'condition' => 'id in ('.implode(",", CHtml::listData(Produto::model()->findAll(), 'tipo_produto_id', 'tipo_produto_id')).')',
-        ));
-        
+        $aCriteria = array();
+        $aProdutos = array();
+        $oProdutos = Produto::model()->findAll();
+        if(!empty($oProdutos)){
+            foreach ($oProdutos as $produto){
+                $aProdutos['tipo_produto_id'][] = $produto->tipo_produto_id;
+            }
+            $aCriteria['condition'] = 'id in (' . implode(",", $aProdutos['tipo_produto_id']) . ')';
+        }
+
+        $oTiposProdutos = TipoProduto::model()->ordenarTitulo()->findAll($aCriteria);
+
         if (isset($_GET['Produto']))
             $model->attributes = $_GET['Produto'];
 
@@ -170,9 +178,27 @@ class ProdutoController extends Controller {
             Yii::app()->end();
         }
     }
-    
-    public function actionEstoque(){
+
+    public function actionEstoque() {
         
+    }
+
+    public function actionRetirar($id) {
+        $model = $this->loadModel($id);
+
+        $oLogRetiradaProduto = new LogRetiradaProduto;
+
+        if (!empty($_POST['LogRetiradaProduto'])) {
+            if ($oLogRetiradaProduto->salvar()) {
+                $model->decrementarQuantidade($_POST['LogRetiradaProduto']['quantidade']);
+                $this->redirect(array('admin'));
+            }
+        }
+
+        $this->render('retirar', array(
+            'model' => $model,
+            'oLogRetiradaProduto' => $oLogRetiradaProduto,
+        ));
     }
 
 }

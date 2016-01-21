@@ -78,7 +78,7 @@
             ));
             ?>
             <?= $form->error($model, 'forma_pagamento_id') ?>
-            <?= $form->textField($oOrdemServicoTipoPagamento, '[1]valor', array('class' => 'preco monetario', 'readonly' => 'readonly', 'value' => FormatHelper::valorMonetario($valor_total), 'placeholder' => 'Valor')) ?>
+            <?= $form->textField($oOrdemServicoTipoPagamento, '[1]valor', array('class' => 'preco monetario', 'disabled' => 'disabled', 'value' => FormatHelper::valorMonetario($valor_total), 'placeholder' => 'Valor')) ?>
             <?= $form->textField($oOrdemServicoTipoPagamento, '[1]parcelas', array('class' => 'parcelas oculta', 'placeholder' => 'Nº de Parcelas')) ?>
         </div>
 
@@ -100,7 +100,7 @@
             ?>
             <?= $form->error($model, 'forma_pagamento_id') ?>
 
-            <?= $form->textField($oOrdemServicoTipoPagamento, '[2]valor', array('class' => 'preco monetario', 'readonly' => 'readonly', 'onchange' => 'atualizaValores()', 'placeholder' => 'Valor')) ?>
+            <?= $form->textField($oOrdemServicoTipoPagamento, '[2]valor', array('class' => 'preco monetario', 'disabled' => 'disabled', 'onchange' => 'atualizaValores()', 'placeholder' => 'Valor')) ?>
             <?= $form->textField($oOrdemServicoTipoPagamento, '[2]parcelas', array('class' => 'parcelas oculta', 'placeholder' => 'Nº de Parcelas')) ?>
         </div>
     </div>
@@ -124,6 +124,9 @@
             'size' => 'medium',
             'buttonType' => 'submit',
             'label' => 'Finalizar',
+            'htmlOptions' => array(
+                'onclick' => 'finalizar()'
+            ),
                 )
         );
         ?>
@@ -136,74 +139,9 @@
 </div>
 
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery.mask.js"></script>
-<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/ordemServico/_finalizar.js"></script>
 <script type="text/javascript">
     var valorTotalOri = <?= $valor_total ?>;
     var valorTotal = <?= $valor_total ?>;
     var desconto = 0;
-
-    $("#select2_forma_pagamento_id_1").val(1);
-
-    var resetarValor = function (tudo) {
-        if (tudo) {
-            $("#select2_forma_pagamento_id_1").val(1);
-            $("#OrdemServicoTipoPagamento_1_valor").val(number_format(valorTotalOri - desconto, 2, ',', '.'));
-            $("#select2_forma_pagamento_id_2").select2('val', '');
-        }
-        $("#OrdemServicoTipoPagamento_2_valor").val(null);
-        $("#OrdemServicoTipoPagamento_2_valor").attr('readonly', 'readonly');
-        $('#OrdemServicoTipoPagamento_2_parcelas').addClass('oculta');
-        $('#OrdemServicoTipoPagamento_2_parcelas').val(null);
-    }
-
-    var addFormaPagamento = function (indentificador, id) {
-        if (id !== "" && indentificador == 2) {
-            $('#OrdemServicoTipoPagamento_' + indentificador + '_valor').removeAttr('readonly');
-        }
-        if (id == 3) {
-            $('#OrdemServicoTipoPagamento_' + indentificador + '_parcelas').removeClass('oculta');
-        } else {
-            $('#OrdemServicoTipoPagamento_' + indentificador + '_parcelas').addClass('oculta');
-            $('#OrdemServicoTipoPagamento_' + indentificador + '_parcelas').val(null);
-        }
-    }
-
-    $("#select2_forma_pagamento_id_2").change(function () {
-        if ($(this).val() === "") {
-            resetarValor(false);
-        }
-    })
-
-    $(".preco").focus(function () {
-
-    }).blur(function () {
-        var valorTmp = parseFloat($(this).val().replace('.', '').replace(',', '.'));
-        if ($(this).val() !== "") {
-            if (valorTmp > valorTotal) {
-                alert('Valor inválido!');
-                $(this).val(null);
-                return false;
-            } else {
-                $("#OrdemServicoTipoPagamento_1_valor").val(number_format(valorTotal - valorTmp, 2, ',', '.'));
-            }
-        }
-    });
-
-    $('#OrdemServico_desconto').blur(function () {
-        var valorTmp = parseFloat($(this).val().replace('.', '').replace(',', '.'));
-        if (valorTmp !== desconto) {
-            if ($(this).val() !== "") {
-                desconto = parseFloat($(this).val().replace('.', '').replace(',', '.'));
-                if (valorTmp > valorTotalOri) {
-                    alert('Valor inválido!');
-                    $(this).val(null);
-                    return false;
-                } else {
-                    valorTotal = valorTotalOri - valorTmp;
-                    $("#valorTotal").text('R$ ' + number_format(valorTotal, 2, ',', '.'));
-                    resetarValor(true);
-                }
-            }
-        }
-    });
 </script>
+<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/ordemServico/_finalizar.js"></script>

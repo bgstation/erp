@@ -1,6 +1,6 @@
 <?php
 
-class CompraController extends Controller {
+class LogRetiradaProdutoController extends Controller {
 
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -13,8 +13,8 @@ class CompraController extends Controller {
      */
     public function filters() {
         return array(
-            'accessControl',
-            'postOnly + delete',
+            'accessControl', // perform access control for CRUD operations
+            'postOnly + delete', // we only allow deletion via POST request
         );
     }
 
@@ -25,15 +25,19 @@ class CompraController extends Controller {
      */
     public function accessRules() {
         return array(
-            array('allow',
+            array('allow', // allow all users to perform 'index' and 'view' actions
                 'actions' => array('index', 'view'),
                 'users' => array('*'),
             ),
-            array('allow',
-                'actions' => array('create', 'update', 'admin', 'delete', 'cancelar'),
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('create', 'update'),
                 'users' => array('@'),
             ),
-            array('deny',
+            array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                'actions' => array('admin', 'delete'),
+                'users' => array('admin'),
+            ),
+            array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
@@ -54,19 +58,19 @@ class CompraController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new Compra;
+        $model = new LogRetiradaProduto;
 
-        $oProdutos = Produto::model()->naoExcluido()->ordenarTitulo()->findAll();
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Compra'])) {
-            $model->attributes = $_POST['Compra'];
+        if (isset($_POST['LogRetiradaProduto'])) {
+            $model->attributes = $_POST['LogRetiradaProduto'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
         $this->render('create', array(
             'model' => $model,
-            'oProdutos' => $oProdutos,
         ));
     }
 
@@ -78,17 +82,17 @@ class CompraController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
 
-        $oProdutos = Produto::model()->naoExcluido()->ordenarTitulo()->findAll();
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
 
-        if (isset($_POST['Compra'])) {
-            $model->attributes = $_POST['Compra'];
+        if (isset($_POST['LogRetiradaProduto'])) {
+            $model->attributes = $_POST['LogRetiradaProduto'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
 
         $this->render('update', array(
             'model' => $model,
-            'oProdutos' => $oProdutos,
         ));
     }
 
@@ -100,6 +104,7 @@ class CompraController extends Controller {
     public function actionDelete($id) {
         $this->loadModel($id)->delete();
 
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
@@ -108,7 +113,7 @@ class CompraController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('Compra');
+        $dataProvider = new CActiveDataProvider('LogRetiradaProduto');
         $this->render('index', array(
             'dataProvider' => $dataProvider,
         ));
@@ -118,31 +123,31 @@ class CompraController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
-        $model = new Compra('search');
+        $model = new LogRetiradaProduto('search');
         $model->unsetAttributes();
 
-        $aCompras = array();
-        $oCompras = Compra::model()->findAll();
-        if (!empty($oCompras)) {
-            foreach ($oCompras as $compra) {
-                $aCompras['produto_id'][] = $compra->produto_id;
-                $aCompras['usuario_id'][] = $compra->usuario_id;
+        $aLogsRetiradasProdutos = array();
+        $oLogsRetiradasProdutos = LogRetiradaProduto::model()->findAll();
+        if (!empty($oLogsRetiradasProdutos)) {
+            foreach ($oLogsRetiradasProdutos as $log) {
+                $aLogsRetiradasProdutos['produto_id'][] = $log->produto_id;
+                $aLogsRetiradasProdutos['usuario_id'][] = $log->usuario_id;
             }
 
             $oProdutos = Produto::model()->naoExcluido()->ordenarTitulo()->findAll(array(
-                'condition' => 'id in (' . implode(",", $aCompras['produto_id']) . ')',
+                'condition' => 'id in (' . implode(",", $aLogsRetiradasProdutos['produto_id']) . ')',
             ));
 
             $oUsuarios = Usuario::model()->ordenarNome()->findAll(array(
-                'condition' => 'id in (' . implode(",", $aCompras['usuario_id']) . ')',
+                'condition' => 'id in (' . implode(",", $aLogsRetiradasProdutos['usuario_id']) . ')',
             ));
         } else {
             $oProdutos = Produto::model()->naoExcluido()->ordenarTitulo()->findAll();
             $oUsuarios = Usuario::model()->ordenarNome()->findAll();
         }
 
-        if (isset($_GET['Compra']))
-            $model->attributes = $_GET['Compra'];
+        if (isset($_GET['LogRetiradaProduto']))
+            $model->attributes = $_GET['LogRetiradaProduto'];
 
         $this->render('admin', array(
             'model' => $model,
@@ -155,11 +160,11 @@ class CompraController extends Controller {
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Compra the loaded model
+     * @return LogRetiradaProduto the loaded model
      * @throws CHttpException
      */
     public function loadModel($id) {
-        $model = Compra::model()->findByPk($id);
+        $model = LogRetiradaProduto::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -167,29 +172,13 @@ class CompraController extends Controller {
 
     /**
      * Performs the AJAX validation.
-     * @param Compra $model the model to be validated
+     * @param LogRetiradaProduto $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'compra-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'log-retirada-produto-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
-    }
-
-    public function actionCancelar() {
-        $aRetorno = array();
-        $aRetorno['status'] = 'error';
-        if (!empty($_GET['id'])) {
-            $model = $this->loadModel($_GET['id']);
-            $model->scenario = 'alteracaoCompra';
-            $model->excluido = 1;
-            if ($model->save()) {
-                $aRetorno['status'] = 'success';
-            } else {
-                $aRetorno['errors'] = $model->getErrors();
-            }
-        }
-        die(CJSON::encode($aRetorno));
     }
 
 }

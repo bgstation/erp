@@ -150,12 +150,15 @@ class Produto extends CActiveRecord {
     }
 
     public function decrementarQuantidade($quantidade = null) {
+        $this->scenario = 'alteracaoCompra';
         if (!empty($quantidade)) {
             $this->quantidade = $this->quantidade - $quantidade;
         } else {
             $this->quantidade = $this->quantidade - 1;
         }
-        $this->save();
+        if(!$this->save()){
+            die(var_dump($this->getErrors()));
+        }
     }
 
 }

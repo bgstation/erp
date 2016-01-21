@@ -119,15 +119,29 @@ class CompraController extends Controller {
      */
     public function actionAdmin() {
         $model = new Compra('search');
-        $model->unsetAttributes();  
+        $model->unsetAttributes();
 
-        $oProdutos = Produto::model()->naoExcluido()->ordenarTitulo()->findAll(array(
-            'condition' => 'id in ('.implode(",", CHtml::listData(Compra::model()->findAll(), 'produto_id', 'produto_id')).')',
-        ));
+        $aCompras = array();
+        $oCompras = Compra::model()->findAll();
+        if (!empty($oCompras)) {
+            foreach ($oCompras as $compra) {
+                $aCompras['produto_id'][] = $compra->produto_id;
+                $aCompras['usuario_id'][] = $compra->usuario_id;
+            }
 
-        $oUsuarios = Usuario::model()->ordenarNome()->findAll(array(
-            'condition' => 'id in ('.implode(",", CHtml::listData(Compra::model()->findAll(), 'usuario_id', 'usuario_id')).')',
-        ));
+            $oProdutos = Produto::model()->naoExcluido()->ordenarTitulo()->findAll(array(
+                'condition' => 'id in (' . implode(",", $aCompras['produto_id']) . ')',
+            ));
+
+            $oUsuarios = Usuario::model()->ordenarNome()->findAll(array(
+                'condition' => 'id in (' . implode(",", $aCompras['usuario_id']) . ')',
+            ));
+        } else {
+            $oProdutos = Produto::model()->naoExcluido()->ordenarTitulo()->findAll();
+            $oUsuarios = Usuario::model()->ordenarNome()->findAll();
+        }
+
+
 
         if (isset($_GET['Compra']))
             $model->attributes = $_GET['Compra'];

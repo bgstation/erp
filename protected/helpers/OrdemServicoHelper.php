@@ -64,7 +64,7 @@ class OrdemServicoHelper {
         }
         if (empty($return)) {
             $colspan = $remover ? 3 : 2;
-            $return = '<td colspan="' . $colspan . '">Não há itens cadastrados nesta sessão.';
+            $return = '<td colspan="' . $colspan . '" class="sem_item">Não há itens cadastrados nesta sessão.';
         }
         return $return;
     }

@@ -26,7 +26,7 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
                     ), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Relatórios', 'items' => array(
                         array('label' => 'Financeiro', 'url' => array('financeiro/admin'), 'visible' => Yii::app()->user->checkAccess('financeiro/admin')),
-                        array('label' => 'Estoque', 'url' => array('produto/estoque'), 'visible' => Yii::app()->user->checkAccess('produto/estoque')),
+                        array('label' => 'Retiradas do estoque', 'url' => array('logRetiradaProduto/admin')),
                     ), 'visible' => !Yii::app()->user->isGuest),
             ),
         ),

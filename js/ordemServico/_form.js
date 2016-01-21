@@ -88,6 +88,7 @@ var adicionarItem = function (tipoItem, itemId, obj) {
             aProdutos.push(parseInt(obj.itemId));
         if (tipoItem == 2)
             aServicos.push(parseInt(obj.itemId));
+        $('#tipo_item_' + tipoItem + '_adicionados .sem_item').remove();
         $('#tipo_item_' + tipoItem + '_adicionados').append(getCodigoHtml(obj, true));
         $('#tipo_item_' + tipoItem + '_adicionados.resumo').append(getCodigoHtml(obj, false));
         var novoValor = parseFloat($("#valor_total").attr('total')) + parseFloat(obj.preco);

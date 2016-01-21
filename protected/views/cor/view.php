@@ -11,17 +11,19 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 ));
 ?>
 
-<h1>Cor: <?php echo $model->titulo; ?></h1>
+<h1>Cor: <?= $model->titulo ?></h1>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
-	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'titulo',
-		'rgb',
-		'excluido',
-	),
-)); ?>
+<?php
+$this->widget('zii.widgets.CDetailView', array(
+    'data' => $model,
+    'attributes' => array(
+        'id',
+        'titulo',
+        'rgb',
+        'excluido',
+    ),
+));
+?>
 
 <hr>
 
@@ -32,8 +34,8 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     <?php endif; ?>
     <?php if (Yii::app()->user->checkAccess('cor/update')) : ?>
         <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar cor') ?></a></li>
-    <?php endif; ?>
-    <?php if (Yii::app()->user->checkAccess('cor/create')) : ?>
+        <?php endif; ?>
+        <?php if (Yii::app()->user->checkAccess('cor/create')) : ?>
         <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar cor') ?></a></li>
-    <?php endif; ?>
+<?php endif; ?>
 </ul>

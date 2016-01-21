@@ -6,12 +6,13 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Cadastro' => '',
-        'Despesas'
+        'Despesas' => Yii::app()->createUrl('despesa/admin'),
+        'Nova Despesa'
     ),
 ));
 ?>
 
-<h3>Cadastrar nova despesa</h3>
+<h1>Cadastrar Despesa</h1>
 
 <?php
 $this->renderPartial('_form', array(

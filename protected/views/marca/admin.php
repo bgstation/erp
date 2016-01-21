@@ -11,7 +11,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 ));
 ?>
 
-<h3>Marcas</h3>
+<h1>Marcas</h1>
 
 <?php
 if (Yii::app()->user->checkAccess('marca/create')) {
@@ -35,10 +35,11 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
-        'id',
         'titulo',
-        'observacao',
-        'excluido',
+        array(
+            'name' => 'excluido',
+            'value' => '$data->excluido ? \'Sim\' : \'Não\' '
+        ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{view}{update}{delete}',

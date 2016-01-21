@@ -33,7 +33,7 @@
         <?= $form->labelEx($model, 'senha') ?>
         <?= $form->passwordField($model, 'senha', array('size' => 20, 'maxlength' => 20)) ?>
         <?= $form->error($model, 'senha') ?>
-        <?= !$model->isNewRecord ? '<p>Preencha apenas caso queira alterar a senha</p>' : '' ?>
+        <?= !$model->isNewRecord ? '<p class="important">Preencha apenas caso queira alterar a senha</p>' : '' ?>
     </div>
 
     <div class="row">

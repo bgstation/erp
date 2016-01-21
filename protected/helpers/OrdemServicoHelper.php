@@ -9,7 +9,7 @@ class OrdemServicoHelper {
         $return .= $obj->titulo;
         $return .= '</td>';
         $return .= '<td>';
-        $return .= 'R$' . number_format($obj->preco, 2, ',', '.');
+        $return .= 'R$' . FormatHelper::valorMonetario($obj->preco);
         $return .= '</td>';
         if ($remover) {
             $return .= '<td>';
@@ -24,7 +24,6 @@ class OrdemServicoHelper {
 
     public static function renderItens($tipoItem, $oOrdemServicoItens, $remover = true) {
         $return = '';
-
         if (!empty($oOrdemServicoItens)) {
             $identificador = 1400;
             foreach ($oOrdemServicoItens as $model) {
@@ -60,13 +59,13 @@ class OrdemServicoHelper {
                         $return .= self::getHtml($obj, $remover);
                     }
                 }
-
-
-
                 $identificador++;
             }
         }
-
+        if (empty($return)) {
+            $colspan = $remover ? 3 : 2;
+            $return = '<td colspan="' . $colspan . '">Não há itens cadastrados nesta sessão.';
+        }
         return $return;
     }
 

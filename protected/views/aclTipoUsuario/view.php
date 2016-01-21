@@ -19,8 +19,14 @@ $this->widget('zii.widgets.CDetailView', array(
     'attributes' => array(
         'id',
         'titulo',
-        'excluido',
-        'data_cadastro',
+        array(
+            'name' => 'excluido',
+            'value' => $model->excluido == 0 ? 'Não' : 'Sim',
+        ),
+        array(
+            'name' => 'data_cadastro',
+            'value' => FormatHelper::dataHora($model->data_cadastro),
+        ),
     ),
 ));
 ?>

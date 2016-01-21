@@ -6,7 +6,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Cadastro' => '',
-        'Usuários'
+        'Usuários',
     ),
 ));
 ?>
@@ -27,7 +27,6 @@ if (Yii::app()->user->checkAccess('usuario/create')) {
     );
 }
 ?>
-<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -37,7 +36,10 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'columns' => array(
         'nome',
         'login',
-        'acl_tipo_usuario_id',
+        array(
+            'name' => 'acl_tipo_usuario_id',
+            'value' => '$data->tipoUsuario->titulo'
+        ),
         array(
             'name' => 'excluido',
             'value' => '$data->excluido? \'Sim\' : \'Não\''

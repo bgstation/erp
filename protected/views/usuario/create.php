@@ -5,8 +5,9 @@
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
+        'Cadastro' => '',
         'Usuários' => Yii::app()->createUrl('usuario/admin'),
-        'Cadastrar',
+        'Novo Usuário',
     ),
 ));
 ?>

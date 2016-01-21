@@ -5,12 +5,12 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Cadastro' => '',
-        'Servicos'
+        'Serviços'
     ),
 ));
 ?>
 
-<h3>Servicos</h3>
+<h1>Serviços</h1>
 
 <?php
 if (Yii::app()->user->checkAccess('servico/create')) {
@@ -26,20 +26,18 @@ if (Yii::app()->user->checkAccess('servico/create')) {
     );
 }
 ?>
-<br>
+
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'servico-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
-        'id',
         'titulo',
         array(
             'name' => 'preco',
             'value' => '!empty($data->preco) ? "R$ ". RPFormat::valorMonetario($data->preco) : ""',
         ),
-        'observacao',
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{view}{update}{delete}',

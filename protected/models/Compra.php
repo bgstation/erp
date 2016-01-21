@@ -29,8 +29,6 @@ class Compra extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('produto_id, quantidade, usuario_id, excluido', 'numerical', 'integerOnly' => true),
             array('nota_fiscal', 'length', 'max' => 200),
@@ -82,14 +80,6 @@ class Compra extends CActiveRecord {
         return parent::afterSave();
     }
 
-    public function scopes() {
-        return array(
-            'naoExcluido' => array(
-                'condition' => 't.excluido = false',
-            ),
-        );
-    }
-
     /**
      * @return array relational rules.
      */
@@ -114,6 +104,14 @@ class Compra extends CActiveRecord {
             'data_hora' => 'Data',
             'usuario_id' => 'Usuário',
             'excluido' => 'Excluído',
+        );
+    }
+    
+    public function scopes() {
+        return array(
+            'naoExcluido' => array(
+                'condition' => 't.excluido = false',
+            ),
         );
     }
 

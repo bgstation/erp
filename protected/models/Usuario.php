@@ -62,7 +62,7 @@ class Usuario extends CActiveRecord {
      */
     public function relations() {
         return array(
-            'acl_tipo_usuario' => array(self::BELONGS_TO, 'AclTipoUsuario', 'acl_tipo_usuario_id'),
+            'tipoUsuario' => array(self::BELONGS_TO, 'AclTipoUsuario', 'acl_tipo_usuario_id'),
         );
     }
 

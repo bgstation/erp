@@ -24,8 +24,6 @@ class OrdemServico extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('cliente_id, cliente_carro_id, forma_pagamento_id, excluido', 'numerical', 'integerOnly' => true),
             array('observacao', 'safe'),
@@ -154,6 +152,13 @@ class OrdemServico extends CActiveRecord {
             }
         }
         return false;
+    }
+    
+    public function getStatus() {
+        $oLogOrdemServico = LogOrdemServico::model()->ultimoRegistro()->findByAttributes(array(
+            'ordem_servico_id' => $this->id
+        ));
+        return $oLogOrdemServico->status;
     }
 
 }

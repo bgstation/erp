@@ -11,7 +11,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 ));
 ?>
 
-<h3><?php echo $model->titulo; ?></h3>
+<h1>Produtos: <?= $model->titulo ?></h1>
 
 <?php
 $this->widget('zii.widgets.CDetailView', array(
@@ -34,7 +34,7 @@ $this->widget('zii.widgets.CDetailView', array(
         ),
         array(
             'name' => 'preco',
-            'value' => !empty($model->preco) ? number_format($model->preco, 2, ',', '.') : '',
+            'value' => !empty($model->preco) ? FormatHelper::valorMonetario($model->preco) : '',
         ),
         'observacao',
         'quantidade',
@@ -55,5 +55,5 @@ $this->widget('zii.widgets.CDetailView', array(
     <?php endif; ?>
     <?php if (Yii::app()->user->checkAccess('produto/create')) : ?>
         <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Cadastrar produto') ?></a></li>
-    <?php endif; ?>
+        <?php endif; ?>
 </ul>

@@ -11,8 +11,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 ));
 ?>
 
-<h3>Modelos</h3>
-
+<h1>Modelos</h1>
 
 <?php
 if (Yii::app()->user->checkAccess('modelo/create')) {
@@ -28,7 +27,6 @@ if (Yii::app()->user->checkAccess('modelo/create')) {
     );
 }
 ?>
-<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -36,18 +34,15 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
-        array(
-            'name' => 'id',
-            'value' => '$data->id',
-            'htmlOptions'=>array('width'=>'100px'),
-        ),
         'titulo',
         array(
             'name' => 'marca_id',
             'value' => '$data->marca->titulo'
         ),
-        'observacao',
-//        'excluido',
+        array(
+            'name' => 'excluido',
+            'value' => '$data->excluido? \'Sim\' : \'Não\''
+        ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{view}{update}{delete}',

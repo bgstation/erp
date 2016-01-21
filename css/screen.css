@@ -60,7 +60,7 @@ dl dt {font-weight:bold;}
 dd {margin-left:1.5em;}
 table {margin-bottom:1.4em;width:100%;}
 th {font-weight:bold;}
-thead th {background:#c3d9ff;}
+thead th {background:#cce2ff;}
 th, td, caption {padding:4px 10px 4px 5px;}
 tfoot {font-style:italic;}
 caption {background:#eee;}
@@ -237,5 +237,14 @@ hr.space {background:#fff;color:#fff;visibility:hidden;}
 .clearfix, .container {display:block;}
 .clear {clear:both;}
 .nav_alter li {
+    padding: 10px;
     float:left;
+}
+.acl_section {
+    padding: 10px;
+}
+.acl_section th, .acl_section td {
+    width: 50%;
+    border: 1px solid #999999;
+    padding: 5px;
 }

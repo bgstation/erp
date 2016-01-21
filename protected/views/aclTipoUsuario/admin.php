@@ -27,7 +27,6 @@ if (Yii::app()->user->checkAccess('aclTipoUsuario/create')) {
     );
 }
 ?>
-<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(

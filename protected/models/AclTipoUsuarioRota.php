@@ -31,6 +31,19 @@ class AclTipoUsuarioRota extends CActiveRecord {
         );
     }
 
+    public function beforeSave() {
+        if ($this->isNewRecord) {
+            $oAclTipoUsuarioRota = AclTipoUsuarioRota::model()->findByAttributes(array(
+                'acl_rota_id' => $this->acl_rota_id,
+                'acl_tipo_usuario_id' => $this->acl_tipo_usuario_id,
+            ));
+            if (!empty($oAclTipoUsuarioRota)) {
+                return false;
+            }
+        }
+        return parent::beforeSave();
+    }
+
     /**
      * @return array relational rules.
      */
@@ -128,6 +141,14 @@ class AclTipoUsuarioRota extends CActiveRecord {
         }
     }
 
+    public function excluirRotas() {
+        if (!empty($this->acl_tipo_usuario_id)) {
+            self::model()->deleteAllByAttributes(array(
+                'acl_tipo_usuario_id' => $this->acl_tipo_usuario_id,
+            ));
+        }
+    }
+
     public function salvarRotasFilhas($aclRotaPaiId) {
         $oAclRotas = AclRota::model()->naoExcluido()->naoExibir()->findAllByAttributes(array(
             'acl_rota_id' => $aclRotaPaiId
@@ -143,7 +164,7 @@ class AclTipoUsuarioRota extends CActiveRecord {
     }
 
     public function salvarTipoUsuarioRotas($post) {
-        $this->marcarComoExcluido();
+        $this->excluirRotas();
         if (!empty($post['AclTipoUsuarioRotas'])) {
             foreach ($post['AclTipoUsuarioRotas'] as $value) {
                 $model = new self;

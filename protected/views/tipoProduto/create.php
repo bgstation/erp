@@ -6,7 +6,8 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Cadastro' => '',
-        'Tipo de produto'
+        'Tipos de Produtos' => Yii::app()->createUrl('tipoProduto/admin'),
+        'Novo Tipo de Produto'
     ),
 ));
 ?>

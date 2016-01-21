@@ -3,13 +3,6 @@
 /* @var $model ClienteCarro */
 /* @var $form CActiveForm */
 ?>
-<style>
-
-    #ClienteCarro_placa{
-        text-transform:uppercase
-    }
-
-</style>
 <div class="form">
 
     <?php

@@ -11,7 +11,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 ));
 ?>
 
-<h3>Marca: <?php echo $model->titulo; ?></h3>
+<h1>Marca: <?= $model->titulo ?></h1>
 
 <?php
 $this->widget('zii.widgets.CDetailView', array(

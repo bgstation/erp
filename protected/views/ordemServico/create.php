@@ -5,13 +5,14 @@
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
-        'Ordens de serviço' => Yii::app()->createUrl('ordemServico/admin'),
-        'Cadastrar',
+        'Cadastro' => '',
+        'Ordens de Serviços' => Yii::app()->createUrl('ordemServico/admin'),
+        'Nova Ordem de Serviço',
     ),
 ));
 ?>
 
-<h3>Cadastrar ordem de serviço</h3>
+<h1>Cadastrar Ordem de Serviço</h1>
 
 <?php
 $this->renderPartial('_form', array(

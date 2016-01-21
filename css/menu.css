@@ -53,4 +53,9 @@
     .nav-collapse {
         margin-left: 30px!important;
     }
+    .dropdown-menu {
+        height: auto;
+        max-height: 300px;
+        overflow-x: hidden;
+    }
 }

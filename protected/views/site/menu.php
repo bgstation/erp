@@ -8,7 +8,7 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
         array(
             'class' => 'bootstrap.widgets.TbMenu',
             'items' => array(
-                array('label' => 'Home', 'url' => array('site/index'), 'active' => true),
+                array('label' => 'Home', 'url' => array('site/index')),
                 array('label' => 'Cadastro', 'items' => array(
                         array('label' => 'Clientes', 'url' => array('cliente/admin'), 'visible' => Yii::app()->user->checkAccess('cliente/admin')),
                         array('label' => 'Compras', 'url' => array('compra/admin'), 'visible' => Yii::app()->user->checkAccess('compra/admin')),
@@ -25,8 +25,8 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
                         array('label' => 'Usuários', 'url' => array('usuario/admin'), 'visible' => Yii::app()->user->checkAccess('usuario/admin')),
                     ), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Relatórios', 'items' => array(
-                        array('label' => 'Financeiro', 'url' => array('financeiro/admin')),
-                        array('label' => 'Estoque', 'url' => array('produto/estoque')),
+                        array('label' => 'Financeiro', 'url' => array('financeiro/admin'), 'visible' => Yii::app()->user->checkAccess('financeiro/admin')),
+                        array('label' => 'Estoque', 'url' => array('produto/estoque'), 'visible' => Yii::app()->user->checkAccess('produto/estoque')),
                     ), 'visible' => !Yii::app()->user->isGuest),
             ),
         ),

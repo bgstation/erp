@@ -3,7 +3,6 @@
 /* @var $model Cliente */
 /* @var $form CActiveForm */
 ?>
-<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery-2.1.4.min.js"></script>
 <div class="form">
 
     <?php
@@ -18,15 +17,15 @@
     <?= $form->errorSummary($model) ?>
 
     <div class="row">
-        <?= $form->labelEx($model, 'email') ?>
-        <?= $form->emailField($model, 'email', array('size' => 60, 'maxlength' => 100)) ?>
-        <?= $form->error($model, 'email') ?>
-    </div>
-
-    <div class="row">
         <?= $form->labelEx($model, 'nome') ?>
         <?= $form->textField($model, 'nome', array('size' => 60, 'maxlength' => 100)) ?>
         <?= $form->error($model, 'nome') ?>
+    </div>
+    
+    <div class="row">
+        <?= $form->labelEx($model, 'email') ?>
+        <?= $form->emailField($model, 'email', array('size' => 60, 'maxlength' => 100)) ?>
+        <?= $form->error($model, 'email') ?>
     </div>
 
     <div class="row">
@@ -99,7 +98,6 @@
     <?php $this->endWidget() ?>
 
 </div>
-
 
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery.mask.js"></script>
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/cliente/_form.js"></script>

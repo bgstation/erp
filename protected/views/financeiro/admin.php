@@ -11,7 +11,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 ));
 ?>
 
-<h3>Financeiro</h3>
+<h1>Financeiro</h1>
 
 
 <?php
@@ -21,11 +21,6 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'filter' => $model,
     'rowCssClassExpression'=> '$data->getColor($data->tipo_item)',
     'columns' => array(
-        array(
-            'name' => 'id',
-            'value' => '$data->id',
-            'htmlOptions' => array('width' => '100px'),
-        ),
         array(
             'name' => 'tipo_item',
             'value' => '$data->aTiposItens[$data->tipo_item]',
@@ -47,13 +42,6 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'name' => 'data_hora',
             'value' => '!empty($data->data_hora) ? date("d/m/Y H:i:s", strtotime($data->data_hora)) : ""'
         ),
-    /*
-      'usuario',
-      'data_hora',
-     */
-//        array(
-//            'class' => 'CButtonColumn',
-//        ),
     ),
 ));
 ?>

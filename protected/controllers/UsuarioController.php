@@ -30,7 +30,7 @@ class UsuarioController extends Controller {
                 'users' => array('*'),
             ),
             array('allow',
-                'actions' => array('create', 'update', 'admin', 'delete'),
+                'actions' => array('create', 'update', 'admin', 'delete', 'setarRotaAdmin'),
                 'users' => array('@'),
             ),
             array('allow',
@@ -79,11 +79,18 @@ class UsuarioController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
+        $senhaOriginal = $model->senha;
+        $model->senha = null;
 
         if (isset($_POST['Usuario'])) {
             $model->attributes = $_POST['Usuario'];
-            if ($model->save())
+            if (!$model->senha) {
+                $model->senha = $senhaOriginal;
+            }
+
+            if ($model->save()) {
                 $this->redirect(array('view', 'id' => $model->id));
+            }
         }
 
         $this->render('update', array(
@@ -153,4 +160,14 @@ class UsuarioController extends Controller {
         }
     }
 
+    public function actionSetarRotaAdmin() {
+        $oRotas = AclRota::model()->findAll();
+        foreach ($oRotas as $rota) {
+            $oTipoUsuarioRota = new AclTipoUsuarioRota();
+            $oTipoUsuarioRota->acl_rota_id = $rota->id;
+            $oTipoUsuarioRota->acl_tipo_usuario_id = 1;
+            $oTipoUsuarioRota->save();
+        }
+    }
+    
 }

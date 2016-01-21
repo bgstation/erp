@@ -27,7 +27,6 @@ if (Yii::app()->user->checkAccess('cliente/create')) {
     );
 }
 ?>
-<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -43,13 +42,13 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'template' => '{view}{update}{delete}',
             'buttons' => array(
                 'view' => array(
-                    'visible' => 'Yii::app()->user->checkAccess("aclTipoUsuario/view")',
+                    'visible' => 'Yii::app()->user->checkAccess("cliente/view")',
                 ),
                 'update' => array(
-                    'visible' => 'Yii::app()->user->checkAccess("aclTipoUsuario/update")',
+                    'visible' => 'Yii::app()->user->checkAccess("cliente/update")',
                 ),
                 'delete' => array(
-                    'visible' => 'Yii::app()->user->checkAccess("aclTipoUsuario/delete")',
+                    'visible' => 'Yii::app()->user->checkAccess("cliente/delete")',
                 ),
             ),
         ),

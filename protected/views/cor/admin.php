@@ -9,7 +9,6 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
         'Cores'
     ),
 ));
-
 ?>
 
 <h1>Cores</h1>
@@ -28,20 +27,34 @@ if (Yii::app()->user->checkAccess('cor/create')) {
     );
 }
 ?>
-<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
-	'id'=>'cor-grid',
-	'dataProvider'=>$model->search(),
-	'filter'=>$model,
-	'columns'=>array(
-		'id',
-		'titulo',
-		'rgb',
-		'excluido',
-		array(
-			'class'=>'CButtonColumn',
-		),
-	),
-)); ?>
+    'id' => 'cor-grid',
+    'dataProvider' => $model->search(),
+    'filter' => $model,
+    'columns' => array(
+        'titulo',
+        'rgb',
+        array(
+            'name' => 'excluido',
+            'value' => '$data->excluido? \'Sim\' : \'Não\''
+        ),
+        array(
+            'class' => 'bootstrap.widgets.TbButtonColumn',
+            'template' => '{view}{update}{delete}',
+            'buttons' => array(
+                'view' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("cor/view")',
+                ),
+                'update' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("cor/update")',
+                ),
+                'delete' => array(
+                    'visible' => 'Yii::app()->user->checkAccess("cor/delete")',
+                ),
+            ),
+        ),
+    ),
+));
+?>

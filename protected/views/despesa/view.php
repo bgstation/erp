@@ -11,7 +11,7 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
 ));
 ?>
 
-<h1>Despesa: #<?php echo $model->id; ?></h1>
+<h1>Despesa: <?= $model->id ?></h1>
 
 <?php
 $this->widget('zii.widgets.CDetailView', array(
@@ -24,13 +24,13 @@ $this->widget('zii.widgets.CDetailView', array(
         ),
         array(
             'name' => 'preco',
-            'value' => !empty($model->preco) ? number_format($model->preco, 2, ',', '.') : '',
+            'value' => !empty($model->preco) ? FormatHelper::valorMonetario($model->preco) : '',
         ),
         'observacao',
         'quantidade',
         array(
             'name' => 'data_hora',
-            'value' => !empty($model->data_hora) ? date("d/m/Y H:i:s", strtotime($model->data_hora)) : '',
+            'value' => !empty($model->data_hora) ? FormatHelper::dataHora($model->data_hora) : '',
         ),
         array(
             'name' => 'usuario_id',

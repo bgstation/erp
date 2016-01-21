@@ -6,12 +6,12 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
         'Cadastro' => '',
-        'Ordens de serviço'
+        'Ordens de Serviços'
     ),
 ));
 ?>
 
-<h3>Ordens de serviços</h3>
+<h1>Ordens de Serviços</h1>
 
 <?php
 if (Yii::app()->user->checkAccess('ordemServico/create')) {
@@ -27,7 +27,6 @@ if (Yii::app()->user->checkAccess('ordemServico/create')) {
     );
 }
 ?>
-<br>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -54,23 +53,24 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                 'empty' => '',
             )),
         ),
-        'observacao',
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{finalizar}{view}{update}{delete}',
             'buttons' => array(
                 'finalizar' => array(
+                    'label'=>'<i class="fa fa-check-circle"></i>',
+                    'options'=>array('title'=>'Finalizar OS', 'style' => 'margin:0 5px 0 0;color:#313131;'),
                     'url' => 'Yii::app()->createUrl("ordemServico/finalizar", array("id" => $data->id))',
-//                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/finalizar")',
+                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/finalizar") && $data->getStatus() == 1',
                 ),
                 'view' => array(
                     'visible' => 'Yii::app()->user->checkAccess("ordemServico/view")',
                 ),
                 'update' => array(
-                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/update")',
+                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/update") && $data->getStatus() == 1',
                 ),
                 'delete' => array(
-                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/delete")',
+                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/delete") && $data->getStatus() == 1',
                 ),
             ),
         ),

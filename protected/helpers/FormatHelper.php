@@ -4,7 +4,7 @@ class FormatHelper {
     
     public static function valorMonetario($valor) {
         if (empty($valor)) {
-            return $valor;
+            $valor = 0;
         }
         return number_format($valor, 2, ',', '.');
     }

@@ -20,11 +20,16 @@ class Financeiro extends CActiveRecord {
     public $data_hora_final;
     public $data_hora_inicial_grid;
     public $data_hora_final_grid;
+
     public $aTiposItens = array(
         1 => 'Ordem de serviço',
         2 => 'Compra',
         3 => 'Despesa',
     );
+    
+    const ORDEM_SERVICO = 1;
+    const COMPRA = 2;
+    const DESPESA = 3;
 
     /**
      * @return string the associated database table name
@@ -71,6 +76,23 @@ class Financeiro extends CActiveRecord {
         );
     }
 
+    public function scopes() {
+        return array(
+            'ordemServico' => array(
+                'condition' => 't.tipo_item = ' . self::ORDEM_SERVICO,
+            ),
+            'compras' => array(
+                'condition' => 't.tipo_item = ' . self::COMPRA,
+            ),
+            'despesas' => array(
+                'condition' => 't.tipo_item = ' . self::DESPESA,
+            ),
+            'ativas' => array(
+                'condition' => 't.status = 0',
+            ),
+        );
+    }
+
     /**
      * Retrieves a list of models based on the current search/filter conditions.
      *
@@ -85,7 +107,12 @@ class Financeiro extends CActiveRecord {
      */
     public function search() {
         // @todo Please modify the following code to remove attributes that should not be searched.
+        return new CActiveDataProvider($this, array(
+            'criteria' => $this->getSearchCriteria(),
+        ));
+    }
 
+    public function getSearchCriteria() {
         $criteria = new CDbCriteria;
 
         $criteria->compare('id', $this->id);
@@ -108,26 +135,7 @@ class Financeiro extends CActiveRecord {
             $criteria->addBetweenCondition('date(data_hora)', $this->data_hora_inicial, $this->data_hora_final);
         }
 
-        return new CActiveDataProvider($this, array(
-            'criteria' => $criteria,
-        ));
-    }
-
-    public function scopes() {
-        return array(
-            'ordemServico' => array(
-                'condition' => 't.tipo_item = 1',
-            ),
-            'compras' => array(
-                'condition' => 't.tipo_item = 2',
-            ),
-            'despesas' => array(
-                'condition' => 't.tipo_item = 3',
-            ),
-            'ativas' => array(
-                'condition' => 't.status = 0',
-            ),
-        );
+        return $criteria;
     }
 
     /**
@@ -163,77 +171,63 @@ class Financeiro extends CActiveRecord {
         if (!empty($status)) {
             $this->status = $status;
         }
-        $this->data_hora = date("Y-m-d H:i:s");
+        $this->data_hora = date('Y-m-d H:i:s');
         if (!$this->save()) {
             die(var_dump($this->getErrors()));
         }
     }
 
-    public function getLink($tipoItem, $tipoItemId) {
-        switch ($tipoItem) {
-            case 1:
-                return CHtml::link($tipoItemId, Yii::app()->createUrl('ordemServico/view', array('id' => $tipoItemId)), array('target' => '_blank'));
+    public function getTotalOrdemServico() {
+        $criteria = $this->getSearchCriteria();
+        $criteria->select = 'SUM(valor)';
+        $criteria->addCondition('t.tipo_item = ' . self::ORDEM_SERVICO);
+        return $this->commandBuilder->createFindCommand($this->getTableSchema(), $criteria)->queryScalar();
+    }
+    
+    public function getTotalCompras() {
+        $criteria = $this->getSearchCriteria();
+        $criteria->select = 'SUM(valor)';
+        $criteria->addCondition('t.tipo_item = ' . self::COMPRA);
+        return $this->commandBuilder->createFindCommand($this->getTableSchema(), $criteria)->queryScalar();
+    }
+    
+    public function getTotalDespesas() {
+        $criteria = $this->getSearchCriteria();
+        $criteria->select = 'SUM(valor)';
+        $criteria->addCondition('t.tipo_item = ' . self::DESPESA);
+        return $this->commandBuilder->createFindCommand($this->getTableSchema(), $criteria)->queryScalar();
+    }
+    
+    public function getLink() {
+        $link = '';
+        switch ($this->tipo_item) {
+            case self::ORDEM_SERVICO:
+                $link = CHtml::link($this->tipo_item_id, Yii::app()->createUrl('ordemServico/view', array('id' => $this->tipo_item_id)), array('target' => '_blank'));
                 break;
-            case 2:
-                return CHtml::link($tipoItemId, Yii::app()->createUrl('compra/view', array('id' => $tipoItemId)), array('target' => '_blank'));
+            case self::COMPRA:
+                $link = CHtml::link($this->tipo_item_id, Yii::app()->createUrl('compra/view', array('id' => $this->tipo_item_id)), array('target' => '_blank'));
                 break;
-            case 3:
-                return CHtml::link($tipoItemId, Yii::app()->createUrl('despesa/view', array('id' => $tipoItemId)), array('target' => '_blank'));
+            case self::DESPESA:
+                $link = CHtml::link($this->tipo_item_id, Yii::app()->createUrl('despesa/view', array('id' => $this->tipo_item_id)), array('target' => '_blank'));
                 break;
         }
+        return $link;
     }
 
-    public function getColor($tipoItem) {
-        switch ($tipoItem) {
-            case 1:
-                return 'alert-success';
+    public function getColor() {
+        $cor = '';
+        switch ($this->tipo_item) {
+            case self::ORDEM_SERVICO:
+                $cor = 'alert-success';
                 break;
-            case 2:
-                return 'alert-info';
+            case self::COMPRA:
+                $cor = 'alert-info';
                 break;
-            case 3:
-                return 'alert-danger';
+            case self::DESPESA:
+                $cor = 'alert-danger';
                 break;
         }
-    }
-
-    public function getTotais($dataInicio = null, $dataFinal = null) {
-        $aRetorno = array();
-        $aRetorno['ordem_servico'] = 0;
-        $aRetorno['compra'] = 0;
-        $aRetorno['despesa'] = 0;
-        $aCriteria = array();
-        if (!empty($dataInicio) && !empty($dataFinal)) {
-            $aCriteria['condition'] = ' date(data_hora) beteween "' . $dataInicio . '" AND "' . $dataFinal . '"';
-        } else if (!empty($dataInicio)) {
-            $aCriteria['condition'] = ' date(data_hora) beteween "' . $dataInicio . '" AND "' . date("Y-m-d") . '"';
-        }
-        $oFinanceiros = self::model()->ativas()->findAll($aCriteria);
-        if (!empty($oFinanceiros)) {
-            foreach ($oFinanceiros as $financeiro) {
-                if ($financeiro->tipo_item == 1)
-                    $aRetorno['ordem_servico'] += $financeiro->valor;
-                if ($financeiro->tipo_item == 2)
-                    $aRetorno['compra'] += $financeiro->valor;
-                if ($financeiro->tipo_item == 3)
-                    $aRetorno['despesa'] += $financeiro->valor;
-            }
-        }
-        return $aRetorno;
-    }
-
-    public function getHeadersRelatorio() {
-        $headers = array(
-            'tipo',
-            'tipo_item_id',
-            'status',
-            'descricao',
-            'valor',
-            'parcelas',
-            'usuario',
-            'datahora',
-        );
-        return $headers;
+        return $cor;
     }
 
 }

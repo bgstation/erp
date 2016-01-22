@@ -26,9 +26,11 @@ $('.search-form form').submit(function(){
 
 <h1>Financeiro</h1>
 
-<p>Ordens de Serviço: R$ <?= FormatHelper::valorMonetario($aTotais['ordem_servico']) ?></p>
-<p>Compras: R$ <?= FormatHelper::valorMonetario($aTotais['compra']) ?></p>
-<p>Despesas: R$ <?= FormatHelper::valorMonetario($aTotais['despesa']) ?></p>
+<div class="financeiro-resumo">
+    <p class='financeiro-resumo-os'>Ordens de Serviço: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServico) ?></p>
+    <p class='financeiro-resumo-compras'>Compras: R$ <?= FormatHelper::valorMonetario($oTotalCompras) ?></p>
+    <p class='financeiro-resumo-despesas'>Despesas: R$ <?= FormatHelper::valorMonetario($oTotalDespesas) ?></p>
+</div>
 
 <div class="admin-buttons">
     <?= CHtml::link(($exibeFormularioBusca ? 'Ocultar' : 'Exibir') . ' Filtros', '#', array('class' => 'search_button btn btn-success')) ?>
@@ -77,9 +79,13 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'financeiro-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
-    'afterAjaxUpdate' => "function() {
+    'afterAjaxUpdate' => "function(id, data) {
                               jQuery('#Financeiro_data_hora_inicial_grid').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['pt'], {'showAnim':'fold','dateFormat':'yy-mm-dd','changeMonth':'true','showButtonPanel':'true','changeYear':'true','constrainInput':'false'}));
                               jQuery('#Financeiro_data_hora_final_grid').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['pt'], {'showAnim':'fold','dateFormat':'yy-mm-dd','changeMonth':'true','showButtonPanel':'true','changeYear':'true','constrainInput':'false'}));
+
+                              $('.financeiro-resumo-os').text($(data).find('.financeiro-resumo-os').html());
+                              $('.financeiro-resumo-compras').text($(data).find('.financeiro-resumo-compras').html());
+                              $('.financeiro-resumo-despesas').text($(data).find('.financeiro-resumo-despesas').html());
                           }",
     'rowCssClassExpression' => '$data->getColor($data->tipo_item)',
     'columns' => array(

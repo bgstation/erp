@@ -115,19 +115,23 @@ class FinanceiroController extends Controller {
         $model = new Financeiro('search');
         $model->unsetAttributes();
         $oSearchForm = new SearchForm();
+        $oFinanceiroForm = new FinanceiroForm();
 
         if (isset($_GET['Financeiro'])) {
             $model->attributes = $_GET['Financeiro'];
             $oSearchForm->request = $_GET['Financeiro'];
         }
         
-        $headers = $model->getHeadersRelatorio();
+        $headers = $oFinanceiroForm->getHeadersRelatorio();
         $this->exportarRelatorio($model->search(), 'Relatório Financeiro - ', $headers, date('YmdHis') . '_relatorio_financeiro.csv');
 
         $this->render('admin', array(
             'model' => $model,
-            'aTotais' => $model->getTotais(),
+            'oTotalCompras' => $model->getTotalCompras(),
+            'oTotalDespesas' => $model->getTotalDespesas(),
+            'oTotalOrdemServico' => $model->getTotalOrdemServico(),
             'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
+            'oFinanceiroForm' => $oFinanceiroForm,
         ));
     }
 

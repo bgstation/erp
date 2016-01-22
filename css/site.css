@@ -90,3 +90,6 @@ input {
 .search-buttons button:last-child {
     margin-left: 5px;
 }
+.financeiro-resumo p {
+    font-size: 17px;
+}

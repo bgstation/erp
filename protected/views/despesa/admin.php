@@ -106,16 +106,37 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
-            'template' => '{view}{update}{delete}',
+            'template' => '{view}{cancelar}',
             'buttons' => array(
                 'view' => array(
                     'visible' => 'Yii::app()->user->checkAccess("despesa/view")',
                 ),
-                'update' => array(
-                    'visible' => 'Yii::app()->user->checkAccess("despesa/update")',
-                ),
-                'delete' => array(
-                    'visible' => 'Yii::app()->user->checkAccess("despesa/delete")',
+                'cancelar' => array(
+                    'label' => '<i class="fa fa-times"></i>',
+                    'options' => array(
+                        'ajax' => array(
+                            'type' => 'GET',
+                            'url' => "js:$(this).attr('href')",
+                            'beforeSend' => 'function(){
+                                    var confirma = confirm("Deseja cancelar esta despesa ?");
+                                    if (!confirma) {
+                                        alert("Nenhuma ação realizada!");
+                                        return false;
+                                    }
+                                }',
+                            'success' => 'function(data) {
+                                            var obj = $.parseJSON(data);
+                                            if(obj.status == "success"){
+                                                alert("Despesa cancelada com sucesso!");
+                                            } else {
+                                                alert("Houve algum erro ao cancelar a despesa!");
+                                            }
+                                        }'
+                        ),
+                        'title' => 'Cancelar despesa', 'style' => 'margin:0 5px 0 0;color:#313131;'
+                    ),
+                    'url' => 'Yii::app()->createUrl("despesa/cancelar", array("id" => $data->id))',
+//                    'visible' => 'Yii::app()->user->checkAccess("despesa/cancelar") && $data->checaCancelado()',
                 ),
             ),
         ),

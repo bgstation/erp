@@ -6,45 +6,88 @@
 
 <div class="wide form">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'action'=>Yii::app()->createUrl($this->route),
-	'method'=>'get',
-)); ?>
+    <?php
+    $form = $this->beginWidget('CActiveForm', array(
+        'action' => Yii::app()->createUrl($this->route),
+        'method' => 'get',
+    ));
+    ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'id'); ?>
-		<?php echo $form->textField($model,'id'); ?>
-	</div>
+    <div class="row">
+        <?= $form->textField($model, 'produto_id', array('placeholder' => 'Produto')) ?>
+    </div>
 
-	<div class="row">
-		<?php echo $form->label($model,'produto_id'); ?>
-		<?php echo $form->textField($model,'produto_id'); ?>
-	</div>
+    <div class="row">
+        <?= $form->textField($model, 'quantidade', array('placeholder' => 'Quantidade')) ?>
+    </div>
 
-	<div class="row">
-		<?php echo $form->label($model,'quantidade'); ?>
-		<?php echo $form->textField($model,'quantidade'); ?>
-	</div>
+    <div class="row">
+        <?= $form->textField($model, 'usuario_id', array('placeholder' => 'Usuário')) ?>
+    </div>
 
-	<div class="row">
-		<?php echo $form->label($model,'usuario_id'); ?>
-		<?php echo $form->textField($model,'usuario_id'); ?>
-	</div>
+    <div class="row">
+        <?php
+        $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+            'model' => $model,
+            'language' => 'pt',
+            'attribute' => 'data_hora_inicial',
+            'options' => array(
+                'showAnim' => 'fold',
+                'dateFormat' => 'yy-mm-dd',
+                'changeMonth' => 'true',
+                'changeYear' => 'true',
+                'constrainInput' => 'false',
+            ),
+            'htmlOptions' => array(
+                'placeholder' => 'Data Inicial'
+            ),
+        ));
+        ?>
+        <?php
+        $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+            'model' => $model,
+            'language' => 'pt',
+            'attribute' => 'data_hora_final',
+            'options' => array(
+                'showAnim' => 'fold',
+                'dateFormat' => 'yy-mm-dd',
+                'changeMonth' => 'true',
+                'changeYear' => 'true',
+                'constrainInput' => 'false',
+            ),
+            'htmlOptions' => array(
+                'placeholder' => 'Data Final'
+            ),
+        ));
+        ?>
+    </div>
 
-	<div class="row">
-		<?php echo $form->label($model,'observacao'); ?>
-		<?php echo $form->textArea($model,'observacao',array('rows'=>6, 'cols'=>50)); ?>
-	</div>
+    <div class='rows search-buttons'>
+        <?php
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'type' => 'success',
+            'size' => 'medium',
+            'buttonType' => 'submit',
+            'label' => 'Filtrar',
+            'htmlOptions' => array(
+                'class' => 'pull-left'
+            )
+                )
+        );
 
-	<div class="row">
-		<?php echo $form->label($model,'data_hora'); ?>
-		<?php echo $form->textField($model,'data_hora'); ?>
-	</div>
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'size' => 'medium',
+            'buttonType' => 'button',
+            'label' => 'Limpar',
+            'htmlOptions' => array(
+                'class' => 'pull-left reset-form'
+            )
+                )
+        );
+        ?>
+    </div>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Search'); ?>
-	</div>
+    <?php $this->endWidget() ?>
 
-<?php $this->endWidget(); ?>
-
-</div><!-- search-form -->
+</div>
+<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery.mask.js"></script>

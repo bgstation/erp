@@ -118,11 +118,16 @@ class TipoProdutoController extends Controller {
     public function actionAdmin() {
         $model = new TipoProduto('search');
         $model->unsetAttributes();
-        if (isset($_GET['TipoProduto']))
+        $oSearchForm = new SearchForm();
+
+        if (isset($_GET['TipoProduto'])) {
             $model->attributes = $_GET['TipoProduto'];
+            $oSearchForm->request = $_GET['TipoProduto'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 

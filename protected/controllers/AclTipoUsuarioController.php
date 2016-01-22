@@ -131,11 +131,16 @@ class AclTipoUsuarioController extends Controller {
     public function actionAdmin() {
         $model = new AclTipoUsuario('search');
         $model->unsetAttributes();
-        if (isset($_GET['AclTipoUsuario']))
+        $oSearchForm = new SearchForm();
+
+        if (isset($_GET['AclTipoUsuario'])) {
             $model->attributes = $_GET['AclTipoUsuario'];
+            $oSearchForm->request = $_GET['AclTipoUsuario'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 

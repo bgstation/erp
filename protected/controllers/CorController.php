@@ -114,11 +114,16 @@ class CorController extends Controller {
     public function actionAdmin() {
         $model = new Cor('search');
         $model->unsetAttributes();
-        if (isset($_GET['Cor']))
+        $oSearchForm = new SearchForm();
+        
+        if (isset($_GET['Cor'])) {
             $model->attributes = $_GET['Cor'];
+            $oSearchForm->request = $_GET['Cor'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 

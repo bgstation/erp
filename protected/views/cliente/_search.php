@@ -24,6 +24,11 @@
     <div class="row">
         <?= $form->textField($model, 'cpf', array('placeholder' => 'CPF')) ?>
     </div>
+    
+    <div class="row">
+        <?= $form->label($model, 'excluido') ?>
+        <?= $form->checkbox($model, 'excluido') ?>
+    </div>
 
     <div class='rows search-buttons'>
         <?php
@@ -37,7 +42,6 @@
             )
                 )
         );
-        
         $this->widget('bootstrap.widgets.TbButton', array(
             'size' => 'medium',
             'buttonType' => 'button',

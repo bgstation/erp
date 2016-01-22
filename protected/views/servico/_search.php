@@ -6,35 +6,46 @@
 
 <div class="wide form">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'action'=>Yii::app()->createUrl($this->route),
-	'method'=>'get',
-)); ?>
+    <?php
+    $form = $this->beginWidget('CActiveForm', array(
+        'action' => Yii::app()->createUrl($this->route),
+        'method' => 'get',
+    ));
+    ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'id'); ?>
-		<?php echo $form->textField($model,'id'); ?>
-	</div>
+    <div class="row">
+        <?= $form->textField($model, 'titulo', array('placeholder' => 'Título')) ?>
+    </div>
 
-	<div class="row">
-		<?php echo $form->label($model,'titulo'); ?>
-		<?php echo $form->textField($model,'titulo',array('size'=>60,'maxlength'=>200)); ?>
-	</div>
+    <div class="row">
+        <?= $form->textField($model, 'preco', array('placeholder' => 'Preço')) ?>
+    </div>
 
-	<div class="row">
-		<?php echo $form->label($model,'preco'); ?>
-		<?php echo $form->textField($model,'preco',array('size'=>10,'maxlength'=>10)); ?>
-	</div>
+    <div class='rows search-buttons'>
+        <?php
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'type' => 'success',
+            'size' => 'medium',
+            'buttonType' => 'submit',
+            'label' => 'Filtrar',
+            'htmlOptions' => array(
+                'class' => 'pull-left'
+            )
+                )
+        );
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'size' => 'medium',
+            'buttonType' => 'button',
+            'label' => 'Limpar',
+            'htmlOptions' => array(
+                'class' => 'pull-left reset-form'
+            )
+                )
+        );
+        ?>
+    </div>
 
-	<div class="row">
-		<?php echo $form->label($model,'observacao'); ?>
-		<?php echo $form->textArea($model,'observacao',array('rows'=>6, 'cols'=>50)); ?>
-	</div>
+    <?php $this->endWidget() ?>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Search'); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- search-form -->
+</div>
+<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery.mask.js"></script>

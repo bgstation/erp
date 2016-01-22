@@ -132,25 +132,29 @@ class ProdutoController extends Controller {
     public function actionAdmin() {
         $model = new Produto('search');
         $model->unsetAttributes();
-        
+        $oSearchForm = new SearchForm();
+        $oProdutos = Produto::model()->findAll();
         $aCriteria = array();
         $aProdutos = array();
-        $oProdutos = Produto::model()->findAll();
+        
         if(!empty($oProdutos)){
             foreach ($oProdutos as $produto){
                 $aProdutos['tipo_produto_id'][] = $produto->tipo_produto_id;
             }
-            $aCriteria['condition'] = 'id in (' . implode(",", $aProdutos['tipo_produto_id']) . ')';
+            $aCriteria['condition'] = 'id in (' . implode(',', $aProdutos['tipo_produto_id']) . ')';
         }
 
         $oTiposProdutos = TipoProduto::model()->ordenarTitulo()->findAll($aCriteria);
 
-        if (isset($_GET['Produto']))
+        if (isset($_GET['Produto'])) {
             $model->attributes = $_GET['Produto'];
+            $oSearchForm->request = $_GET['Produto'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
             'oTiposProdutos' => $oTiposProdutos,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 

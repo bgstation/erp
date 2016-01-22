@@ -1,6 +1,7 @@
 <?php
 /* @var $this ServicoController */
 /* @var $model Servico */
+
 $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
     'homeLink' => '<a href="' . Yii::app()->createUrl('site/index') . '">Home</a>',
     'links' => array(
@@ -8,24 +9,45 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
         'Serviços'
     ),
 ));
+
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+	$('.search-form').toggle();
+	return false;
+});
+$('.search-form form').submit(function(){
+	$('#servico-grid').yiiGridView('update', {
+		data: $(this).serialize()
+	});
+	return false;
+});
+");
 ?>
 
 <h1>Serviços</h1>
 
-<?php
-if (Yii::app()->user->checkAccess('servico/create')) {
-    $this->widget('bootstrap.widgets.TbButton', array(
-        'type' => 'success',
-        'size' => 'medium',
-        'label' => 'Cadastrar',
-        'url' => Yii::app()->createUrl('servico/create'),
-        'htmlOptions' => array(
-            'class' => 'pull-left',
-        ),
-            )
-    );
-}
-?>
+<div class="admin-buttons">
+    <?= CHtml::link(($exibeFormularioBusca ? 'Ocultar' : 'Exibir') . ' Filtros', '#', array('class' => 'search_button btn btn-success')) ?>
+
+    <?php
+    if (Yii::app()->user->checkAccess('servico/create')) {
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'type' => 'success',
+            'size' => 'medium',
+            'label' => 'Cadastrar',
+            'url' => Yii::app()->createUrl('servico/create'),
+                )
+        );
+    }
+    ?>
+    <div class="search_form" style='display:<?= $exibeFormularioBusca ? '' : 'none' ?>;'>
+        <?php
+        $this->renderPartial('_search', array(
+            'model' => $model,
+        ));
+        ?>
+    </div>
+</div>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
@@ -56,3 +78,4 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     ),
 ));
 ?>
+<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/site.js"></script>

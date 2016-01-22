@@ -154,6 +154,7 @@ class OrdemServicoController extends Controller {
     public function actionAdmin() {
         $model = new OrdemServico('search');
         $model->unsetAttributes();
+        $oSearchForm = new SearchForm();
 
         $oOrdemServido = OrdemServico::model()->findAll();
 
@@ -171,12 +172,14 @@ class OrdemServicoController extends Controller {
 
         if (isset($_GET['OrdemServico'])) {
             $model->attributes = $_GET['OrdemServico'];
+            $oSearchForm->request = $_GET['OrdemServico'];
         }
 
         $this->render('admin', array(
             'model' => $model,
             'oClientes' => $oClientes,
             'oClientesCarros' => $oClientesCarros,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 

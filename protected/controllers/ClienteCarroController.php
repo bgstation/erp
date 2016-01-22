@@ -132,11 +132,16 @@ class ClienteCarroController extends Controller {
     public function actionAdmin() {
         $model = new ClienteCarro('search');
         $model->unsetAttributes();
-        if (isset($_GET['ClienteCarro']))
+        $oSearchForm = new SearchForm();
+
+        if (isset($_GET['ClienteCarro'])) {
             $model->attributes = $_GET['ClienteCarro'];
+            $oSearchForm->request = $_GET['ClienteCarro'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 

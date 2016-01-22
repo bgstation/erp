@@ -15,6 +15,11 @@
  */
 class Despesa extends CActiveRecord {
 
+    public $data_hora_inicial;
+    public $data_hora_final;
+    public $data_hora_inicial_grid;
+    public $data_hora_final_grid;
+    
     /**
      * @return string the associated database table name
      */
@@ -29,7 +34,7 @@ class Despesa extends CActiveRecord {
         return array(
             array('tipo_despesa_id, quantidade, usuario_id, excluido', 'numerical', 'integerOnly' => true),
             array('preco', 'length', 'max' => 10),
-            array('observacao, data_hora', 'safe'),
+            array('observacao, data_hora, data_hora_inicial, data_hora_final, data_hora_inicial_grid, data_hora_final_grid', 'safe'),
             array('preco, tipo_despesa_id, quantidade', 'required'),
             array('preco', 'tratarPreco'),
             array('id, tipo_despesa_id, preco, observacao, quantidade, data_hora, usuario_id, excluido', 'safe', 'on' => 'search'),
@@ -110,6 +115,21 @@ class Despesa extends CActiveRecord {
         $criteria->compare('data_hora', $this->data_hora, true);
         $criteria->compare('usuario_id', $this->usuario_id);
         $criteria->compare('excluido', $this->excluido);
+        
+        if (!empty($this->data_hora_inicial) && !empty($this->data_hora_final)) {
+            $this->data_hora_inicial_grid = $this->data_hora_inicial;
+            $this->data_hora_final_grid = $this->data_hora_final;
+            $criteria->addBetweenCondition('date(data_hora)', $this->data_hora_inicial, $this->data_hora_final);
+        } else if (!empty($this->data_hora_inicial_grid) && !empty($this->data_hora_final_grid)) {
+            $this->data_hora_inicial = $this->data_hora_inicial_grid;
+            $this->data_hora_final = $this->data_hora_final_grid;
+            $criteria->addBetweenCondition('date(data_hora)', $this->data_hora_inicial, $this->data_hora_final);
+        }
+        
+        if (!empty($this->tipo_despesa_id)) {
+            $criteria->join = ' JOIN tipos_despesas td ON td.id = t.tipo_despesa_id ';
+            $criteria->addCondition("td.titulo like '" . $this->tipo_despesa_id . "'");
+        }
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

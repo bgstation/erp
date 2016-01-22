@@ -1,7 +1,7 @@
 <?php
+require_once __DIR__ . '/config/defines.php';
 
-// change the following paths if necessary
-$yiic=dirname(__FILE__).'/../../yii_1_1_14/yiic.php';
+$yiic = _CAMINHO_YII_ . 'yiic.php';
 $config=dirname(__FILE__).'/config/console.php';
 
 require_once($yiic);

@@ -9,35 +9,56 @@ $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
         'Ordens de Serviços'
     ),
 ));
+
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+	$('.search-form').toggle();
+	return false;
+});
+$('.search-form form').submit(function(){
+	$('#ordem-servico-grid').yiiGridView('update', {
+		data: $(this).serialize()
+	});
+	return false;
+});
+");
 ?>
 
 <h1>Ordens de Serviços</h1>
 
-<?php
-if (Yii::app()->user->checkAccess('ordemServico/create')) {
-    $this->widget('bootstrap.widgets.TbButton', array(
-        'type' => 'success',
-        'size' => 'medium',
-        'label' => 'Cadastrar',
-        'url' => Yii::app()->createUrl('ordemServico/create'),
-        'htmlOptions' => array(
-            'class' => 'pull-left',
-        ),
-            )
-    );
-}
-?>
+<div class="admin-buttons">
+    <?= CHtml::link(($exibeFormularioBusca ? 'Ocultar' : 'Exibir') . ' Filtros', '#', array('class' => 'search_button btn btn-success')) ?>
+
+    <?php
+    if (Yii::app()->user->checkAccess('ordemServico/create')) {
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'type' => 'success',
+            'size' => 'medium',
+            'label' => 'Cadastrar',
+            'url' => Yii::app()->createUrl('ordemServico/create'),
+                )
+        );
+    }
+    ?>
+    <div class="search_form" style='display:<?= $exibeFormularioBusca ? '' : 'none' ?>;'>
+        <?php
+        $this->renderPartial('_search', array(
+            'model' => $model,
+        ));
+        ?>
+    </div>
+</div>
 
 <?php
 $this->widget('bootstrap.widgets.TbGridView', array(
-    'id' => 'modelo-grid',
+    'id' => 'ordem-servico-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
     'columns' => array(
         array(
             'name' => 'id',
             'value' => '$data->id',
-            'htmlOptions'=>array('width'=>'100px'),
+            'htmlOptions' => array('width' => '100px'),
         ),
         array(
             'name' => 'cliente_id',
@@ -58,8 +79,8 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'template' => '{finalizar}{view}{update}{delete}',
             'buttons' => array(
                 'finalizar' => array(
-                    'label'=>'<i class="fa fa-check-circle"></i>',
-                    'options'=>array('title'=>'Finalizar OS', 'style' => 'margin:0 5px 0 0;color:#313131;'),
+                    'label' => '<i class="fa fa-check-circle"></i>',
+                    'options' => array('title' => 'Finalizar OS', 'style' => 'margin:0 5px 0 0;color:#313131;'),
                     'url' => 'Yii::app()->createUrl("ordemServico/finalizar", array("id" => $data->id))',
                     'visible' => 'Yii::app()->user->checkAccess("ordemServico/finalizar") && $data->getStatus() == 1',
                 ),
@@ -76,4 +97,4 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
     ),
 ));
-?>
+?><script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/site.js"></script>

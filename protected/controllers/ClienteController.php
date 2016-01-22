@@ -121,19 +121,18 @@ class ClienteController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
-        $oSearchForm = new SearchForm();
         $model = new Cliente('search');
         $model->unsetAttributes();
-        
+        $oSearchForm = new SearchForm();
+
         if (!empty($_GET['Cliente'])) {
-            $oSearchForm->request = $_GET['Cliente'];
             $model->attributes = $_GET['Cliente'];
+            $oSearchForm->request = $_GET['Cliente'];
         }
-        $exibeFormularioBusca = $oSearchForm->checaRequisicaoVazia();
 
         $this->render('admin', array(
             'model' => $model,
-            'exibeFormularioBusca' => $exibeFormularioBusca,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 

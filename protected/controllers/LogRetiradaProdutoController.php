@@ -13,8 +13,8 @@ class LogRetiradaProdutoController extends Controller {
      */
     public function filters() {
         return array(
-            'accessControl', // perform access control for CRUD operations
-            'postOnly + delete', // we only allow deletion via POST request
+            'accessControl',
+            'postOnly + delete',
         );
     }
 
@@ -25,19 +25,15 @@ class LogRetiradaProdutoController extends Controller {
      */
     public function accessRules() {
         return array(
-            array('allow', // allow all users to perform 'index' and 'view' actions
+            array('allow',
                 'actions' => array('index', 'view'),
                 'users' => array('*'),
             ),
-            array('allow', // allow authenticated user to perform 'create' and 'update' actions
-                'actions' => array('create', 'update'),
+            array('allow',
+                'actions' => array('create', 'update', 'admin', 'delete'),
                 'users' => array('@'),
             ),
-            array('allow', // allow admin user to perform 'admin' and 'delete' actions
-                'actions' => array('admin', 'delete'),
-                'users' => array('admin'),
-            ),
-            array('deny', // deny all users
+            array('deny',
                 'users' => array('*'),
             ),
         );
@@ -60,9 +56,6 @@ class LogRetiradaProdutoController extends Controller {
     public function actionCreate() {
         $model = new LogRetiradaProduto;
 
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
-
         if (isset($_POST['LogRetiradaProduto'])) {
             $model->attributes = $_POST['LogRetiradaProduto'];
             if ($model->save())
@@ -81,9 +74,6 @@ class LogRetiradaProdutoController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
-
-        // Uncomment the following line if AJAX validation is needed
-        // $this->performAjaxValidation($model);
 
         if (isset($_POST['LogRetiradaProduto'])) {
             $model->attributes = $_POST['LogRetiradaProduto'];
@@ -104,7 +94,6 @@ class LogRetiradaProdutoController extends Controller {
     public function actionDelete($id) {
         $this->loadModel($id)->delete();
 
-        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
@@ -125,6 +114,7 @@ class LogRetiradaProdutoController extends Controller {
     public function actionAdmin() {
         $model = new LogRetiradaProduto('search');
         $model->unsetAttributes();
+        $oSearchForm = new SearchForm();
 
         $aLogsRetiradasProdutos = array();
         $oLogsRetiradasProdutos = LogRetiradaProduto::model()->findAll();
@@ -146,13 +136,16 @@ class LogRetiradaProdutoController extends Controller {
             $oUsuarios = Usuario::model()->ordenarNome()->findAll();
         }
 
-        if (isset($_GET['LogRetiradaProduto']))
+        if (isset($_GET['LogRetiradaProduto'])) {
             $model->attributes = $_GET['LogRetiradaProduto'];
+            $oSearchForm->request = $_GET['LogRetiradaProduto'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
             'oProdutos' => $oProdutos,
             'oUsuarios' => $oUsuarios,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 

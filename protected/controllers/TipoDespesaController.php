@@ -114,11 +114,16 @@ class TipoDespesaController extends Controller {
     public function actionAdmin() {
         $model = new TipoDespesa('search');
         $model->unsetAttributes();
-        if (isset($_GET['TipoDespesa']))
+        $oSearchForm = new SearchForm();
+
+        if (isset($_GET['TipoDespesa'])) {
             $model->attributes = $_GET['TipoDespesa'];
+            $oSearchForm->request = $_GET['TipoDespesa'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 

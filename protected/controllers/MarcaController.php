@@ -114,11 +114,16 @@ class MarcaController extends Controller {
     public function actionAdmin() {
         $model = new Marca('search');
         $model->unsetAttributes();
-        if (isset($_GET['Marca']))
+        $oSearchForm = new SearchForm();
+
+        if (isset($_GET['Marca'])) {
             $model->attributes = $_GET['Marca'];
+            $oSearchForm->request = $_GET['Marca'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 

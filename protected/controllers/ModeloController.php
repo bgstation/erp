@@ -120,11 +120,16 @@ class ModeloController extends Controller {
     public function actionAdmin() {
         $model = new Modelo('search');
         $model->unsetAttributes();
-        if (isset($_GET['Modelo']))
+        $oSearchForm = new SearchForm();
+
+        if (isset($_GET['Modelo'])) {
             $model->attributes = $_GET['Modelo'];
+            $oSearchForm->request = $_GET['Modelo'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 
@@ -152,12 +157,12 @@ class ModeloController extends Controller {
             Yii::app()->end();
         }
     }
-    
-    public function actionGetDataJson(){
+
+    public function actionGetDataJson() {
         $array = array();
         $oModelos = Modelo::model()->naoExcluido()->ordenarTitulo()->findAllByAttributes(array('marca_id' => $_POST['marcaId']));
         $i = 0;
-        foreach ($oModelos as $modelo){
+        foreach ($oModelos as $modelo) {
             $array[$i]['id'] = intval($modelo->id);
             $array[$i]['text'] = $modelo->titulo;
             $i++;

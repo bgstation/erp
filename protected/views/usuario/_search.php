@@ -6,50 +6,55 @@
 
 <div class="wide form">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'action'=>Yii::app()->createUrl($this->route),
-	'method'=>'get',
-)); ?>
+    <?php
+    $form = $this->beginWidget('CActiveForm', array(
+        'action' => Yii::app()->createUrl($this->route),
+        'method' => 'get',
+    ));
+    ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'id'); ?>
-		<?php echo $form->textField($model,'id'); ?>
-	</div>
+    <div class="row">
+        <?= $form->textField($model, 'nome', array('placeholder' => 'Nome')) ?>
+    </div>
 
-	<div class="row">
-		<?php echo $form->label($model,'nome'); ?>
-		<?php echo $form->textField($model,'nome',array('size'=>60,'maxlength'=>100)); ?>
-	</div>
+    <div class="row">
+        <?= $form->textField($model, 'login', array('placeholder' => 'Login')) ?>
+    </div>
 
-	<div class="row">
-		<?php echo $form->label($model,'login'); ?>
-		<?php echo $form->textField($model,'login',array('size'=>60,'maxlength'=>100)); ?>
-	</div>
+    <div class="row">
+        <?= $form->textField($model, 'acl_tipo_usuario_id', array('placeholder' => 'Tipo Usuário')) ?>
+    </div>
+    
+    <div class="row">
+        <?= $form->label($model, 'excluido') ?>
+        <?= $form->checkbox($model, 'excluido') ?>
+    </div>
 
-	<div class="row">
-		<?php echo $form->label($model,'senha'); ?>
-		<?php echo $form->textField($model,'senha',array('size'=>20,'maxlength'=>20)); ?>
-	</div>
+    <div class='rows search-buttons'>
+        <?php
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'type' => 'success',
+            'size' => 'medium',
+            'buttonType' => 'submit',
+            'label' => 'Filtrar',
+            'htmlOptions' => array(
+                'class' => 'pull-left'
+            )
+                )
+        );
+        $this->widget('bootstrap.widgets.TbButton', array(
+            'size' => 'medium',
+            'buttonType' => 'button',
+            'label' => 'Limpar',
+            'htmlOptions' => array(
+                'class' => 'pull-left reset-form'
+            )
+                )
+        );
+        ?>
+    </div>
 
-	<div class="row">
-		<?php echo $form->label($model,'tipo_usuario_id'); ?>
-		<?php echo $form->textField($model,'tipo_usuario_id'); ?>
-	</div>
+    <?php $this->endWidget() ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'excluido'); ?>
-		<?php echo $form->textField($model,'excluido'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->label($model,'data_cadastro'); ?>
-		<?php echo $form->textField($model,'data_cadastro'); ?>
-	</div>
-
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Search'); ?>
-	</div>
-
-<?php $this->endWidget(); ?>
-
-</div><!-- search-form -->
+</div>
+<script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/jquery.mask.js"></script>

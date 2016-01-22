@@ -36,8 +36,6 @@ $('.search-form form').submit(function(){
             'size' => 'medium',
             'label' => 'Cadastrar',
             'url' => Yii::app()->createUrl('cliente/create'),
-            'htmlOptions' => array(
-            ),
                 )
         );
     }

@@ -16,6 +16,10 @@
  */
 class Financeiro extends CActiveRecord {
 
+    public $data_hora_inicial;
+    public $data_hora_final;
+    public $data_hora_inicial_grid;
+    public $data_hora_final_grid;
     public $aTiposItens = array(
         1 => 'Ordem de serviço',
         2 => 'Compra',
@@ -33,13 +37,11 @@ class Financeiro extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('tipo_item, tipo_item_id, parcelas, status', 'numerical', 'integerOnly' => true),
             array('descricao, usuario', 'length', 'max' => 200),
             array('valor', 'length', 'max' => 10),
-            array('data_hora', 'safe'),
+            array('data_hora, data_hora_inicial, data_hora_final, data_hora_inicial_grid, data_hora_final_grid', 'safe'),
             array('id, tipo_item, tipo_item_id, descricao, valor, parcelas, usuario, data_hora, status', 'safe', 'on' => 'search'),
         );
     }
@@ -48,8 +50,6 @@ class Financeiro extends CActiveRecord {
      * @return array relational rules.
      */
     public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
         );
     }
@@ -97,6 +97,16 @@ class Financeiro extends CActiveRecord {
         $criteria->compare('parcelas', $this->parcelas);
         $criteria->compare('usuario', $this->usuario, true);
         $criteria->compare('data_hora', $this->data_hora, true);
+
+        if (!empty($this->data_hora_inicial) && !empty($this->data_hora_final)) {
+            $this->data_hora_inicial_grid = $this->data_hora_inicial;
+            $this->data_hora_final_grid = $this->data_hora_final;
+            $criteria->addBetweenCondition('date(data_hora)', $this->data_hora_inicial, $this->data_hora_final);
+        } else if (!empty($this->data_hora_inicial_grid) && !empty($this->data_hora_final_grid)) {
+            $this->data_hora_inicial = $this->data_hora_inicial_grid;
+            $this->data_hora_final = $this->data_hora_final_grid;
+            $criteria->addBetweenCondition('date(data_hora)', $this->data_hora_inicial, $this->data_hora_final);
+        }
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -210,6 +220,20 @@ class Financeiro extends CActiveRecord {
             }
         }
         return $aRetorno;
+    }
+
+    public function getHeadersRelatorio() {
+        $headers = array(
+            'tipo',
+            'tipo_item_id',
+            'status',
+            'descricao',
+            'valor',
+            'parcelas',
+            'usuario',
+            'datahora',
+        );
+        return $headers;
     }
 
 }

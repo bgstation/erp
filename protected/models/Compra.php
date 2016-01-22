@@ -17,6 +17,10 @@
 class Compra extends CActiveRecord {
 
     private $qntAntigaTmp = 0;
+    public $data_hora_inicial;
+    public $data_hora_final;
+    public $data_hora_inicial_grid;
+    public $data_hora_final_grid;
 
     /**
      * @return string the associated database table name
@@ -33,7 +37,7 @@ class Compra extends CActiveRecord {
             array('produto_id, quantidade, usuario_id, excluido', 'numerical', 'integerOnly' => true),
             array('nota_fiscal', 'length', 'max' => 200),
             array('preco', 'length', 'max' => 10),
-            array('observacao, data_hora', 'safe'),
+            array('observacao, data_hora, data_hora_inicial, data_hora_final, data_hora_inicial_grid, data_hora_final_grid', 'safe'),
             array('produto_id', 'required'),
             array('preco', 'tratarPreco', 'except' => 'alteracaoCompra'),
             array('id, nota_fiscal, produto_id, preco, observacao, quantidade, data_hora, usuario_id, excluido', 'safe', 'on' => 'search'),
@@ -159,6 +163,21 @@ class Compra extends CActiveRecord {
         $criteria->compare('data_hora', $this->data_hora, true);
         $criteria->compare('usuario_id', $this->usuario_id);
         $criteria->compare('excluido', $this->excluido);
+        
+        if (!empty($this->data_hora_inicial) && !empty($this->data_hora_final)) {
+            $this->data_hora_inicial_grid = $this->data_hora_inicial;
+            $this->data_hora_final_grid = $this->data_hora_final;
+            $criteria->addBetweenCondition('date(data_hora)', $this->data_hora_inicial, $this->data_hora_final);
+        } else if (!empty($this->data_hora_inicial_grid) && !empty($this->data_hora_final_grid)) {
+            $this->data_hora_inicial = $this->data_hora_inicial_grid;
+            $this->data_hora_final = $this->data_hora_final_grid;
+            $criteria->addBetweenCondition('date(data_hora)', $this->data_hora_inicial, $this->data_hora_final);
+        }
+        
+        if (!empty($this->produto_id)) {
+            $criteria->join = ' JOIN produtos p ON p.id = t.produto_id ';
+            $criteria->addCondition("p.titulo like '" . $this->produto_id . "'");
+        }
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

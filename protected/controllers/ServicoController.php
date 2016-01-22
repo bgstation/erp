@@ -118,11 +118,16 @@ class ServicoController extends Controller {
     public function actionAdmin() {
         $model = new Servico('search');
         $model->unsetAttributes();
-        if (isset($_GET['Servico']))
+        $oSearchForm = new SearchForm();
+
+        if (isset($_GET['Servico'])) {
             $model->attributes = $_GET['Servico'];
+            $oSearchForm->request = $_GET['Servico'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 

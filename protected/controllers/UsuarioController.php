@@ -127,11 +127,16 @@ class UsuarioController extends Controller {
     public function actionAdmin() {
         $model = new Usuario('search');
         $model->unsetAttributes();
-        if (isset($_GET['Usuario']))
+        $oSearchForm = new SearchForm();
+
+        if (isset($_GET['Usuario'])) {
             $model->attributes = $_GET['Usuario'];
+            $oSearchForm->request = $_GET['Usuario'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 
@@ -169,5 +174,5 @@ class UsuarioController extends Controller {
             $oTipoUsuarioRota->save();
         }
     }
-    
+
 }

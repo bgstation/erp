@@ -39,5 +39,28 @@ class Controller extends CController {
 //        }
 //        return parent::beforeAction($action);
 //    }
+    
+    public function behaviors() {
+        return array(
+            'exportableGrid' => array(
+                'class' => 'application.components.ExportableGridBehavior',
+                'csvDelimiter' => ';',
+        ));
+    }
+    
+    /**
+     * @param model $model Modelo a ser exportado
+     * @param string $nomeRelatorio Nome do relatorio que será exportado
+     * @param array $headers cabeçalho do arquivo
+     * @param string $filename Nome do arquivo
+     * @return file Efetua o download de um csv
+     */
+    public function exportarRelatorio($model, $nomeRelatorio, $headers, $filename) {
+        if ($this->isExportRequest()) {
+            $this->setFilename($filename);
+            $this->exportCSV(array($nomeRelatorio . date('d/m/Y H:i:s')), null, false);
+            $this->exportCSV($model, $headers);
+        }
+    }
 
 }

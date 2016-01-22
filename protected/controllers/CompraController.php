@@ -120,9 +120,10 @@ class CompraController extends Controller {
     public function actionAdmin() {
         $model = new Compra('search');
         $model->unsetAttributes();
-
-        $aCompras = array();
+        $oSearchForm = new SearchForm();
         $oCompras = Compra::model()->findAll();
+        $aCompras = array();
+
         if (!empty($oCompras)) {
             foreach ($oCompras as $compra) {
                 $aCompras['produto_id'][] = $compra->produto_id;
@@ -141,13 +142,16 @@ class CompraController extends Controller {
             $oUsuarios = Usuario::model()->ordenarNome()->findAll();
         }
 
-        if (isset($_GET['Compra']))
+        if (isset($_GET['Compra'])) {
             $model->attributes = $_GET['Compra'];
+            $oSearchForm->request = $_GET['Compra'];
+        }
 
         $this->render('admin', array(
             'model' => $model,
             'oProdutos' => $oProdutos,
             'oUsuarios' => $oUsuarios,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 

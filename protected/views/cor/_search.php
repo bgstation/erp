@@ -17,11 +17,6 @@
         <?= $form->textField($model, 'titulo', array('placeholder' => 'Título')) ?>
     </div>
 
-    <div class="row">
-        <label>Excluído</label>
-        <?= $form->checkbox($model, 'excluido') ?>
-    </div>
-
     <div class='rows search-buttons'>
         <?php
         $this->widget('bootstrap.widgets.TbButton', array(

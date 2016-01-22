@@ -14,21 +14,17 @@ class TipoProduto extends CActiveRecord {
      * @return string the associated database table name
      */
     public function tableName() {
-        return 'tipos_produto';
+        return 'tipos_produtos';
     }
 
     /**
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('excluido', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
             array('titulo', 'required'),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
             array('id, titulo, excluido', 'safe', 'on' => 'search'),
         );
     }

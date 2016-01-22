@@ -24,6 +24,10 @@
     <div class="row">
         <?= $form->textField($model, 'quantidade', array('placeholder' => 'Quantidade')) ?>
     </div>
+    
+    <div class="row">
+        <?= $form->textField($model, 'usuario_id', array('placeholder' => 'Usuário')) ?>
+    </div>
 
     <div class="row">
         <?php

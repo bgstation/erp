@@ -21,11 +21,6 @@
         <?= $form->textField($model, 'marca_id', array('placeholder' => 'Marca')) ?>
     </div>
 
-    <div class="row">
-        <?= $form->label($model, 'excluido') ?>
-        <?= $form->checkbox($model, 'excluido') ?>
-    </div>
-
     <div class='rows search-buttons'>
         <?php
         $this->widget('bootstrap.widgets.TbButton', array(

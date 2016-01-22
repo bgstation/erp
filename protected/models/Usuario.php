@@ -108,14 +108,22 @@ class Usuario extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
+        $aJoin = array();
 
         $criteria->compare('id', $this->id);
         $criteria->compare('nome', $this->nome, true);
         $criteria->compare('login', $this->login, true);
         $criteria->compare('senha', $this->senha, true);
-        $criteria->compare('acl_tipo_usuario_id', $this->acl_tipo_usuario_id);
         $criteria->compare('excluido', $this->excluido);
         $criteria->compare('data_cadastro', $this->data_cadastro, true);
+        
+        if (!empty($this->acl_tipo_usuario_id)) {
+            $aJoin[] = 'JOIN acl_tipos_usuarios tipo_usuario ON tipo_usuario.id = t.acl_tipo_usuario_id';
+            $criteria->addCondition("tipo_usuario.titulo like '%" . $this->acl_tipo_usuario_id . "%'");
+        }
+        if (!empty($aJoin)) {
+            $criteria->join = implode(' ', $aJoin);
+        }
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

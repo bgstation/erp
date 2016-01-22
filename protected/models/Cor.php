@@ -22,14 +22,10 @@ class Cor extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('excluido', 'numerical', 'integerOnly' => true),
             array('titulo, rgb', 'length', 'max' => 20),
             array('titulo', 'required'),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
             array('id, titulo, rgb, excluido', 'safe', 'on' => 'search'),
         );
     }
@@ -61,7 +57,7 @@ class Cor extends CActiveRecord {
             'id' => 'ID',
             'titulo' => 'Titulo',
             'rgb' => 'Rgb',
-            'excluido' => 'Excluido',
+            'excluido' => 'Excluído',
         );
     }
 

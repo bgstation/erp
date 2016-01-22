@@ -63,9 +63,6 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'name' => 'tipo_produto_id',
             'value' => '!empty($data->tipo_produto_id) ? $data->tipoProduto->titulo : ""',
-            'filter' => CHtml::activeDropDownList($model, 'tipo_produto_id', CHtml::listData($oTiposProdutos, 'id', 'titulo'), array(
-                'empty' => '',
-            )),
         ),
         array(
             'name' => 'preco',
@@ -80,7 +77,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                     'label' => '<i class="fa fa-minus-circle"></i>',
                     'options' => array('title' => 'Retirar produto', 'style' => 'margin:0 5px 0 0;color:#313131;'),
                     'url' => 'Yii::app()->createUrl("produto/retirar", array("id" => $data->id))',
-//                    'visible' => 'Yii::app()->user->checkAccess("produto/retirar")',
+                    'visible' => 'Yii::app()->user->checkAccess("produto/retirar")',
                 ),
                 'view' => array(
                     'visible' => 'Yii::app()->user->checkAccess("produto/view")',

@@ -24,11 +24,6 @@
     <div class="row">
         <?= $form->textField($model, 'acl_tipo_usuario_id', array('placeholder' => 'Tipo Usuário')) ?>
     </div>
-    
-    <div class="row">
-        <?= $form->label($model, 'excluido') ?>
-        <?= $form->checkbox($model, 'excluido') ?>
-    </div>
 
     <div class='rows search-buttons'>
         <?php

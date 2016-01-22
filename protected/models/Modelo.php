@@ -23,8 +23,6 @@ class Modelo extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('marca_id, excluido', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
@@ -49,10 +47,10 @@ class Modelo extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'titulo' => 'Titulo',
+            'titulo' => 'Título',
             'marca_id' => 'Marca',
-            'observacao' => 'Observacao',
-            'excluido' => 'Excluido',
+            'observacao' => 'Observação',
+            'excluido' => 'Excluído',
         );
     }
 
@@ -83,12 +81,21 @@ class Modelo extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
+        $aJoin = array();
 
         $criteria->compare('id', $this->id);
         $criteria->compare('titulo', $this->titulo, true);
-        $criteria->compare('marca_id', $this->marca_id);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
+        
+        if (!empty($this->marca_id)) {
+            $aJoin[] = 'JOIN marcas marca ON marca.id = t.marca_id';
+            $criteria->addCondition("marca.titulo like '%" . $this->marca_id . "%'");
+        }
+        
+        if (!empty($aJoin)) {
+            $criteria->join = implode(' ', $aJoin);
+        }
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

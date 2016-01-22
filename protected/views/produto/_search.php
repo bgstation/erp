@@ -36,10 +36,9 @@
     <div class="row">
         <?= $form->textField($model, 'quantidade', array('placeholder' => 'Quantidade')) ?>
     </div>
-
+    
     <div class="row">
-        <?= $form->label($model, 'excluido') ?>
-        <?= $form->checkbox($model, 'excluido') ?>
+        <?= $form->textField($model, 'tipo_produto_id', array('placeholder' => 'Tipo Produto')) ?>
     </div>
 
     <div class='rows search-buttons'>

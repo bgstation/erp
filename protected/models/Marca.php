@@ -22,15 +22,11 @@ class Marca extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('excluido', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
             array('observacao', 'safe'),
             array('titulo', 'required'),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
             array('id, titulo, observacao, excluido', 'safe', 'on' => 'search'),
         );
     }
@@ -39,8 +35,6 @@ class Marca extends CActiveRecord {
      * @return array relational rules.
      */
     public function relations() {
-        // NOTE: you may need to adjust the relation name and the related
-        // class name for the relations automatically generated below.
         return array(
         );
     }
@@ -51,9 +45,9 @@ class Marca extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'titulo' => 'Titulo',
-            'observacao' => 'Observacao',
-            'excluido' => 'Excluido',
+            'titulo' => 'Título',
+            'observacao' => 'Observação',
+            'excluido' => 'Excluído',
         );
     }
     

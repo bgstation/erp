@@ -1,5 +1,5 @@
 @media (min-width: 801px) {
-    .admin-buttons {
+    .admin-buttons .search_button, .admin-buttons .search_form {
         display:none
     }
 }

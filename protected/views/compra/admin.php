@@ -84,7 +84,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'compra-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
-        'afterAjaxUpdate' => "function() {
+    'afterAjaxUpdate' => "function() {
                                   jQuery('#Compra_data_hora_inicial_grid').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['pt'], {'showAnim':'fold','dateFormat':'yy-mm-dd','changeMonth':'true','showButtonPanel':'true','changeYear':'true','constrainInput':'false'}));
                                   jQuery('#Compra_data_hora_final_grid').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['pt'], {'showAnim':'fold','dateFormat':'yy-mm-dd','changeMonth':'true','showButtonPanel':'true','changeYear':'true','constrainInput':'false'}));
                               }",
@@ -115,13 +115,10 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
-            'template' => '{view}{update}{cancelar}',
+            'template' => '{view}{cancelar}',
             'buttons' => array(
                 'view' => array(
                     'visible' => 'Yii::app()->user->checkAccess("compra/view")',
-                ),
-                'update' => array(
-                    'visible' => 'Yii::app()->user->checkAccess("compra/update")',
                 ),
                 'cancelar' => array(
                     'label' => '<i class="fa fa-times"></i>',
@@ -148,15 +145,11 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                         'title' => 'Cancelar compra', 'style' => 'margin:0 5px 0 0;color:#313131;'
                     ),
                     'url' => 'Yii::app()->createUrl("compra/cancelar", array("id" => $data->id))',
-//                    'visible' => 'Yii::app()->user->checkAccess("compra/cancelar") && $data->checaCancelado()',
+                    'visible' => 'Yii::app()->user->checkAccess("compra/cancelar") && $data->checaCancelado()',
                 ),
             ),
         ),
     ),
 ));
 ?>
-
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/site.js"></script>
-<script>
-//    $.parseJSON()
-</script>

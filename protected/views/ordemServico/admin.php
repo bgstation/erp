@@ -63,16 +63,10 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'name' => 'cliente_id',
             'value' => '!empty($data->cliente_id) ? $data->cliente->nome : "" ',
-            'filter' => CHtml::activeDropDownList($model, 'cliente_id', CHtml::listData($oClientes, 'id', 'nome'), array(
-                'empty' => '',
-            )),
         ),
         array(
             'name' => 'cliente_carro_id',
             'value' => '!empty($data->cliente_carro_id) ? $data->clienteCarro->placa : "" ',
-            'filter' => CHtml::activeDropDownList($model, 'cliente_carro_id', CHtml::listData($oClientesCarros, 'id', 'placa'), array(
-                'empty' => '',
-            )),
         ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',

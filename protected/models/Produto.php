@@ -105,7 +105,7 @@ class Produto extends CActiveRecord {
         $aJoin = array();
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('titulo', $this->titulo, true);
+        $criteria->compare('t.titulo', $this->titulo, true);
         $criteria->compare('codigo_barra', $this->codigo_barra, true);
         $criteria->compare('preco', $this->preco, true);
         $criteria->compare('observacao', $this->observacao, true);

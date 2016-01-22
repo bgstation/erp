@@ -85,7 +85,6 @@ class OrdemServico extends CActiveRecord {
         $aJoin = array();
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('cliente_carro_id', $this->cliente_carro_id);
         $criteria->compare('forma_pagamento_id', $this->forma_pagamento_id);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
@@ -93,6 +92,10 @@ class OrdemServico extends CActiveRecord {
         if (!empty($this->cliente_id)) {
             $aJoin[] = 'JOIN clientes cliente ON cliente.id = t.cliente_id';
             $criteria->addCondition("cliente.nome like '%" . $this->cliente_id . "%'");
+        }
+        if (!empty($this->cliente_carro_id)) {
+            $aJoin[] = 'JOIN clientes_carros cliente_carro ON cliente_carro.id = t.cliente_carro_id';
+            $criteria->addCondition("cliente_carro.placa like '%" . $this->cliente_carro_id . "%'");
         }
         
         if (!empty($aJoin)) {

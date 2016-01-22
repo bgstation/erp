@@ -50,7 +50,7 @@ class TipoDespesa extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'Código',
-            'titulo' => 'Titulo',
+            'titulo' => 'Título',
             'excluido' => 'Excluído'
         );
     }

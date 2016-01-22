@@ -82,13 +82,22 @@ class OrdemServico extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
+        $aJoin = array();
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('cliente_id', $this->cliente_id);
         $criteria->compare('cliente_carro_id', $this->cliente_carro_id);
         $criteria->compare('forma_pagamento_id', $this->forma_pagamento_id);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
+
+        if (!empty($this->cliente_id)) {
+            $aJoin[] = 'JOIN clientes cliente ON cliente.id = t.cliente_id';
+            $criteria->addCondition("cliente.nome like '%" . $this->cliente_id . "%'");
+        }
+        
+        if (!empty($aJoin)) {
+            $criteria->join = implode(' ', $aJoin);
+        }
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

@@ -106,14 +106,13 @@ class Despesa extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
+        $aJoin = array();
 
         $criteria->compare('id', $this->id);
-        $criteria->compare('tipo_despesa_id', $this->tipo_despesa_id);
         $criteria->compare('preco', $this->preco, true);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('quantidade', $this->quantidade);
         $criteria->compare('data_hora', $this->data_hora, true);
-        $criteria->compare('usuario_id', $this->usuario_id);
         $criteria->compare('excluido', $this->excluido);
         
         if (!empty($this->data_hora_inicial) && !empty($this->data_hora_final)) {
@@ -125,10 +124,16 @@ class Despesa extends CActiveRecord {
             $this->data_hora_final = $this->data_hora_final_grid;
             $criteria->addBetweenCondition('date(data_hora)', $this->data_hora_inicial, $this->data_hora_final);
         }
-        
         if (!empty($this->tipo_despesa_id)) {
-            $criteria->join = ' JOIN tipos_despesas td ON td.id = t.tipo_despesa_id ';
-            $criteria->addCondition("td.titulo like '" . $this->tipo_despesa_id . "'");
+             $aJoin[] = 'JOIN tipos_despesas td ON td.id = t.tipo_despesa_id';
+            $criteria->addCondition("td.titulo like '%" . $this->tipo_despesa_id . "%'");
+        }
+        if (!empty($this->usuario_id)) {
+            $aJoin[] = 'JOIN usuarios usuario ON usuario.id = t.usuario_id';
+            $criteria->addCondition("usuario.nome like '%" . $this->usuario_id . "%'");
+        }
+        if (!empty($aJoin)) {
+            $criteria->join = implode(' ', $aJoin);
         }
 
         return new CActiveDataProvider($this, array(

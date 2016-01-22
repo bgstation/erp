@@ -153,15 +153,14 @@ class Compra extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
+        $aJoin = array();
 
         $criteria->compare('id', $this->id);
         $criteria->compare('nota_fiscal', $this->nota_fiscal, true);
-        $criteria->compare('produto_id', $this->produto_id);
         $criteria->compare('preco', $this->preco, true);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('quantidade', $this->quantidade);
         $criteria->compare('data_hora', $this->data_hora, true);
-        $criteria->compare('usuario_id', $this->usuario_id);
         $criteria->compare('excluido', $this->excluido);
         
         if (!empty($this->data_hora_inicial) && !empty($this->data_hora_final)) {
@@ -173,10 +172,16 @@ class Compra extends CActiveRecord {
             $this->data_hora_final = $this->data_hora_final_grid;
             $criteria->addBetweenCondition('date(data_hora)', $this->data_hora_inicial, $this->data_hora_final);
         }
-        
         if (!empty($this->produto_id)) {
-            $criteria->join = ' JOIN produtos p ON p.id = t.produto_id ';
-            $criteria->addCondition("p.titulo like '" . $this->produto_id . "'");
+            $aJoin[] = 'JOIN produtos produto ON produto.id = t.produto_id';
+            $criteria->addCondition("produto.titulo like '%" . $this->produto_id . "%'");
+        }
+        if (!empty($this->usuario_id)) {
+            $aJoin[] = 'JOIN usuarios usuario ON usuario.id = t.usuario_id';
+            $criteria->addCondition("usuario.nome like '%" . $this->usuario_id . "%'");
+        }
+        if (!empty($aJoin)) {
+            $criteria->join = implode(' ', $aJoin);
         }
 
         return new CActiveDataProvider($this, array(

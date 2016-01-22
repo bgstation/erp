@@ -75,16 +75,12 @@ class ClienteCarro extends CActiveRecord {
      * @return array validation rules for model attributes.
      */
     public function rules() {
-        // NOTE: you should only define rules for those attributes that
-        // will receive user inputs.
         return array(
             array('observacao', 'safe'),
             array('placa, cliente_id', 'required'),
             array('marca_id, cliente_id, excluido, modelo_id', 'numerical', 'integerOnly' => true),
             array('placa', 'length', 'max' => 8),
             array('placa', 'checarUnique', 'except' => 'marcarExcluido'),
-            // The following rule is used by search().
-            // @todo Please remove those attributes that should not be searched.
             array('id, placa, marca_id, cliente_id, observacao, excluido, modelo_id', 'safe', 'on' => 'search'),
         );
     }
@@ -154,14 +150,28 @@ class ClienteCarro extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
+        $aJoin = array();
 
         $criteria->compare('id', $this->id);
         $criteria->compare('placa', $this->placa, true);
-        $criteria->compare('marca_id', $this->marca_id);
-        $criteria->compare('modelo_id', $this->modelo_id);
-        $criteria->compare('cliente_id', $this->cliente_id);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
+        
+        if (!empty($this->marca_id)) {
+            $aJoin[] = 'JOIN marcas marca ON marca.id = t.marca_id';
+            $criteria->addCondition("marca.titulo like '%" . $this->marca_id . "%'");
+        }
+        if (!empty($this->modelo_id)) {
+            $aJoin[] = 'JOIN modelos modelo ON modelo.id = t.modelo_id';
+            $criteria->addCondition("modelo.titulo like '%" . $this->modelo_id . "%'");
+        }
+        if (!empty($this->cliente_id)) {
+            $aJoin[] = 'JOIN clientes cliente ON cliente.id = t.cliente_id';
+            $criteria->addCondition("cliente.nome like '%" . $this->cliente_id . "%'");
+        }
+        if (!empty($aJoin)) {
+            $criteria->join = implode(' ', $aJoin);
+        }
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

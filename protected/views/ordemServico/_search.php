@@ -14,20 +14,11 @@
     ?>
 
     <div class="row">
+        <?= $form->textField($model, 'id', array('placeholder' => 'Número OS')) ?>
+    </div>
+    
+    <div class="row">
         <?= $form->textField($model, 'cliente_id', array('placeholder' => 'Cliente')) ?>
-    </div>
-
-    <div class="row">
-        <?= $form->textField($model, 'cliente_carro_id', array('placeholder' => 'Carro')) ?>
-    </div>
-
-    <div class="row">
-        <?= $form->textField($model, 'forma_pagamento_id', array('placeholder' => 'Forma Pagamento')) ?>
-    </div>
-
-    <div class="row">
-        <?= $form->label($model, 'excluido') ?>
-        <?= $form->checkbox($model, 'excluido') ?>
     </div>
 
     <div class='rows search-buttons'>

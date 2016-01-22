@@ -102,17 +102,31 @@ class Produto extends CActiveRecord {
         // @todo Please modify the following code to remove attributes that should not be searched.
 
         $criteria = new CDbCriteria;
+        $aJoin = array();
 
         $criteria->compare('id', $this->id);
         $criteria->compare('titulo', $this->titulo, true);
         $criteria->compare('codigo_barra', $this->codigo_barra, true);
-        $criteria->compare('marca_id', $this->marca_id);
-        $criteria->compare('modelo_id', $this->modelo_id);
         $criteria->compare('preco', $this->preco, true);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('quantidade', $this->quantidade);
         $criteria->compare('excluido', $this->excluido);
-        $criteria->compare('tipo_produto_id', $this->tipo_produto_id);
+        
+        if (!empty($this->marca_id)) {
+            $aJoin[] = 'JOIN marcas marca ON marca.id = t.marca_id';
+            $criteria->addCondition("marca.titulo like '%" . $this->marca_id . "%'");
+        }
+        if (!empty($this->modelo_id)) {
+            $aJoin[] = 'JOIN modelos modelo ON modelo.id = t.modelo_id';
+            $criteria->addCondition("modelo.titulo like '%" . $this->modelo_id . "%'");
+        }
+        if (!empty($this->tipo_produto_id)) {
+             $aJoin[] = 'JOIN tipos_produtos tp ON tp.id = t.tipo_produto_id';
+            $criteria->addCondition("tp.titulo like '%" . $this->tipo_produto_id . "%'");
+        }
+        if (!empty($aJoin)) {
+            $criteria->join = implode(' ', $aJoin);
+        }
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

@@ -90,11 +90,11 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                               }",
     'rowCssClassExpression' => '$data->getColor($data->excluido)',
     'columns' => array(
-        'nota_fiscal',
         array(
             'name' => 'produto_id',
             'value' => '!empty($data->produto_id) ? $data->produto->titulo : ""',
         ),
+        'nota_fiscal',
         array(
             'name' => 'preco',
             'value' => '!empty($data->preco) ? "R$ ". FormatHelper::valorMonetario($data->preco, 2) : ""'
@@ -111,7 +111,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
         array(
             'name' => 'excluido',
-            'value' => '!empty($data->excluido) && $data->excluido == 1 ? "Cancelada" : "Ativa"'
+            'value' => '!empty($data->excluido) && $data->excluido == 1 ? "Sim" : "Não"'
         ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',

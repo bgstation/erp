@@ -52,7 +52,7 @@ class AclTipoUsuario extends CActiveRecord {
         return array(
             'id' => 'ID',
             'titulo' => 'Título',
-            'excluido' => 'Desabilitado',
+            'excluido' => 'Excluído',
             'data_cadastro' => 'Data Cadastro',
         );
     }

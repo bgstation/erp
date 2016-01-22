@@ -2,3 +2,6 @@ assets/
 protected/runtime/
 protected/runtime/application.log
 nbproject/
+protected/config/defines.php
+protected/config/main.php
+protected/config/console.php

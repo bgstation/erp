@@ -33,10 +33,6 @@ class ClienteController extends Controller {
                 'actions' => array('create', 'update', 'admin', 'delete'),
                 'users' => array('@'),
             ),
-            array('allow',
-                'actions' => array(),
-                'users' => array('admin'),
-            ),
             array('deny', // deny all users
                 'users' => array('*'),
             ),

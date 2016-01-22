@@ -30,7 +30,7 @@ class DespesaController extends Controller {
                 'users' => array('*'),
             ),
             array('allow',
-                'actions' => array('create', 'update', 'admin', 'delete'),
+                'actions' => array('create', 'update', 'admin', 'delete', 'cancelar'),
                 'users' => array('@'),
             ),
             array('deny',
@@ -161,6 +161,19 @@ class DespesaController extends Controller {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }
+    }
+
+    public function actionCancelar() {
+        $aRetorno['status'] = 'error';
+        if (!empty($_GET['id'])) {
+            $model = $this->loadModel($_GET['id']);
+            $model->scenario = 'cancelarCompra';
+            $model->excluido = 1;
+            if ($model->save()) {
+                $aRetorno['status'] = 'success';
+            }
+        }
+        die(CJSON::encode($aRetorno));
     }
 
 }

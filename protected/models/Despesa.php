@@ -19,7 +19,7 @@ class Despesa extends CActiveRecord {
     public $data_hora_final;
     public $data_hora_inicial_grid;
     public $data_hora_final_grid;
-    
+
     /**
      * @return string the associated database table name
      */
@@ -36,7 +36,7 @@ class Despesa extends CActiveRecord {
             array('preco', 'length', 'max' => 10),
             array('observacao, data_hora, data_hora_inicial, data_hora_final, data_hora_inicial_grid, data_hora_final_grid', 'safe'),
             array('preco, tipo_despesa_id, quantidade', 'required'),
-            array('preco', 'tratarPreco'),
+            array('preco', 'tratarPreco', 'except' => 'cancelarCompra'),
             array('id, tipo_despesa_id, preco, observacao, quantidade, data_hora, usuario_id, excluido', 'safe', 'on' => 'search'),
         );
     }
@@ -60,6 +60,12 @@ class Despesa extends CActiveRecord {
         if ($this->isNewRecord) {
             $oFinanceiro = new Financeiro;
             $oFinanceiro->salvar(3, $this);
+        } else if ($this->excluido == 1) {
+            $oFinanceiro = Financeiro::model()->findByAttributes(array(
+                'tipo_item' => 3,
+                'tipo_item_id' => $this->id,
+            ));
+            $oFinanceiro->salvar(3, $this, null, 1);
         }
         parent::afterSave();
     }
@@ -114,7 +120,7 @@ class Despesa extends CActiveRecord {
         $criteria->compare('quantidade', $this->quantidade);
         $criteria->compare('data_hora', $this->data_hora, true);
         $criteria->compare('excluido', $this->excluido);
-        
+
         if (!empty($this->data_hora_inicial) && !empty($this->data_hora_final)) {
             $this->data_hora_inicial_grid = $this->data_hora_inicial;
             $this->data_hora_final_grid = $this->data_hora_final;
@@ -124,6 +130,10 @@ class Despesa extends CActiveRecord {
             $this->data_hora_final = $this->data_hora_final_grid;
             $criteria->addBetweenCondition('date(data_hora)', $this->data_hora_inicial, $this->data_hora_final);
         }
+<<<<<<< HEAD
+
+=======
+>>>>>>> ee312dc7abf0be81abfe3ee042288a1156b2bfc5
         if (!empty($this->tipo_despesa_id)) {
              $aJoin[] = 'JOIN tipos_despesas td ON td.id = t.tipo_despesa_id';
             $criteria->addCondition("td.titulo like '%" . $this->tipo_despesa_id . "%'");
@@ -149,6 +159,14 @@ class Despesa extends CActiveRecord {
      */
     public static function model($className = __CLASS__) {
         return parent::model($className);
+    }
+
+    public function checaCancelado() {
+        if ($this->excluido == 1) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }

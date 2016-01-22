@@ -1,6 +1,11 @@
-@media (max-width: 979px) {
-    #header {
-        height: 60px!important;
+@media (min-width: 801px) {
+    .admin-buttons .search_button {
+        display:none
+    }
+}
+@media (max-width: 450px) {
+    .grid-view .summary {
+        text-align: left;
     }
 }
 @media (max-width: 500px) {
@@ -8,8 +13,13 @@
         height: 60px!important;
     }
 }
-@media (max-width: 450px) {
-    .grid-view .summary {
-        text-align: left;
+@media (max-width: 800px) {
+    .grid-view .filters {
+        display:none
+    }
+}
+@media (max-width: 979px) {
+    #header {
+        height: 60px!important;
     }
 }

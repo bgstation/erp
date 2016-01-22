@@ -55,7 +55,7 @@ $('.search-form form').submit(function(){
 $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'cliente-grid',
     'dataProvider' => $model->search(),
-//    'filter' => $model,
+    'filter' => $model,
     'columns' => array(
         'nome',
         'email',

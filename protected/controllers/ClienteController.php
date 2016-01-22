@@ -33,7 +33,7 @@ class ClienteController extends Controller {
                 'actions' => array('create', 'update', 'admin', 'delete'),
                 'users' => array('@'),
             ),
-            array('deny', // deny all users
+            array('deny',
                 'users' => array('*'),
             ),
         );
@@ -125,6 +125,9 @@ class ClienteController extends Controller {
             $model->attributes = $_GET['Cliente'];
             $oSearchForm->request = $_GET['Cliente'];
         }
+        
+        $headers = $model->getHeadersRelatorio();
+        $this->exportarRelatorio($model->search(), 'Relatório Clientes - ', $headers, date('YmdHis') . '_relatorio_clientes.csv');
 
         $this->render('admin', array(
             'model' => $model,

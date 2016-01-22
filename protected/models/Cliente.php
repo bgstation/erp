@@ -133,5 +133,22 @@ class Cliente extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
+    
+    public function getHeadersRelatorio() {
+        $headers = array(
+            'id',
+            'nome',
+            'email',
+            'cpf',
+            'sexo',
+            'telefone_fixo',
+            'celular',
+            'endereco',
+            'numero',
+            'complemento',
+            'data_cadastro',
+        );
+        return $headers;
+    }
 
 }

@@ -68,7 +68,7 @@ $intervaloDataPedido = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
             ),
                 ), true);
 
-$this->widget('bootstrap.widgets.TbGridView', array(
+$gridView = $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'log-retirada-produto-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
@@ -103,5 +103,6 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
     ),
 ));
+$this->renderExportGridButton($gridView, 'Exportar Relatório', array('class' => 'btn btn-info pull-left'));
 ?>
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/site.js"></script>

@@ -140,6 +140,9 @@ class LogRetiradaProdutoController extends Controller {
             $model->attributes = $_GET['LogRetiradaProduto'];
             $oSearchForm->request = $_GET['LogRetiradaProduto'];
         }
+        
+        $headers = $model->getHeadersRelatorio();
+        $this->exportarRelatorio($model->search(), 'Relatório Retirada Estoque - ', $headers, date('YmdHis') . '_relatorio_retirada_estoque.csv');
 
         $this->render('admin', array(
             'model' => $model,

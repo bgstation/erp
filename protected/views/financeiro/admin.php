@@ -84,16 +84,16 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
     'rowCssClassExpression' => '$data->getColor($data->tipo_item)',
     'columns' => array(
         array(
+            'name' => 'tipo_item_id',
+            'type' => 'raw',
+            'value' => '$data->getLink($data->tipo_item, $data->tipo_item_id)',
+        ),
+        array(
             'name' => 'tipo_item',
             'value' => '$data->aTiposItens[$data->tipo_item]',
             'filter' => CHtml::activeDropDownList($model, 'tipo_item', $model->aTiposItens, array(
                 'empty' => '',
             )),
-        ),
-        array(
-            'name' => 'tipo_item_id',
-            'type' => 'raw',
-            'value' => '$data->getLink($data->tipo_item, $data->tipo_item_id)',
         ),
         'descricao',
         array(

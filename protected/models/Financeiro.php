@@ -61,7 +61,7 @@ class Financeiro extends CActiveRecord {
         return array(
             'id' => 'ID',
             'tipo_item' => 'Tipo',
-            'tipo_item_id' => 'Identificador',
+            'tipo_item_id' => 'ID',
             'descricao' => 'Descrição',
             'valor' => 'Valor',
             'parcelas' => 'Parcelas',

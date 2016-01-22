@@ -50,7 +50,7 @@ $('.search-form form').submit(function(){
 </div>
 
 <?php
-$this->widget('bootstrap.widgets.TbGridView', array(
+$gridView = $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'cliente-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
@@ -75,5 +75,6 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
     ),
 ));
+$this->renderExportGridButton($gridView, 'Exportar Relatório', array('class' => 'btn btn-info pull-left'));
 ?>
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/site.js"></script>

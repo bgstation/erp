@@ -12,7 +12,7 @@
  * @property string $data_hora
  */
 class LogRetiradaProduto extends CActiveRecord {
-    
+
     public $data_hora_inicial;
     public $data_hora_final;
     public $data_hora_inicial_grid;
@@ -83,7 +83,7 @@ class LogRetiradaProduto extends CActiveRecord {
         $criteria->compare('quantidade', $this->quantidade);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('data_hora', $this->data_hora, true);
-        
+
         if (!empty($this->data_hora_inicial) && !empty($this->data_hora_final)) {
             $this->data_hora_inicial_grid = $this->data_hora_inicial;
             $this->data_hora_final_grid = $this->data_hora_final;
@@ -128,6 +128,18 @@ class LogRetiradaProduto extends CActiveRecord {
             return true;
         }
         return false;
+    }
+
+    public function getHeadersRelatorio() {
+        $headers = array(
+            'id',
+            'produto_id',
+            'quantidade',
+            'usuario_id',
+            'observacao',
+            'data_hora',
+        );
+        return $headers;
     }
 
 }

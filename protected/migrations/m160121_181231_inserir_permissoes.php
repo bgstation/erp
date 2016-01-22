@@ -2,7 +2,8 @@
 
 class m160121_181231_inserir_permissoes extends CDbMigration {
 
-    public function safeUp() {
+    public function safeUp() { 
+//        a
         $this->insert('acl_rotas', array(
             'controller' => 'logRetiradaProduto',
             'action' => 'view',

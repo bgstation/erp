@@ -8,22 +8,13 @@ class m160112_113711_criar_crud_log_itens_nao_cadastrados extends CDbMigration {
             'ordem_servico_item_id' => 'integer',
             'titulo' => 'varchar(200)',
             'preco' => 'decimal(10,2)',
+            'cadastrado' => 'boolean default false',
         ));
     }
 
-    public function down() {
+    public function safeDown() {
         echo "m160112_113711_criar_crud_log_itens_nao_cadastrados does not support migration down.\n";
         return false;
     }
 
-    /*
-      // Use safeUp/safeDown to do migration with transaction
-      public function safeUp()
-      {
-      }
-
-      public function safeDown()
-      {
-      }
-     */
 }

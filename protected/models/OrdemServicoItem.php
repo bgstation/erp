@@ -17,6 +17,10 @@ class OrdemServicoItem extends CActiveRecord {
         1 => 'Produto',
         2 => 'Serviço',
     );
+    
+    const ITEM_NAO_CADASTRADO = 0;
+    const PRODUTO = 1;
+    const SERVICO = 2;
 
     /**
      * @return string the associated database table name
@@ -121,11 +125,12 @@ class OrdemServicoItem extends CActiveRecord {
         $model->ordem_servico_id = $this->ordem_servico_id;
         $model->tipo_item_id = $tipoItem;
         $model->item_id = $itemId;
-        if ($model->save() && $itemId == 0 && !empty($aDados)) {
+        if ($model->save() && $itemId == self::ITEM_NAO_CADASTRADO && !empty($aDados)) {
             $oLogItemNaoCadastrado = new LogItemNaoCadastrado;
             $oLogItemNaoCadastrado->ordem_servico_item_id = $model->id;
             $oLogItemNaoCadastrado->titulo = $aDados['titulo'];
             $oLogItemNaoCadastrado->preco = $aDados['preco'];
+            $oLogItemNaoCadastrado->usuario_id = Yii::app()->user->getId();
             $oLogItemNaoCadastrado->save();
         }
     }
@@ -137,14 +142,14 @@ class OrdemServicoItem extends CActiveRecord {
             if (!empty($aItens)) {
                 foreach ($aItens as $item) {
                     if (!empty($item))
-                        $this->salvarItemPorTipo(1, $item);
+                        $this->salvarItemPorTipo(self::PRODUTO, $item);
                 }
             }
             $aItens = explode(',', $post['Servico']);
             if (!empty($aItens)) {
                 foreach ($aItens as $item) {
                     if (!empty($item))
-                        $this->salvarItemPorTipo(2, $item);
+                        $this->salvarItemPorTipo(self::SERVICO, $item);
                 }
             }
         }
@@ -155,7 +160,7 @@ class OrdemServicoItem extends CActiveRecord {
             foreach ($post as $tipoItem => $aDados) {
                 if (!empty($aDados)) {
                     foreach ($aDados as $dados) {
-                        $this->salvarItemPorTipo($tipoItem, 0, $dados);
+                        $this->salvarItemPorTipo($tipoItem, self::ITEM_NAO_CADASTRADO, $dados);
                     }
                 }
             }

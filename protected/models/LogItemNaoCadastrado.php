@@ -8,6 +8,8 @@
  * @property integer $ordem_servico_item_id
  * @property string $titulo
  * @property string $preco
+ * @property string $cadastrado
+ * @property integer $usuario_id
  */
 class LogItemNaoCadastrado extends CActiveRecord {
 
@@ -26,7 +28,7 @@ class LogItemNaoCadastrado extends CActiveRecord {
             array('ordem_servico_item_id', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
             array('preco', 'length', 'max' => 10),
-            array('id, ordem_servico_item_id, titulo, preco', 'safe', 'on' => 'search'),
+            array('id, ordem_servico_item_id, titulo, preco, cadastrado, usuario_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -35,6 +37,8 @@ class LogItemNaoCadastrado extends CActiveRecord {
      */
     public function relations() {
         return array(
+            'usuario' => array(self::BELONGS_TO, 'Usuario', 'usuario_id'),
+            'ordemServicoItem' => array(self::BELONGS_TO, 'OrdemServicoItem', 'ordem_servico_item_id'),
         );
     }
 
@@ -47,6 +51,16 @@ class LogItemNaoCadastrado extends CActiveRecord {
             'ordem_servico_item_id' => 'Ordem Serviço Item',
             'titulo' => 'Título',
             'preco' => 'Preço',
+            'cadastrado' => 'Cadastrado',
+            'usuario_id' => 'Usuário Responsável',
+        );
+    }
+    
+    public function scopes() {
+        return array(
+            'naoCadastrado' => array(
+                'condition' => 'cadastrado = false'
+            ),
         );
     }
 
@@ -71,6 +85,8 @@ class LogItemNaoCadastrado extends CActiveRecord {
         $criteria->compare('ordem_servico_item_id', $this->ordem_servico_item_id);
         $criteria->compare('titulo', $this->titulo, true);
         $criteria->compare('preco', $this->preco, true);
+        $criteria->compare('cadastrado', $this->cadastrado, true);
+        $criteria->compare('usuario_id', $this->usuario_id);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

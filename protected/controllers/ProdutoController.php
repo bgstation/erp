@@ -57,7 +57,7 @@ class ProdutoController extends Controller {
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate() {
+    public function actionCreate($idItemNaoCadastrado = null) {
         $model = new Produto;
 
         $oModelos = Modelo::model()->ordenarTitulo()->naoExcluido()->findAll();
@@ -66,8 +66,28 @@ class ProdutoController extends Controller {
 
         if (isset($_POST['Produto'])) {
             $model->attributes = $_POST['Produto'];
-            if ($model->save())
+            if ($model->save()) {
+                if (!empty(Yii::app()->user->getState('log_item_nao_cadastrado'))) {
+                    $logItemNaoCadastrado = LogItemNaoCadastrado::model()->findByPk(Yii::app()->user->getState('log_item_nao_cadastrado'));
+                    $logItemNaoCadastrado->cadastrado = true;
+                    $logItemNaoCadastrado->save();
+
+                    $oOrdemServicoItem = OrdemServicoItem::model()->findByPk($logItemNaoCadastrado->ordem_servico_item_id);
+                    $oOrdemServicoItem->item_id = $model->id;
+                    $oOrdemServicoItem->save();
+                    Yii::app()->user->setState('log_item_nao_cadastrado', NULL);
+                }
                 $this->redirect(array('view', 'id' => $model->id));
+            }
+        }
+        
+        if (!empty($idItemNaoCadastrado)) {
+            $logItemNaoCadastrado = LogItemNaoCadastrado::model()->findByPk($idItemNaoCadastrado);
+            if (!empty($logItemNaoCadastrado)) {
+                Yii::app()->user->setState('log_item_nao_cadastrado', $logItemNaoCadastrado->id);
+                $model->titulo = $logItemNaoCadastrado->titulo;
+                $model->preco = $logItemNaoCadastrado->preco;
+            }
         }
 
         $this->render('create', array(
@@ -136,9 +156,9 @@ class ProdutoController extends Controller {
         $oProdutos = Produto::model()->findAll();
         $aCriteria = array();
         $aProdutos = array();
-        
-        if(!empty($oProdutos)){
-            foreach ($oProdutos as $produto){
+
+        if (!empty($oProdutos)) {
+            foreach ($oProdutos as $produto) {
                 $aProdutos['tipo_produto_id'][] = $produto->tipo_produto_id;
             }
             $aCriteria['condition'] = 'id in (' . implode(',', $aProdutos['tipo_produto_id']) . ')';

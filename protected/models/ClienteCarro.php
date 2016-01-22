@@ -108,12 +108,14 @@ class ClienteCarro extends CActiveRecord {
     }
 
     public function checarUnique() {
-        $models = self::model()->naoExcluido()->findByAttributes(array(
-            'placa' => $this->placa,
-        ));
-        if (!empty($models)) {
-            $this->addError($this->placa, 'Esta placa já encontra-se cadastrada.');
-            return false;
+        if ($this->isNewRecord) {
+            $models = self::model()->naoExcluido()->findByAttributes(array(
+                'placa' => $this->placa,
+            ));
+            if (!empty($models)) {
+                $this->addError($this->placa, 'Esta placa já encontra-se cadastrada.');
+                return false;
+            }
         }
         return true;
     }
@@ -156,7 +158,7 @@ class ClienteCarro extends CActiveRecord {
         $criteria->compare('placa', $this->placa, true);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
-        
+
         if (!empty($this->marca_id)) {
             $aJoin[] = 'JOIN marcas marca ON marca.id = t.marca_id';
             $criteria->addCondition("marca.titulo like '%" . $this->marca_id . "%'");
@@ -187,11 +189,11 @@ class ClienteCarro extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-    
-    public function marcarExcluido(){
+
+    public function marcarExcluido() {
         $this->scenario = 'marcarExcluido';
         $this->excluido = 1;
-        if(!$this->save()){
+        if (!$this->save()) {
             die(var_dump($this->getErrors()));
         }
     }

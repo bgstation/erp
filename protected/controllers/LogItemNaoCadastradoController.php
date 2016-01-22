@@ -1,6 +1,6 @@
 <?php
 
-class ServicoController extends Controller {
+class LogItemNaoCadastradoController extends Controller {
 
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -30,11 +30,11 @@ class ServicoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow',
-                'actions' => array('create', 'update', 'admin', 'delete'),
+                'actions' => array('create', 'update'),
                 'users' => array('@'),
             ),
             array('allow',
-                'actions' => array(),
+                'actions' => array('admin', 'delete'),
                 'users' => array('admin'),
             ),
             array('deny',
@@ -57,33 +57,13 @@ class ServicoController extends Controller {
      * Creates a new model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
-    public function actionCreate($idItemNaoCadastrado = null) {
-        $model = new Servico;
+    public function actionCreate() {
+        $model = new LogItemNaoCadastrado;
 
-        if (isset($_POST['Servico'])) {
-            $model->attributes = $_POST['Servico'];
-            if ($model->save()) {
-                if (!empty(Yii::app()->user->getState('log_item_nao_cadastrado'))) {
-                    $logItemNaoCadastrado = LogItemNaoCadastrado::model()->findByPk(Yii::app()->user->getState('log_item_nao_cadastrado'));
-                    $logItemNaoCadastrado->cadastrado = true;
-                    $logItemNaoCadastrado->save();
-
-                    $oOrdemServicoItem = OrdemServicoItem::model()->findByPk($logItemNaoCadastrado->ordem_servico_item_id);
-                    $oOrdemServicoItem->item_id = $model->id;
-                    $oOrdemServicoItem->save();
-                    Yii::app()->user->setState('log_item_nao_cadastrado', NULL);
-                }
+        if (isset($_POST['LogItemNaoCadastrado'])) {
+            $model->attributes = $_POST['LogItemNaoCadastrado'];
+            if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
-            }
-        }
-
-        if (!empty($idItemNaoCadastrado)) {
-            $logItemNaoCadastrado = LogItemNaoCadastrado::model()->findByPk($idItemNaoCadastrado);
-            if (!empty($logItemNaoCadastrado)) {
-                Yii::app()->user->setState('log_item_nao_cadastrado', $logItemNaoCadastrado->id);
-                $model->titulo = $logItemNaoCadastrado->titulo;
-                $model->preco = $logItemNaoCadastrado->preco;
-            }
         }
 
         $this->render('create', array(
@@ -99,10 +79,17 @@ class ServicoController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
 
-        if (isset($_POST['Servico'])) {
-            $model->attributes = $_POST['Servico'];
-            if ($model->save())
-                $this->redirect(array('view', 'id' => $model->id));
+        if (isset($_POST['LogItemNaoCadastrado'])) {
+            $model->attributes = $_POST['LogItemNaoCadastrado'];
+            
+            $oOrdemServicoItem = $model->ordemServicoItem;
+            if (!empty($oOrdemServicoItem)) {
+                if ($oOrdemServicoItem->tipo_item_id == OrdemServicoItem::PRODUTO) {
+                    $this->redirect(array('produto/create', 'idItemNaoCadastrado' => $model->id));
+                } else if ($oOrdemServicoItem->tipo_item_id == OrdemServicoItem::SERVICO) {
+                    $this->redirect(array('servico/create', 'idItemNaoCadastrado' => $model->id));
+                }
+            }
         }
 
         $this->render('update', array(
@@ -126,7 +113,7 @@ class ServicoController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('Servico');
+        $dataProvider = new CActiveDataProvider('LogItemNaoCadastrado');
         $this->render('index', array(
             'dataProvider' => $dataProvider,
         ));
@@ -136,18 +123,13 @@ class ServicoController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
-        $model = new Servico('search');
+        $model = new LogItemNaoCadastrado('search');
         $model->unsetAttributes();
-        $oSearchForm = new SearchForm();
-
-        if (isset($_GET['Servico'])) {
-            $model->attributes = $_GET['Servico'];
-            $oSearchForm->request = $_GET['Servico'];
-        }
+        if (isset($_GET['LogItemNaoCadastrado']))
+            $model->attributes = $_GET['LogItemNaoCadastrado'];
 
         $this->render('admin', array(
             'model' => $model,
-            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 
@@ -155,11 +137,11 @@ class ServicoController extends Controller {
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Servico the loaded model
+     * @return LogItemNaoCadastrado the loaded model
      * @throws CHttpException
      */
     public function loadModel($id) {
-        $model = Servico::model()->findByPk($id);
+        $model = LogItemNaoCadastrado::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -167,10 +149,10 @@ class ServicoController extends Controller {
 
     /**
      * Performs the AJAX validation.
-     * @param Servico $model the model to be validated
+     * @param LogItemNaoCadastrado $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'servico-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'log-item-nao-cadastrado-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

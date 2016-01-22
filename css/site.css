@@ -47,7 +47,7 @@ input {
     height: 30px!important;
 }
 .page-header {
-    margin: 10px 0 20px!important;
+    margin: 10px 0 5px!important;
 }
 .panel-primary .panel-heading {
     background-color: #337ab7;
@@ -92,4 +92,10 @@ input {
 }
 .financeiro-resumo p {
     font-size: 17px;
+}
+.dashboard-card .row {
+    margin:0;
+}
+.dashboard-card .row {
+    text-align:center;
 }

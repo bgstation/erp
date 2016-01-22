@@ -13,6 +13,11 @@
         height: 60px!important;
     }
 }
+@media (max-width: 600px) {
+    .dashboard-card .row {
+        text-align: left;
+    }
+}
 @media (max-width: 800px) {
     .grid-view .filters {
         display:none

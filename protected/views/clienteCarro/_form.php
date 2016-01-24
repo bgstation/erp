@@ -141,6 +141,7 @@
                 marcaId: marcaId,
             },
             success: function(data) {
+                console.log(data);
                 $("#select2_modelo_id").select2({
                     data: $.parseJSON(data),
                 });
@@ -159,7 +160,8 @@
     })
 
     $('#select2_marca_id').click(function() {
-        $("#select2_modelo_id").select2('data', null)
+        $("#select2_modelo_id").select2('data', "");
+        console.log($(this).val());
         carregaSelect2Modelos($(this).val());
     });
 

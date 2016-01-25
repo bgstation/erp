@@ -153,18 +153,8 @@ class ProdutoController extends Controller {
         $model = new Produto('search');
         $model->unsetAttributes();
         $oSearchForm = new SearchForm();
-        $oProdutos = Produto::model()->findAll();
-        $aCriteria = array();
-        $aProdutos = array();
-
-        if (!empty($oProdutos)) {
-            foreach ($oProdutos as $produto) {
-                $aProdutos['tipo_produto_id'][] = $produto->tipo_produto_id;
-            }
-            $aCriteria['condition'] = 'id in (' . implode(',', $aProdutos['tipo_produto_id']) . ')';
-        }
-
-        $oTiposProdutos = TipoProduto::model()->ordenarTitulo()->findAll($aCriteria);
+        
+        $oTiposProdutos = TipoProduto::model()->ordenarTitulo()->findAll();
 
         if (isset($_GET['Produto'])) {
             $model->attributes = $_GET['Produto'];

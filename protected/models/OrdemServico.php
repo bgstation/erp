@@ -104,6 +104,8 @@ class OrdemServico extends CActiveRecord {
         }
         
         $criteria->addCondition('excluido = 0');
+        
+        $criteria->order = 'id DESC';
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

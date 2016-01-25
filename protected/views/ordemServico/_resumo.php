@@ -17,7 +17,7 @@
             </tr>
         </thead>
         <tbody id="tipo_item_1_adicionados" class="resumo">
-            <?= OrdemServicoHelper::renderItens(1, $model->ordemServicoItens) ?>
+            <?= OrdemServicoHelper::renderItens(1, $model->ordemServicoItens, false) ?>
         </tbody>
     </table>
 </div>

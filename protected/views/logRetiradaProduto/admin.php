@@ -92,8 +92,10 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
             'filter' => $intervaloDataPedido,
             'value' => '!empty($data->data_hora) ? FormatHelper::dataHora($data->data_hora) : ""'
         ),
-        'excluido',
-        'ordem_servico_id',
+        array(
+            'name' => 'excluido',
+            'value' => '$data->excluido == 1 ? "Cancelado" : "Ativo"'
+        ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{view}',
@@ -104,7 +106,7 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
             ),
         ),
     ),
-));
+        ));
 $this->renderExportGridButton($gridView, 'Exportar Relatório', array('class' => 'btn btn-info pull-left'));
 ?>
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/site.js"></script>

@@ -59,7 +59,7 @@ class LogRetiradaProduto extends CActiveRecord {
             'observacao' => 'Observação',
             'data_hora' => 'Data',
             'ordem_servico_id' => 'Ordem de serviço',
-            'excluido' => 'Excluído',
+            'excluido' => 'Status',
         );
     }
 

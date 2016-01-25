@@ -102,6 +102,8 @@ class OrdemServico extends CActiveRecord {
         if (!empty($aJoin)) {
             $criteria->join = implode(' ', $aJoin);
         }
+        
+        $criteria->addCondition('excluido = 0');
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -172,6 +174,16 @@ class OrdemServico extends CActiveRecord {
             'ordem_servico_id' => $this->id
         ));
         return $oLogOrdemServico->status;
+    }
+    
+    public function getTituloStatus() {
+        $oLogOrdemServico = new LogOrdemServico();
+        return $oLogOrdemServico->aStatus[$this->getStatus()];
+    }
+    
+    public function marcarExcluido(){
+        $this->excluido = 1;
+        $this->save();
     }
 
 }

@@ -15,7 +15,8 @@ class LogOrdemServico extends CActiveRecord {
 
     public $aStatus = array(
         1 => 'Aberta',
-        2 => 'Fechada'
+        2 => 'Fechada',
+        3 => 'Cancelada',
     );
 
     /**
@@ -49,11 +50,34 @@ class LogOrdemServico extends CActiveRecord {
                     $oLogRetiradaProduto->observacao = 'Ordem de Serviço: ' . $this->ordem_servico_id;
                     $oLogRetiradaProduto->data_hora = date("Y-m-d H:i:s");
                     $oLogRetiradaProduto->usuario_id = Yii::app()->user->getId();
+                    $oLogRetiradaProduto->ordem_servico_id = $this->ordem_servico_id;
                     if (!$oLogRetiradaProduto->save()) {
                         die(var_dump($oLogRetiradaProduto->getErrors()));
                     }
                     $oProduto = Produto::model()->findByPk($item->item_id);
                     $oProduto->decrementarQuantidade();
+                }
+            }
+        } else if ($this->status == 3) {
+            $oFinanceiro = Financeiro::model()->findByAttributes(array(
+                'tipo_item' => 1,
+                'tipo_item_id' => $this->ordem_servico_id,
+            ));
+//            echo '<pre>';
+//            die($oFinanceiro);
+            $oFinanceiro->salvar(1, $this->ordemServico, $this->usuario->nome, 1);
+            foreach ($this->ordemServico->ordemServicoItens as $item) {
+                if ($item->tipo_item_id == 1) {
+                    $oLogRetiradaProduto = LogRetiradaProduto::model()->findByAttributes(array(
+                        'ordem_servico_id' => $this->ordem_servico_id,
+                        'produto_id' => $item->item_id,
+                    ));
+                    $oLogRetiradaProduto->excluido = 1;
+                    if (!$oLogRetiradaProduto->save()) {
+                        die(var_dump($oLogRetiradaProduto->getErrors()));
+                    }
+                    $oProduto = Produto::model()->findByPk($item->item_id);
+                    $oProduto->incrementarQuantidade();
                 }
             }
         }

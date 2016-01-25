@@ -92,6 +92,8 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
             'filter' => $intervaloDataPedido,
             'value' => '!empty($data->data_hora) ? FormatHelper::dataHora($data->data_hora) : ""'
         ),
+        'excluido',
+        'ordem_servico_id',
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{view}',

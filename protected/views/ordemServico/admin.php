@@ -69,8 +69,12 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'value' => '!empty($data->cliente_carro_id) ? $data->clienteCarro->placa : "" ',
         ),
         array(
+            'header' => 'Status',
+            'value' => '$data->getTituloStatus()',
+        ),
+        array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
-            'template' => '{finalizar}{view}{update}{delete}',
+            'template' => '{finalizar}{view}{update}{delete}{cancelar}',
             'buttons' => array(
                 'finalizar' => array(
                     'label' => '<i class="fa fa-check-circle"></i>',
@@ -86,6 +90,33 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                 ),
                 'delete' => array(
                     'visible' => 'Yii::app()->user->checkAccess("ordemServico/delete") && $data->getStatus() == 1',
+                ),
+                'cancelar' => array(
+                    'label' => '<i class="fa fa-times"></i>',
+                    'options' => array(
+                        'ajax' => array(
+                            'type' => 'GET',
+                            'url' => "js:$(this).attr('href')",
+                            'beforeSend' => 'function(){
+                                    var confirma = confirm("Deseja cancelar esta ordem de serviço ?");
+                                    if (!confirma) {
+                                        alert("Nenhuma ação realizada!");
+                                        return false;
+                                    }
+                                }',
+                            'success' => 'function(data) {
+                                            var obj = $.parseJSON(data);
+                                            if(obj.status == "success"){
+                                                alert("Ordem de serviço cancelada com sucesso!");
+                                            } else {
+                                                alert("Houve algum erro ao cancelar!");
+                                            }
+                                        }'
+                        ),
+                        'title' => 'Cancelar', 'style' => 'margin:0 5px 0 0;color:#313131;'
+                    ),
+                    'url' => 'Yii::app()->createUrl("ordemServico/cancelar", array("id" => $data->id))',
+                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/cancelar") && $data->getStatus() == 2',
                 ),
             ),
         ),

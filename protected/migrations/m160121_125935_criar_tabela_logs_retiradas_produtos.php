@@ -10,6 +10,8 @@ class m160121_125935_criar_tabela_logs_retiradas_produtos extends CDbMigration {
             'usuario_id' => 'integer',
             'observacao' => 'text',
             'data_hora' => 'DATETIME',
+            'ordem_servico_id' => 'integer',
+            'excluido' => 'boolean default false',
         )); 
     }
 

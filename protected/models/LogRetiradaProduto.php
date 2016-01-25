@@ -30,10 +30,10 @@ class LogRetiradaProduto extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('produto_id, quantidade, usuario_id', 'numerical', 'integerOnly' => true),
+            array('produto_id, quantidade, usuario_id, excluido, ordem_servico_id', 'numerical', 'integerOnly' => true),
             array('observacao, data_hora, data_hora_inicial, data_hora_final, data_hora_inicial_grid, data_hora_final_grid', 'safe'),
             array('quantidade, usuario_id, produto_id', 'required'),
-            array('id, produto_id, quantidade, usuario_id, observacao, data_hora', 'safe', 'on' => 'search'),
+            array('id, produto_id, quantidade, usuario_id, observacao, data_hora, excluido, ordem_servico_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -58,6 +58,8 @@ class LogRetiradaProduto extends CActiveRecord {
             'usuario_id' => 'Usuário',
             'observacao' => 'Observação',
             'data_hora' => 'Data',
+            'ordem_servico_id' => 'Ordem de serviço',
+            'excluido' => 'Excluído',
         );
     }
 
@@ -83,6 +85,8 @@ class LogRetiradaProduto extends CActiveRecord {
         $criteria->compare('quantidade', $this->quantidade);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('data_hora', $this->data_hora, true);
+        $criteria->compare('ordem_servico_id', $this->ordem_servico_id);
+        $criteria->compare('excluido', $this->excluido);
 
         if (!empty($this->data_hora_inicial) && !empty($this->data_hora_final)) {
             $this->data_hora_inicial_grid = $this->data_hora_inicial;

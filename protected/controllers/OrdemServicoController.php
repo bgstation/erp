@@ -30,7 +30,7 @@ class OrdemServicoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow',
-                'actions' => array('create', 'update', 'admin', 'delete', 'getItensPorTipoJson', 'finalizar'),
+                'actions' => array('create', 'update', 'admin', 'delete', 'getItensPorTipoJson', 'finalizar', 'cancelar'),
                 'users' => array('@'),
             ),
             array('deny',
@@ -136,7 +136,7 @@ class OrdemServicoController extends Controller {
      * @param integer $id the ID of the model to be deleted
      */
     public function actionDelete($id) {
-        $this->loadModel($id)->delete();
+        $this->loadModel($id)->marcarExcluido();
 
         if (!isset($_GET['ajax']))
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
@@ -184,6 +184,7 @@ class OrdemServicoController extends Controller {
             'oClientes' => $oClientes,
             'oClientesCarros' => $oClientesCarros,
             'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
+            'oLogOrdemServico' => new LogOrdemServico,
         ));
     }
 
@@ -251,6 +252,22 @@ class OrdemServicoController extends Controller {
             'oLogOrdemServico' => $oLogOrdemServico,
             'oOrdemServicoTipoPagamento' => $oOrdemServicoTipoPagamento,
         ));
+    }
+
+    public function actionCancelar() {
+        $aRetorno = array();
+        $aRetorno['status'] = 'error';
+        if (!empty($_GET['id'])) {
+            $oLogOrdemServico = new LogOrdemServico;
+            $oLogOrdemServico->status = 3;
+            $oLogOrdemServico->ordem_servico_id = $_GET['id'];
+            if ($oLogOrdemServico->salvarLog()) {
+                $aRetorno['status'] = 'success';
+            } else {
+                $aRetorno['errors'] = $oLogOrdemServico->getErrors();
+            }
+        }
+        die(CJSON::encode($aRetorno));
     }
 
 }

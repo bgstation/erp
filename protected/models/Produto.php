@@ -178,6 +178,18 @@ class Produto extends CActiveRecord {
             die(var_dump($this->getErrors()));
         }
     }
+    
+    public function incrementarQuantidade($quantidade = null) {
+        $this->scenario = 'alteracaoCompra';
+        if (!empty($quantidade)) {
+            $this->quantidade = $this->quantidade + $quantidade;
+        } else {
+            $this->quantidade = $this->quantidade + 1;
+        }
+        if (!$this->save()) {
+            die(var_dump($this->getErrors()));
+        }
+    }
 
     public function getHeadersExportar() {
         $headers = array(

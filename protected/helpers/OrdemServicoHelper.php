@@ -71,11 +71,11 @@ class OrdemServicoHelper {
 
     public static function renderLogs($oLogsOrdemServico) {
         $return = '';
-
+        
         foreach ($oLogsOrdemServico as $log) {
             $return .= '<tr>';
             $return .= '<td>';
-            $return .= $log->status == 1 ? "Aberta" : "Finalizada";
+            $return .= $log->aStatus[$log->status];
             $return .= '</td>';
             $return .= '<td>';
             $return .= RPFormat::dataHora($log->data_hora);

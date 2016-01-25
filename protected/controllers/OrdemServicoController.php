@@ -44,9 +44,13 @@ class OrdemServicoController extends Controller {
      * @param integer $id the ID of the model to be displayed
      */
     public function actionView($id) {
+        $oLogsOrdemServico = LogOrdemServico::model()->findAllByAttributes(array(
+            'ordem_servico_id' => $id
+        ));
         $this->render('view', array(
             'model' => $this->loadModel($id),
             'oOrdemServicoFormaPagamento' => new OrdemServicoTipoPagamento,
+            'oLogsOrdemServico' => $oLogsOrdemServico,
         ));
     }
 

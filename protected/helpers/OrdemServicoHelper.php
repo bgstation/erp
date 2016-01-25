@@ -69,4 +69,24 @@ class OrdemServicoHelper {
         return $return;
     }
 
+    public static function renderLogs($oLogsOrdemServico) {
+        $return = '';
+
+        foreach ($oLogsOrdemServico as $log) {
+            $return .= '<tr>';
+            $return .= '<td>';
+            $return .= $log->status == 1 ? "Aberta" : "Finalizada";
+            $return .= '</td>';
+            $return .= '<td>';
+            $return .= RPFormat::dataHora($log->data_hora);
+            $return .= '</td>';
+            $return .= '<td>';
+            $return .= $log->usuario->nome;
+            $return .= '</td>';
+            $return .= '</tr>';
+        }
+
+        return $return;
+    }
+
 }

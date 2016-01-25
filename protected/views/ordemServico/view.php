@@ -49,6 +49,20 @@ $this->widget('zii.widgets.CDetailView', array(
     <table class="acl_section">
         <thead>
             <tr>
+                <th>Operação</th>
+                <th>Data</th>
+                <th>Responsável</th>
+            </tr>
+        </thead>
+        <tbody id="tipo_item_1_adicionados">
+            <?= OrdemServicoHelper::renderLogs($model->logsOrdemServico) ?>
+        </tbody>
+    </table>
+</div>
+<div>
+    <table class="acl_section">
+        <thead>
+            <tr>
                 <th>Produto</th>
                 <th>Preço</th>
             </tr>

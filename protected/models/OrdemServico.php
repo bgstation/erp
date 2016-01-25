@@ -39,6 +39,7 @@ class OrdemServico extends CActiveRecord {
         return array(
             'ordemServicoItens' => array(self::HAS_MANY, 'OrdemServicoItem', 'ordem_servico_id'),
             'ordemServicoTipoPagamento' => array(self::HAS_MANY, 'OrdemServicoTipoPagamento', 'ordem_servico_id'),
+            'logsOrdemServico' => array(self::HAS_MANY, 'LogOrdemServico', 'ordem_servico_id'),
             'cliente' => array(self::BELONGS_TO, 'Cliente', 'cliente_id'),
             'clienteCarro' => array(self::BELONGS_TO, 'ClienteCarro', 'cliente_carro_id'),
         );

@@ -124,12 +124,14 @@ class FinanceiroController extends Controller {
         
         $headers = $oFinanceiroForm->getHeadersRelatorio();
         $this->exportarRelatorio($model->search(), 'Relatório Financeiro - ', $headers, date('YmdHis') . '_relatorio_financeiro.csv');
-
+        
         $this->render('admin', array(
             'model' => $model,
             'oTotalCompras' => $model->getTotalCompras(),
             'oTotalDespesas' => $model->getTotalDespesas(),
             'oTotalOrdemServico' => $model->getTotalOrdemServico(),
+            'oTotalOrdemServicoDinheiro' => $model->getTotalOrdemServicoDinheiro(),
+            'oTotalOrdemServicoCartao' => $model->getTotalOrdemServicoCartao(),
             'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
             'oFinanceiroForm' => $oFinanceiroForm,
         ));

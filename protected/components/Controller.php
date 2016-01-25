@@ -31,7 +31,8 @@ class Controller extends CController {
             2 => 'site/login',
             3 => 'site/index',
             8 => 'site/error',
-            8 => 'modelo/getDataJson',
+            9 => 'modelo/getDataJson',
+            10 => 'clienteCarro/getDataJson',
         );
         if (!in_array(Yii::app()->controller->id . '/' . Yii::app()->controller->action->id, $aNaoVerificar)) {
             if (!Yii::app()->user->checkAccess(Yii::app()->controller->id . '/' . Yii::app()->controller->action->id)) {

@@ -28,6 +28,8 @@ $('.search-form form').submit(function(){
 
 <div class="financeiro-resumo">
     <p class='financeiro-resumo-os'>Ordens de Serviço: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServico) ?></p>
+    <li class="dinheiro"><p>Dinheiro: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoDinheiro) ?></p></li>
+    <li class="cartao"><p>Cartão: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartao) ?></p></li>
     <p class='financeiro-resumo-compras'>Compras: R$ <?= FormatHelper::valorMonetario($oTotalCompras) ?></p>
     <p class='financeiro-resumo-despesas'>Despesas: R$ <?= FormatHelper::valorMonetario($oTotalDespesas) ?></p>
 </div>
@@ -86,6 +88,8 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
                               $('.financeiro-resumo-os').text($(data).find('.financeiro-resumo-os').html());
                               $('.financeiro-resumo-compras').text($(data).find('.financeiro-resumo-compras').html());
                               $('.financeiro-resumo-despesas').text($(data).find('.financeiro-resumo-despesas').html());
+                              $('.dinheiro').text($(data).find('.dinheiro').html());
+                              $('.cartao').text($(data).find('.cartao').html());
                           }",
     'rowCssClassExpression' => '$data->getColor($data->tipo_item)',
     'columns' => array(

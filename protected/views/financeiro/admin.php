@@ -28,8 +28,8 @@ $('.search-form form').submit(function(){
 
 <div class="financeiro-resumo">
     <p class='financeiro-resumo-os'>Ordens de Serviço: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServico) ?></p>
-    <li class="dinheiro"><p>Dinheiro: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoDinheiro) ?></p></li>
-    <li class="cartao"><p>Cartão: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartao) ?></p></li>
+    <li><p class="dinheiro">Dinheiro: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoDinheiro) ?></p></li>
+    <li><p class="cartao">Cartão: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartao) ?></p></li>
     <p class='financeiro-resumo-compras'>Compras: R$ <?= FormatHelper::valorMonetario($oTotalCompras) ?></p>
     <p class='financeiro-resumo-despesas'>Despesas: R$ <?= FormatHelper::valorMonetario($oTotalDespesas) ?></p>
 </div>

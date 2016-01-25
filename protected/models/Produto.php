@@ -111,6 +111,7 @@ class Produto extends CActiveRecord {
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('quantidade', $this->quantidade);
         $criteria->compare('excluido', $this->excluido);
+        $criteria->compare('tipo_produto_id', $this->tipo_produto_id);
 
         if (!empty($this->marca_id)) {
             $aJoin[] = 'JOIN marcas marca ON marca.id = t.marca_id';

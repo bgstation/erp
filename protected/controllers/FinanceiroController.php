@@ -120,6 +120,9 @@ class FinanceiroController extends Controller {
         if (isset($_GET['Financeiro'])) {
             $model->attributes = $_GET['Financeiro'];
             $oSearchForm->request = $_GET['Financeiro'];
+        } else {
+            $model->data_hora_inicial_grid = date("Y-m-d");
+            $model->data_hora_final_grid = date("Y-m-d");
         }
         
         $headers = $oFinanceiroForm->getHeadersRelatorio();

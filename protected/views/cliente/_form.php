@@ -55,13 +55,13 @@
 
     <div class="row">
         <?= $form->labelEx($model, 'telefone_fixo') ?>
-        <?= $form->textField($model, 'telefone_fixo', array('size' => 20, 'maxlength' => 20)) ?>
+        <?= $form->textField($model, 'telefone_fixo', array('size' => 20, 'maxlength' => 20, 'placeholder' => '(21) 9999-9999')) ?>
         <?= $form->error($model, 'telefone_fixo') ?>
     </div>
 
     <div class="row">
         <?= $form->labelEx($model, 'celular') ?>
-        <?= $form->textField($model, 'celular', array('size' => 20, 'maxlength' => 20)) ?>
+        <?= $form->textField($model, 'celular', array('size' => 20, 'maxlength' => 20, 'placeholder' => '(21) 99999-9999')) ?>
         <?= $form->error($model, 'celular') ?>
     </div>
 

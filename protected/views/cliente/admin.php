@@ -60,8 +60,16 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
         'cpf',
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
-            'template' => '{view}{update}{delete}',
+            'template' => '{addCarro}{update}{delete}',
             'buttons' => array(
+                'addCarro' => array(
+                    'label' => '<i class="fa fa-car"></i>',
+                    'url' => 'Yii::app()->createUrl("clienteCarro/create", array("clienteId" => $data->id))',
+                    'visible' => 'Yii::app()->user->checkAccess("cliente/view")',
+                    'options' => array(
+                        'title' => 'Cadastrar carro', 'style' => 'margin:0 5px 0 0;color:#313131;'
+                    ),
+                ),
                 'view' => array(
                     'visible' => 'Yii::app()->user->checkAccess("cliente/view")',
                 ),

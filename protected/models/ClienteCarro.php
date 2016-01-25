@@ -78,10 +78,10 @@ class ClienteCarro extends CActiveRecord {
         return array(
             array('observacao', 'safe'),
             array('placa, cliente_id', 'required'),
-            array('marca_id, cliente_id, excluido, modelo_id', 'numerical', 'integerOnly' => true),
+            array('marca_id, cliente_id, excluido, modelo_id, cor_id', 'numerical', 'integerOnly' => true),
             array('placa', 'length', 'max' => 8),
-            array('placa', 'checarUnique', 'except' => 'marcarExcluido'),
-            array('id, placa, marca_id, cliente_id, observacao, excluido, modelo_id', 'safe', 'on' => 'search'),
+            array('placa', 'tratarPlaca'),
+            array('id, placa, marca_id, cliente_id, observacao, excluido, modelo_id, cor_id', 'safe', 'on' => 'search'),
         );
     }
 
@@ -107,16 +107,8 @@ class ClienteCarro extends CActiveRecord {
         );
     }
 
-    public function checarUnique() {
-        if ($this->isNewRecord) {
-            $models = self::model()->naoExcluido()->findByAttributes(array(
-                'placa' => $this->placa,
-            ));
-            if (!empty($models)) {
-                $this->addError($this->placa, 'Esta placa já encontra-se cadastrada.');
-                return false;
-            }
-        }
+    public function tratarPlaca() {
+        $this->placa = strtoupper($this->placa);
         return true;
     }
 

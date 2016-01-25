@@ -64,9 +64,9 @@ class ClienteCarroController extends Controller {
             if ($model->save()) {
                 if ($_POST['abrir_os'] == "true") {
                     $this->redirect(array('ordemServico/create', 'clienteId' => $model->cliente_id, 'clienteCarroId' => $model->id));
+                } else {
+                    $this->redirect(array('cliente/view', 'id' => $model->cliente_id));
                 }
-            } else {
-                $this->redirect(array('cliente/view', 'id' => $model->cliente_id));
             }
         }
 
@@ -93,7 +93,11 @@ class ClienteCarroController extends Controller {
         if (isset($_POST['ClienteCarro'])) {
             $model->attributes = $_POST['ClienteCarro'];
             if ($model->save())
-                $this->redirect(array('cliente/view', 'id' => $model->cliente_id));
+                if ($_POST['abrir_os'] == "true") {
+                    $this->redirect(array('ordemServico/create', 'clienteId' => $model->cliente_id, 'clienteCarroId' => $model->id));
+                } else {
+                    $this->redirect(array('cliente/view', 'id' => $model->cliente_id));
+                }
         }
 
         $this->render('update', array(

@@ -50,7 +50,7 @@ $('.search-form form').submit(function(){
 </div>
 
 <?php
-$this->widget('bootstrap.widgets.TbGridView', array(
+$gridView = $this->widget('bootstrap.widgets.TbGridView', array(
     'id' => 'produto-grid',
     'dataProvider' => $model->search(),
     'filter' => $model,
@@ -63,6 +63,9 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'name' => 'tipo_produto_id',
             'value' => '!empty($data->tipo_produto_id) ? $data->tipoProduto->titulo : ""',
+            'filter' => CHtml::activeDropDownList($model, 'tipo_produto_id', CHtml::listData($oTiposProdutos, 'id', 'titulo'), array(
+                'empty' => '',
+            )),
         ),
         array(
             'name' => 'preco',
@@ -92,5 +95,6 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
     ),
 ));
+
 ?>
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/site.js"></script>

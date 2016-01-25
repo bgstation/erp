@@ -203,10 +203,6 @@ class ProdutoController extends Controller {
         }
     }
 
-    public function actionEstoque() {
-        
-    }
-
     public function actionRetirar($id) {
         $model = $this->loadModel($id);
 

@@ -136,7 +136,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                         'title' => 'Cancelar despesa', 'style' => 'margin:0 5px 0 0;color:#313131;'
                     ),
                     'url' => 'Yii::app()->createUrl("despesa/cancelar", array("id" => $data->id))',
-//                    'visible' => 'Yii::app()->user->checkAccess("despesa/cancelar") && $data->checaCancelado()',
+                    'visible' => 'Yii::app()->user->checkAccess("despesa/cancelar") && $data->checaCancelado()',
                 ),
             ),
         ),

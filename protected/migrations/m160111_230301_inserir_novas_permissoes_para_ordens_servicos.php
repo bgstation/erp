@@ -6,7 +6,7 @@ class m160111_230301_inserir_novas_permissoes_para_ordens_servicos extends CDbMi
         $this->insert('acl_rotas', array(
             'controller' => 'ordemServico',
             'action' => 'create',
-            'titulo' => 'Modificar',
+            'titulo' => 'Abrir',
             'categoria' => 'Ordem Serviço',
         ));
         $this->insert('acl_rotas', array(

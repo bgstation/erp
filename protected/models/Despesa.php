@@ -130,10 +130,7 @@ class Despesa extends CActiveRecord {
             $this->data_hora_final = $this->data_hora_final_grid;
             $criteria->addBetweenCondition('date(data_hora)', $this->data_hora_inicial, $this->data_hora_final);
         }
-<<<<<<< HEAD
 
-=======
->>>>>>> ee312dc7abf0be81abfe3ee042288a1156b2bfc5
         if (!empty($this->tipo_despesa_id)) {
              $aJoin[] = 'JOIN tipos_despesas td ON td.id = t.tipo_despesa_id';
             $criteria->addCondition("td.titulo like '%" . $this->tipo_despesa_id . "%'");

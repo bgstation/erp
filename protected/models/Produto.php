@@ -111,7 +111,7 @@ class Produto extends CActiveRecord {
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('quantidade', $this->quantidade);
         $criteria->compare('excluido', $this->excluido);
-        
+
         if (!empty($this->marca_id)) {
             $aJoin[] = 'JOIN marcas marca ON marca.id = t.marca_id';
             $criteria->addCondition("marca.titulo like '%" . $this->marca_id . "%'");
@@ -120,10 +120,11 @@ class Produto extends CActiveRecord {
             $aJoin[] = 'JOIN modelos modelo ON modelo.id = t.modelo_id';
             $criteria->addCondition("modelo.titulo like '%" . $this->modelo_id . "%'");
         }
-        if (!empty($this->tipo_produto_id)) {
-             $aJoin[] = 'JOIN tipos_produtos tp ON tp.id = t.tipo_produto_id';
-            $criteria->addCondition("tp.titulo like '%" . $this->tipo_produto_id . "%'");
-        }
+//        if (!empty($this->tipo_produto_id)) {
+//            $aJoin[] = 'JOIN tipos_produtos tp ON tp.id = t.tipo_produto_id';
+//            $criteria->addCondition("tp.titulo like '%" . $this->tipo_produto_id . "%'");
+//        }
+
         if (!empty($aJoin)) {
             $criteria->join = implode(' ', $aJoin);
         }
@@ -145,7 +146,9 @@ class Produto extends CActiveRecord {
 
     public function getDataJson() {
         $aModels = array();
-        $oModels = self::model()->naoExcluido()->ordenarTitulo()->findAll();
+        $oModels = self::model()->naoExcluido()->ordenarTitulo()->findAll(array(
+            'condition' => 'tipo_produto_id = 1'
+        ));
         if (!empty($oModels)) {
             $i = 0;
             foreach ($oModels as $model) {
@@ -170,9 +173,21 @@ class Produto extends CActiveRecord {
         } else {
             $this->quantidade = $this->quantidade - 1;
         }
-        if(!$this->save()){
+        if (!$this->save()) {
             die(var_dump($this->getErrors()));
         }
+    }
+
+    public function getHeadersExportar() {
+        $headers = array(
+            'titulo',
+            'marca',
+            'modelo',
+            'tipo_produto_id',
+            'preco',
+            'quantidade',
+        );
+        return $headers;
     }
 
 }

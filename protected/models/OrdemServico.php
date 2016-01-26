@@ -30,8 +30,17 @@ class OrdemServico extends CActiveRecord {
             array('cliente_id, cliente_carro_id, forma_pagamento_id, excluido', 'numerical', 'integerOnly' => true),
             array('observacao, status', 'safe'),
             array('cliente_id, cliente_carro_id', 'required'),
-            array('id, cliente_id, cliente_carro_id, forma_pagamento_id, observacao, excluido', 'safe', 'on' => 'search'),
+            array('desconto', 'length', 'max' => 10),
+            array('desconto', 'tratarDesconto'),
+            array('id, cliente_id, cliente_carro_id, forma_pagamento_id, observacao, excluido, desconto', 'safe', 'on' => 'search'),
         );
+    }
+    
+    public function tratarDesconto() {
+        if (!empty($this->preco)) {
+            $preco = str_replace('.', '', $this->preco);
+            $this->preco = str_replace(',', '.', $preco);
+        }
     }
 
     /**
@@ -111,6 +120,7 @@ class OrdemServico extends CActiveRecord {
         }
 
         $criteria->addCondition('t.excluido = false');
+        $criteria->order = 'id DESC';
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

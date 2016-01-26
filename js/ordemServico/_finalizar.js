@@ -1,12 +1,33 @@
 $('.monetario').mask("#.##0,00", {reverse: true});
 
-var finalizar = function () {
+var aplicaDesconto = function(valorDesconto) {
+    var valorTmp = parseFloat(valorDesconto.replace('.', '').replace(',', '.'));
+    if (valorTmp !== desconto) {
+        if (valorDesconto !== "") {
+            desconto = parseFloat(valorDesconto.replace('.', '').replace(',', '.'));
+            if (valorTmp > valorTotalOri) {
+                alert('Valor inválido!');
+                $(this).val(null);
+                return false;
+            } else {
+                valorTotal = valorTotalOri - valorTmp;
+                console.log(valorTotal);
+                resetarValor(true);
+            }
+        } else {
+            desconto = 0;
+            resetarValor(true);
+        }
+    }
+}
+
+var finalizar = function() {
     $('input').removeAttr('disabled');
 }
 
 $("#select2_forma_pagamento_id_1").val(1);
 
-var resetarValor = function (tudo) {
+var resetarValor = function(tudo) {
     if (tudo) {
         $("#select2_forma_pagamento_id_1").val(1);
         $("#OrdemServicoTipoPagamento_1_valor").val(number_format(valorTotalOri - desconto, 2, ',', '.'));
@@ -19,7 +40,7 @@ var resetarValor = function (tudo) {
     $('#OrdemServicoTipoPagamento_2_parcelas').val(null);
 }
 
-var addFormaPagamento = function (indentificador, id) {
+var addFormaPagamento = function(indentificador, id) {
     if (id !== "" && indentificador == 2) {
         $('#OrdemServicoTipoPagamento_' + indentificador + '_valor').removeAttr('disabled');
     }
@@ -31,15 +52,15 @@ var addFormaPagamento = function (indentificador, id) {
     }
 }
 
-$("#select2_forma_pagamento_id_2").change(function () {
+$("#select2_forma_pagamento_id_2").change(function() {
     if ($(this).val() === "") {
         resetarValor(false);
     }
 })
 
-$(".preco").focus(function () {
+$(".preco").focus(function() {
 
-}).blur(function () {
+}).blur(function() {
     var valorTmp = parseFloat($(this).val().replace('.', '').replace(',', '.'));
     if ($(this).val() !== "") {
         if (valorTmp > valorTotal) {
@@ -52,22 +73,6 @@ $(".preco").focus(function () {
     }
 });
 
-$('#OrdemServico_desconto').blur(function () {
-    var valorTmp = parseFloat($(this).val().replace('.', '').replace(',', '.'));
-    if (valorTmp !== desconto) {
-        if ($(this).val() !== "") {
-            desconto = parseFloat($(this).val().replace('.', '').replace(',', '.'));
-            if (valorTmp > valorTotalOri) {
-                alert('Valor inválido!');
-                $(this).val(null);
-                return false;
-            } else {
-                valorTotal = valorTotalOri - valorTmp;
-                resetarValor(true);
-            }
-        } else {
-            desconto = 0;
-            resetarValor(true);
-        }
-    }
+$('#OrdemServico_desconto').blur(function() {
+    aplicaDesconto($(this).val());
 });

@@ -153,6 +153,7 @@ class ProdutoController extends Controller {
         $model = new Produto('search');
         $model->unsetAttributes();
         $oSearchForm = new SearchForm();
+
         $oProdutos = Produto::model()->findAll();
         $aCriteria = array();
         $aProdutos = array();

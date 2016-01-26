@@ -145,3 +145,11 @@
     var desconto = 0;
 </script>
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/ordemServico/_finalizar.js"></script>
+<script>
+    $(document).ready(function() {
+<?php if (!empty($model->desconto)): ?>
+            var preDesconto = '<?= $model->desconto ?>';
+            aplicaDesconto(preDesconto.replace('.', ','));
+<?php endif; ?>
+    })
+</script>

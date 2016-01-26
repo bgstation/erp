@@ -24,6 +24,12 @@
 </div>
 
 <div class="row">
+    <?= $form->labelEx($model, 'desconto') ?>
+    <?= $form->textField($model, 'desconto', array('class' => 'preco')) ?>
+    <?= $form->error($model, 'desconto') ?>
+</div>
+
+<div class="row">
     <?= $form->labelEx($model, 'observacao') ?>
     <?= $form->textArea($model, 'observacao', array('rows' => 6, 'cols' => 50)) ?>
     <?= $form->error($model, 'observacao') ?>

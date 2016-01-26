@@ -71,12 +71,15 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                     'visible' => 'Yii::app()->user->checkAccess("ordemServico/finalizar") && $data->getStatus() == 1',
                 ),
                 'view' => array(
+                    'url' => 'Yii::app()->createUrl("ordemServico/view", array("id" => $data->id))',
                     'visible' => 'Yii::app()->user->checkAccess("ordemServico/view")',
                 ),
                 'update' => array(
+                    'url' => 'Yii::app()->createUrl("ordemServico/update", array("id" => $data->id))',
                     'visible' => 'Yii::app()->user->checkAccess("ordemServico/update") && $data->getStatus() == 1',
                 ),
                 'delete' => array(
+                    'url' => 'Yii::app()->createUrl("ordemServico/delete", array("id" => $data->id))',
                     'visible' => 'Yii::app()->user->checkAccess("ordemServico/delete") && $data->getStatus() == 1',
                 ),
                 'cancelar' => array(

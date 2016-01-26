@@ -134,7 +134,8 @@ class FinanceiroController extends Controller {
             'oTotalDespesas' => $model->getTotalDespesas(),
             'oTotalOrdemServico' => $model->getTotalOrdemServico(),
             'oTotalOrdemServicoDinheiro' => $model->getTotalOrdemServicoDinheiro(),
-            'oTotalOrdemServicoCartao' => $model->getTotalOrdemServicoCartao(),
+            'oTotalOrdemServicoCartaoCredito' => $model->getTotalOrdemServicoCartaoCredito(),
+            'oTotalOrdemServicoCartaoDebito' => $model->getTotalOrdemServicoCartaoDebito(),
             'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
             'oFinanceiroForm' => $oFinanceiroForm,
         ));

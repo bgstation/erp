@@ -208,12 +208,22 @@ class Financeiro extends CActiveRecord {
         return $this->commandBuilder->createFindCommand($this->getTableSchema(), $criteria)->queryScalar();
     }
     
-    public function getTotalOrdemServicoCartao() {
+    public function getTotalOrdemServicoCartaoCredito() {
         $criteria = $this->getSearchCriteria();
         $criteria->select = 'SUM(ostp.valor)';
         $criteria->join = 'JOIN ordens_servico_tipos_pagamento as ostp ON (t.tipo_item_id = ostp.ordem_servico_id)';
         $criteria->addCondition('t.tipo_item = ' . self::ORDEM_SERVICO);
-        $criteria->addCondition('ostp.forma_pagamento_id != 1');
+        $criteria->addCondition('ostp.forma_pagamento_id = 3');
+        $criteria->addCondition('t.status = 0');
+        return $this->commandBuilder->createFindCommand($this->getTableSchema(), $criteria)->queryScalar();
+    }
+    
+    public function getTotalOrdemServicoCartaoDebito() {
+        $criteria = $this->getSearchCriteria();
+        $criteria->select = 'SUM(ostp.valor)';
+        $criteria->join = 'JOIN ordens_servico_tipos_pagamento as ostp ON (t.tipo_item_id = ostp.ordem_servico_id)';
+        $criteria->addCondition('t.tipo_item = ' . self::ORDEM_SERVICO);
+        $criteria->addCondition('ostp.forma_pagamento_id = 2');
         $criteria->addCondition('t.status = 0');
         return $this->commandBuilder->createFindCommand($this->getTableSchema(), $criteria)->queryScalar();
     }

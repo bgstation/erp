@@ -115,9 +115,9 @@ class ClienteCarroController extends Controller {
      */
     public function actionDelete($id) {
         $this->loadModel($id)->marcarExcluido();
-
+        
         if (!isset($_GET['ajax']))
-            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('cliente/view', 'id' => $this->loadModel($id)->cliente_id));
     }
 
     /**

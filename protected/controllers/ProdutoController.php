@@ -159,9 +159,13 @@ class ProdutoController extends Controller {
 
         if (!empty($oProdutos)) {
             foreach ($oProdutos as $produto) {
-                $aProdutos['tipo_produto_id'][] = $produto->tipo_produto_id;
+                if (!empty($produto->tipo_produto_id)) {
+                    $aProdutos['tipo_produto_id'][] = $produto->tipo_produto_id;
+                }
             }
-            $aCriteria['condition'] = 'id in (' . implode(',', $aProdutos['tipo_produto_id']) . ')';
+            if (!empty($aProdutos['tipo_produto_id'])) {
+                $aCriteria['condition'] = 'id in (' . implode(',', $aProdutos['tipo_produto_id']) . ')';
+            }
         }
 
         $oTiposProdutos = TipoProduto::model()->ordenarTitulo()->findAll($aCriteria);
@@ -171,6 +175,9 @@ class ProdutoController extends Controller {
             $oSearchForm->request = $_GET['Produto'];
         }
 
+        $headers = $model->getHeadersRelatorio();
+        $this->exportarRelatorio($model->search(), 'Relatório Produtos - ', $headers, date('YmdHis') . '_relatorio_produtos.csv');
+        
         $this->render('admin', array(
             'model' => $model,
             'oTiposProdutos' => $oTiposProdutos,

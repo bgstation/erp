@@ -18,6 +18,10 @@ class LogOrdemServico extends CActiveRecord {
         2 => 'Fechada',
         3 => 'Cancelada',
     );
+    
+    CONST ABERTA = 1;
+    CONST FECHADA = 2;
+    CONST CANCELADA = 3;
 
     /**
      * @return string the associated database table name
@@ -39,7 +43,7 @@ class LogOrdemServico extends CActiveRecord {
     }
 
     public function afterSave() {
-        if ($this->status == 2 && $this->isNewRecord) {
+        if ($this->status == self::FECHADA && $this->isNewRecord) {
             $oFinanceiro = new Financeiro;
             $oFinanceiro->salvar(1, $this->ordemServico, $this->usuario->nome);
             foreach ($this->ordemServico->ordemServicoItens as $item) {
@@ -58,13 +62,12 @@ class LogOrdemServico extends CActiveRecord {
                     $oProduto->decrementarQuantidade();
                 }
             }
-        } else if ($this->status == 3) {
+        } else if ($this->status == self::CANCELADA) {
             $oFinanceiro = Financeiro::model()->findByAttributes(array(
                 'tipo_item' => 1,
                 'tipo_item_id' => $this->ordem_servico_id,
             ));
-//            echo '<pre>';
-//            die($oFinanceiro);
+
             $oFinanceiro->salvar(1, $this->ordemServico, $this->usuario->nome, 1);
             foreach ($this->ordemServico->ordemServicoItens as $item) {
                 if ($item->tipo_item_id == 1) {
@@ -72,7 +75,7 @@ class LogOrdemServico extends CActiveRecord {
                         'ordem_servico_id' => $this->ordem_servico_id,
                         'produto_id' => $item->item_id,
                     ));
-                    $oLogRetiradaProduto->excluido = 1;
+                    $oLogRetiradaProduto->excluido = true;
                     if (!$oLogRetiradaProduto->save()) {
                         die(var_dump($oLogRetiradaProduto->getErrors()));
                     }
@@ -105,6 +108,9 @@ class LogOrdemServico extends CActiveRecord {
             'ultimoRegistro' => array(
                 'order' => 'data_hora DESC',
                 'limit' => '1'
+            ),
+            'orderDataHoraDesc' => array(
+                'order' => 'data_hora DESC',
             ),
         );
     }

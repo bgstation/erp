@@ -12,6 +12,8 @@
  * @property integer $excluido
  */
 class OrdemServico extends CActiveRecord {
+    
+    public $status;
 
     /**
      * @return string the associated database table name
@@ -26,7 +28,7 @@ class OrdemServico extends CActiveRecord {
     public function rules() {
         return array(
             array('cliente_id, cliente_carro_id, forma_pagamento_id, excluido', 'numerical', 'integerOnly' => true),
-            array('observacao', 'safe'),
+            array('observacao, status', 'safe'),
             array('cliente_id, cliente_carro_id', 'required'),
             array('id, cliente_id, cliente_carro_id, forma_pagamento_id, observacao, excluido', 'safe', 'on' => 'search'),
         );
@@ -63,7 +65,7 @@ class OrdemServico extends CActiveRecord {
             'cliente_carro_id' => 'Placa do carro',
             'forma_pagamento_id' => 'Forma de pagamento',
             'observacao' => 'Observação',
-            'excluido' => 'Excluido',
+            'excluido' => 'Excluído',
         );
     }
 
@@ -85,10 +87,11 @@ class OrdemServico extends CActiveRecord {
         $criteria = new CDbCriteria;
         $aJoin = array();
 
-        $criteria->compare('id', $this->id);
+        $criteria->select = 't.*';
+        $criteria->compare('t.id', $this->id);
         $criteria->compare('forma_pagamento_id', $this->forma_pagamento_id);
-        $criteria->compare('observacao', $this->observacao, true);
-        $criteria->compare('excluido', $this->excluido);
+        $criteria->compare('t.observacao', $this->observacao, true);
+        $criteria->compare('t.excluido', $this->excluido);
 
         if (!empty($this->cliente_id)) {
             $aJoin[] = 'JOIN clientes cliente ON cliente.id = t.cliente_id';
@@ -98,12 +101,16 @@ class OrdemServico extends CActiveRecord {
             $aJoin[] = 'JOIN clientes_carros cliente_carro ON cliente_carro.id = t.cliente_carro_id';
             $criteria->addCondition("cliente_carro.placa like '%" . $this->cliente_carro_id . "%'");
         }
-        
+        if (!empty($this->status)) {
+            $aJoin[] = 'JOIN log_ordens_servico log ON log.ordem_servico_id = t.id';
+            $criteria->group = 't.id';
+            $criteria->having = 'max(log.status) = ' . $this->status;
+        }
         if (!empty($aJoin)) {
             $criteria->join = implode(' ', $aJoin);
         }
-        
-        $criteria->addCondition('excluido = 0');
+
+        $criteria->addCondition('t.excluido = false');
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

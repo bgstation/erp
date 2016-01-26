@@ -60,6 +60,8 @@ class LogRetiradaProduto extends CActiveRecord {
             'data_hora' => 'Data',
             'ordem_servico_id' => 'Ordem de serviço',
             'excluido' => 'Excluído',
+            'usuario.nome' => 'Usuário',
+            'produto.titulo' => 'Produto',
         );
     }
 
@@ -98,16 +100,16 @@ class LogRetiradaProduto extends CActiveRecord {
             $criteria->addBetweenCondition('date(data_hora)', $this->data_hora_inicial, $this->data_hora_final);
         }
         if (!empty($this->produto_id)) {
-            $aJoin[] = 'JOIN produtos produto ON produto.id = t.produto_id';
             $criteria->addCondition("produto.titulo like '%" . $this->produto_id . "%'");
         }
         if (!empty($this->usuario_id)) {
-            $aJoin[] = 'JOIN usuarios usuario ON usuario.id = t.usuario_id';
             $criteria->addCondition("usuario.nome like '%" . $this->usuario_id . "%'");
         }
         if (!empty($aJoin)) {
             $criteria->join = implode(' ', $aJoin);
         }
+        
+        $criteria->with = array('produto', 'usuario');
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -137,9 +139,9 @@ class LogRetiradaProduto extends CActiveRecord {
     public function getHeadersRelatorio() {
         $headers = array(
             'id',
-            'produto_id',
+            'produto.titulo',
             'quantidade',
-            'usuario_id',
+            'usuario.nome',
             'observacao',
             'data_hora',
         );

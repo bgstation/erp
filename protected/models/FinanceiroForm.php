@@ -4,8 +4,8 @@ class FinanceiroForm extends CFormModel {
 
     public function getHeadersRelatorio() {
         $headers = array(
-            'tipo_item',
-            'tipo_item_id',
+            'titulo_tipo_item',
+            'titulo_tipo_item_id',
             'status',
             'descricao',
             'valor',

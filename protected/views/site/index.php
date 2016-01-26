@@ -8,6 +8,14 @@
                 <h2>Avisos</h2>
                 <?= $this->renderPartial('_dashboard_avisos', array('oLogItemNaoCadastrado' => $oLogItemNaoCadastrado)) ?>
             </div>
+            <hr>
+        <?php endif; ?>
+        <?php if (Yii::app()->user->checkAccess('ordemServico/admin')) : ?>
+            <div class="row">
+                <h2>Ordens de Serviço</h2>
+                <?= $this->renderPartial('_dashboard_ordens_servico', array('oOrdemServico' => $oOrdemServico, 'exibeFormularioBusca' => $exibeFormularioBusca)) ?>
+            </div>
+            <hr>
         <?php endif; ?>
         <?php if (Yii::app()->user->checkAccess('dashboard/acoes')) : ?>
             <div class="row">

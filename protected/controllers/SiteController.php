@@ -1,9 +1,9 @@
 <?php
 
 class SiteController extends Controller {
-    
+
     public $layout = '//layouts/column2';
-    
+
     /**
      * Declares class-based actions.
      */
@@ -47,8 +47,22 @@ class SiteController extends Controller {
      */
     public function actionIndex() {
         $oLogItemNaoCadastrado = LogItemNaoCadastrado::model()->naoCadastrado()->findAll();
+
+        $oOrdemServico = new OrdemServico('search');
+        $oOrdemServico->unsetAttributes();
+        $oSearchForm = new SearchForm();
+
+        $oOrdemServico->status = LogOrdemServico::ABERTA;
+        
+        if (isset($_GET['OrdemServico'])) {
+            $oOrdemServico->attributes = $_GET['OrdemServico'];
+            $oSearchForm->request = $_GET['OrdemServico'];
+        }
+
         $this->render('index', array(
             'oLogItemNaoCadastrado' => $oLogItemNaoCadastrado,
+            'oOrdemServico' => $oOrdemServico,
+            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
         ));
     }
 
@@ -116,7 +130,7 @@ class SiteController extends Controller {
         Yii::app()->user->logout();
         $this->redirect(Yii::app()->homeUrl);
     }
-    
+
     public function actionSemPermissao() {
         $this->render('sem_permissao');
     }

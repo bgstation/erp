@@ -46,17 +46,6 @@ class Produto extends CActiveRecord {
         }
     }
 
-    public function scopes() {
-        return array(
-            'naoExcluido' => array(
-                'condition' => 't.excluido = false',
-            ),
-            'ordenarTitulo' => array(
-                'order' => 't.titulo ASC',
-            ),
-        );
-    }
-
     /**
      * @return array relational rules.
      */
@@ -74,7 +63,7 @@ class Produto extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'Código',
-            'titulo' => 'Título',
+            'titulo' => 'Produto',
             'codigo_barra' => 'Código de barra',
             'marca_id' => 'Marca',
             'modelo_id' => 'Modelo',
@@ -83,6 +72,20 @@ class Produto extends CActiveRecord {
             'quantidade' => 'Quantidade',
             'excluido' => 'Excluído',
             'tipo_produto_id' => 'Tipo do produto',
+            'marca.titulo' => 'Marca',
+            'modelo.titulo' => 'Modelo',
+            'tipoProduto.titulo' => 'Tipo do Produto',
+        );
+    }
+    
+    public function scopes() {
+        return array(
+            'naoExcluido' => array(
+                'condition' => 't.excluido = false',
+            ),
+            'ordenarTitulo' => array(
+                'order' => 't.titulo ASC',
+            ),
         );
     }
 
@@ -114,21 +117,17 @@ class Produto extends CActiveRecord {
         $criteria->compare('tipo_produto_id', $this->tipo_produto_id);
 
         if (!empty($this->marca_id)) {
-            $aJoin[] = 'JOIN marcas marca ON marca.id = t.marca_id';
             $criteria->addCondition("marca.titulo like '%" . $this->marca_id . "%'");
         }
         if (!empty($this->modelo_id)) {
-            $aJoin[] = 'JOIN modelos modelo ON modelo.id = t.modelo_id';
             $criteria->addCondition("modelo.titulo like '%" . $this->modelo_id . "%'");
         }
-//        if (!empty($this->tipo_produto_id)) {
-//            $aJoin[] = 'JOIN tipos_produtos tp ON tp.id = t.tipo_produto_id';
-//            $criteria->addCondition("tp.titulo like '%" . $this->tipo_produto_id . "%'");
-//        }
 
         if (!empty($aJoin)) {
             $criteria->join = implode(' ', $aJoin);
         }
+        
+        $criteria->with = array('marca', 'modelo', 'tipoProduto');
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -191,12 +190,12 @@ class Produto extends CActiveRecord {
         }
     }
 
-    public function getHeadersExportar() {
+    public function getHeadersRelatorio() {
         $headers = array(
             'titulo',
-            'marca',
-            'modelo',
-            'tipo_produto_id',
+            'marca.titulo',
+            'modelo.titulo',
+            'tipoProduto.titulo',
             'preco',
             'quantidade',
         );

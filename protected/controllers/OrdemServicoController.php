@@ -160,20 +160,6 @@ class OrdemServicoController extends Controller {
         $model->unsetAttributes();
         $oSearchForm = new SearchForm();
 
-        $oOrdemServido = OrdemServico::model()->findAll();
-
-        $oClientes = array();
-        $oClientesCarros = array();
-        if (!empty($oOrdemServido)) {
-            $oClientes = Cliente::model()->findAll(array(
-                'condition' => 'id in (' . implode(',', CHtml::listData($oOrdemServido, 'cliente_id', 'cliente_id')) . ')',
-            ));
-
-            $oClientesCarros = ClienteCarro::model()->findAll(array(
-                'condition' => 'id in (' . implode(',', CHtml::listData($oOrdemServido, 'cliente_carro_id', 'cliente_carro_id')) . ')',
-            ));
-        }
-
         if (isset($_GET['OrdemServico'])) {
             $model->attributes = $_GET['OrdemServico'];
             $oSearchForm->request = $_GET['OrdemServico'];
@@ -181,10 +167,7 @@ class OrdemServicoController extends Controller {
 
         $this->render('admin', array(
             'model' => $model,
-            'oClientes' => $oClientes,
-            'oClientesCarros' => $oClientesCarros,
             'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
-            'oLogOrdemServico' => new LogOrdemServico,
         ));
     }
 

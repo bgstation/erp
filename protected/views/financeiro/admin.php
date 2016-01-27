@@ -29,7 +29,14 @@ $('.search-form form').submit(function(){
 <div class="financeiro-resumo">
     <p class='financeiro-resumo-os'>Ordens de Serviço: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServico) ?></p>
     <li><p class="dinheiro">Dinheiro: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoDinheiro) ?></p></li>
-    <li><p class="cartao">Cartão: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartao) ?></p></li>
+    <li>
+        <p class="cartao">Cartão: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartaoDebito + $oTotalOrdemServicoCartaoCredito) ?></p>
+        <ul>
+            <li class="cartao_debito">Débito: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartaoDebito) ?></li>
+            <li class="cartao_credito">Crédito: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartaoCredito) ?></li>
+        </ul>
+    </li>
+    <br>
     <p class='financeiro-resumo-compras'>Compras: R$ <?= FormatHelper::valorMonetario($oTotalCompras) ?></p>
     <p class='financeiro-resumo-despesas'>Despesas: R$ <?= FormatHelper::valorMonetario($oTotalDespesas) ?></p>
 </div>
@@ -90,6 +97,8 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
                               $('.financeiro-resumo-despesas').text($(data).find('.financeiro-resumo-despesas').html());
                               $('.dinheiro').text($(data).find('.dinheiro').html());
                               $('.cartao').text($(data).find('.cartao').html());
+                              $('.cartao_debito').text($(data).find('.cartao_debito').html());
+                              $('.cartao_credito').text($(data).find('.cartao_credito').html());
                           }",
     'rowCssClassExpression' => '$data->getColor($data->tipo_item)',
     'columns' => array(

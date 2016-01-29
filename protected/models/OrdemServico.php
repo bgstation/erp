@@ -12,7 +12,7 @@
  * @property integer $excluido
  */
 class OrdemServico extends CActiveRecord {
-    
+
     public $status;
 
     /**
@@ -35,11 +35,11 @@ class OrdemServico extends CActiveRecord {
             array('id, cliente_id, cliente_carro_id, forma_pagamento_id, observacao, excluido, desconto', 'safe', 'on' => 'search'),
         );
     }
-    
+
     public function tratarDesconto() {
-        if (!empty($this->preco)) {
-            $preco = str_replace('.', '', $this->preco);
-            $this->preco = str_replace(',', '.', $preco);
+        if (!empty($this->desconto)) {
+            $desconto = str_replace('.', '', $this->desconto);
+            $this->desconto = str_replace(',', '.', $desconto);
         }
     }
 
@@ -163,7 +163,7 @@ class OrdemServico extends CActiveRecord {
 
     public function finalizarOS() {
         if (!empty($_POST['OrdemServicoTipoPagamento'])) {
-            if(!empty($_POST['OrdemServico']['desconto'])){
+            if (!empty($_POST['OrdemServico']['desconto'])) {
                 $this->desconto = $_POST['OrdemServico']['desconto'];
                 $this->save();
             }
@@ -187,22 +187,30 @@ class OrdemServico extends CActiveRecord {
         }
         return false;
     }
-    
+
     public function getStatus() {
         $oLogOrdemServico = LogOrdemServico::model()->ultimoRegistro()->findByAttributes(array(
             'ordem_servico_id' => $this->id
         ));
         return $oLogOrdemServico->status;
     }
-    
+
     public function getTituloStatus() {
         $oLogOrdemServico = new LogOrdemServico();
         return $oLogOrdemServico->aStatus[$this->getStatus()];
     }
-    
-    public function marcarExcluido(){
+
+    public function marcarExcluido() {
         $this->excluido = 1;
         $this->save();
+    }
+
+    public function getUrlUpdate() {
+        if ($this->getStatus() == LogOrdemServico::ABERTA) {
+            return Yii::app()->createUrl('ordemServico/update', array('id' => $this->id));
+        } else if ($this->getStatus() == LogOrdemServico::FECHADA) {
+            return Yii::app()->createUrl('ordemServico/finalizar', array('id' => $this->id, 'update' => 1));
+        }
     }
 
 }

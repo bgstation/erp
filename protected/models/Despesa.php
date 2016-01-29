@@ -19,6 +19,10 @@ class Despesa extends CActiveRecord {
     public $data_hora_final;
     public $data_hora_inicial_grid;
     public $data_hora_final_grid;
+    public $aTiposEspeciais = array(
+        0 => 'Normal',
+        1 => 'Especial',
+    );
 
     /**
      * @return string the associated database table name
@@ -134,7 +138,7 @@ class Despesa extends CActiveRecord {
         }
 
         if (!empty($this->tipo_despesa_id)) {
-             $aJoin[] = 'JOIN tipos_despesas td ON td.id = t.tipo_despesa_id';
+            $aJoin[] = 'JOIN tipos_despesas td ON td.id = t.tipo_despesa_id';
             $criteria->addCondition("td.titulo like '%" . $this->tipo_despesa_id . "%'");
         }
         if (!empty($this->usuario_id)) {
@@ -144,6 +148,8 @@ class Despesa extends CActiveRecord {
         if (!empty($aJoin)) {
             $criteria->join = implode(' ', $aJoin);
         }
+        
+        $criteria->order = 'id desc';
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

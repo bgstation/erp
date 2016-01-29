@@ -107,7 +107,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'name' => 'especial',
             'value' => '$data->especial == 0 ? "Não" : "Sim"',
-            'filter' => CHtml::activeDropDownList($model, 'especial', CHtml::listData($aTiposEspeciais, 'id', 'titulo'), array(
+            'filter' => CHtml::activeDropDownList($model, 'especial', $model->aTiposEspeciais, array(
                 'empty' => '',
             )),
         ),

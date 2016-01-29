@@ -88,6 +88,12 @@
         <?php endif ?>
         <?= $form->error($model, 'modelo_id') ?>
     </div>
+    
+    <div class="row">
+        <?= $form->labelEx($model, 'preco_variavel') ?>
+        <?= $form->checkBox($model, 'preco_variavel') ?>
+        <?= $form->error($model, 'preco_variavel') ?>
+    </div>
 
     <div class="row">
         <?= $form->labelEx($model, 'preco') ?>

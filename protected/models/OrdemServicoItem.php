@@ -17,7 +17,7 @@ class OrdemServicoItem extends CActiveRecord {
         1 => 'Produto',
         2 => 'Serviço',
     );
-    
+
     const ITEM_NAO_CADASTRADO = 0;
     const PRODUTO = 1;
     const SERVICO = 2;
@@ -120,12 +120,13 @@ class OrdemServicoItem extends CActiveRecord {
         }
     }
 
-    public function salvarItemPorTipo($tipoItem, $itemId, $aDados = null) {
+    public function salvarItemPorTipo($tipoItem, $aDados) {
         $model = new self;
         $model->ordem_servico_id = $this->ordem_servico_id;
         $model->tipo_item_id = $tipoItem;
-        $model->item_id = $itemId;
-        if ($model->save() && $itemId == self::ITEM_NAO_CADASTRADO && !empty($aDados)) {
+        $model->item_id = $aDados['id'];
+        $model->preco = $aDados['preco'];
+        if ($model->save() && $aDados['id'] == self::ITEM_NAO_CADASTRADO && !empty($aDados)) {
             $oLogItemNaoCadastrado = new LogItemNaoCadastrado;
             $oLogItemNaoCadastrado->ordem_servico_item_id = $model->id;
             $oLogItemNaoCadastrado->titulo = $aDados['titulo'];
@@ -138,18 +139,11 @@ class OrdemServicoItem extends CActiveRecord {
     public function salvarItens($post) {
         if (!empty($post)) {
             self::removerItens();
-            $aItens = explode(',', $post['Produto']);
-            if (!empty($aItens)) {
-                foreach ($aItens as $item) {
-                    if (!empty($item))
-                        $this->salvarItemPorTipo(self::PRODUTO, $item);
-                }
-            }
-            $aItens = explode(',', $post['Servico']);
-            if (!empty($aItens)) {
-                foreach ($aItens as $item) {
-                    if (!empty($item))
-                        $this->salvarItemPorTipo(self::SERVICO, $item);
+            if (!empty($post['Item'])) {
+                foreach ($post['Item'] as $tipoItem => $aItens) {
+                    foreach ($aItens as $aItem) {
+                        $this->salvarItemPorTipo($tipoItem, $aItem);
+                    }
                 }
             }
         }
@@ -157,10 +151,10 @@ class OrdemServicoItem extends CActiveRecord {
 
     public function salvarItensNaoCadastrados($post) {
         if (!empty($post)) {
-            foreach ($post as $tipoItem => $aDados) {
+            foreach ($post['Item'] as $tipoItem => $aDados) {
                 if (!empty($aDados)) {
                     foreach ($aDados as $dados) {
-                        $this->salvarItemPorTipo($tipoItem, self::ITEM_NAO_CADASTRADO, $dados);
+                        $this->salvarItemPorTipo($tipoItem, $dados);
                     }
                 }
             }

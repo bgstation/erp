@@ -33,6 +33,10 @@ $this->widget('zii.widgets.CDetailView', array(
             'value' => !empty($model->modelo_id) ? $model->modelo->titulo : '',
         ),
         array(
+            'name' => 'preco_variavel',
+            'value' => $model->preco_variavel == 0 ? 'Não' : 'Sim',
+        ),
+        array(
             'name' => 'preco',
             'value' => !empty($model->preco) ? FormatHelper::valorMonetario($model->preco) : '',
         ),

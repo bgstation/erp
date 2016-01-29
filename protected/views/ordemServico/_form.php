@@ -15,10 +15,10 @@
     <p class="note">Os campos com <span class="required">*</span> são obrigatórios.</p>
 
     <ul id="myTabs" class="nav nav-tabs" role="tablist"> 
-        <li role="presentation" class="active">
+        <li role="presentation" class="">
             <a href="#cliente" id="cliente-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Cliente</a>
         </li> 
-        <li role="presentation" class="">
+        <li role="presentation" class="active">
             <a href="javascript:void(0)" role="tab" id="servicos-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Serviços</a>
         </li>
         <li role="presentation" class="">
@@ -27,7 +27,7 @@
     </ul>
     <div id="myTabContent" class="tab-content">
 
-        <div role="tabpanel" class="tab-pane fade active in" id="cliente" aria-labelledby="cliente-tab">
+        <div role="tabpanel" class="tab-pane fade" id="cliente" aria-labelledby="cliente-tab">
             <?=
             $this->renderPartial('_cliente', array(
                 'form' => $form,
@@ -37,7 +37,7 @@
             ?>
         </div>
 
-        <div role="tabpanel" class="tab-pane fade" id="servicos" aria-labelledby="servicos-tab">
+        <div role="tabpanel" class="tab-pane fade active in" id="servicos" aria-labelledby="servicos-tab">
             <?php
             $this->renderPartial('_servicos', array(
                 'form' => $form,
@@ -45,6 +45,8 @@
                 'valor_total' => $valor_total,
                 'oOrdemServicoItem' => $oOrdemServicoItem,
                 'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
+                'oServicos' => $oServicos,
+                'oProdutos' => $oProdutos,
             ));
             ?>
         </div>

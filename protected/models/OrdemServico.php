@@ -142,11 +142,13 @@ class OrdemServico extends CActiveRecord {
         if (!empty($this->ordemServicoItens)) {
             foreach ($this->ordemServicoItens as $item) {
                 if ($item->item_id != 0) {
-                    if ($item->tipo_item_id == 1) {
-                        $valor_total = $valor_total + $item->produto->preco;
+                    if ($item->tipo_item_id == OrdemServicoItem::PRODUTO) {
+                        $preco = !empty($item->preco) ? $item->preco : $item->produto->preco;
+                        $valor_total = $valor_total + $preco;
                     }
-                    if ($item->tipo_item_id == 2) {
-                        $valor_total = $valor_total + $item->servico->preco;
+                    if ($item->tipo_item_id == OrdemServicoItem::SERVICO) {
+                        $preco = !empty($item->preco) ? $item->preco : $item->servico->preco;
+                        $valor_total = $valor_total + $preco;
                     }
                 } else {
                     $oLogItemNaoCadastrado = LogItemNaoCadastrado::model()->findByAttributes(array(

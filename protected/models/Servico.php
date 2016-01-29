@@ -23,13 +23,13 @@ class Servico extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('excluido', 'numerical', 'integerOnly' => true),
+            array('excluido, preco_variavel', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
             array('preco', 'length', 'max' => 10),
             array('observacao', 'safe'),
             array('preco', 'tratarPreco'),
             array('titulo', 'required'),
-            array('id, titulo, preco, observacao, excluido', 'safe', 'on' => 'search'),
+            array('id, titulo, preco, observacao, excluido, preco_variavel', 'safe', 'on' => 'search'),
         );
     }
 
@@ -69,6 +69,7 @@ class Servico extends CActiveRecord {
             'preco' => 'Preço',
             'observacao' => 'Observação',
             'excluido' => 'Excluido',
+            'preco_variavel' => 'Preço variável',
         );
     }
 
@@ -94,6 +95,7 @@ class Servico extends CActiveRecord {
         $criteria->compare('preco', $this->preco, true);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
+        $criteria->compare('preco_variavel', $this->preco_variavel);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

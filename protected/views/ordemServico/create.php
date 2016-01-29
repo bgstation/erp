@@ -21,5 +21,7 @@ $this->renderPartial('_form', array(
     'oOrdemServicoItem' => $oOrdemServicoItem,
     'valor_total' => $valor_total,
     'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
+    'oServicos' => $oServicos,
+    'oProdutos' => $oProdutos,
 ));
 ?>

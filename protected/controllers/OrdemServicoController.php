@@ -69,6 +69,9 @@ class OrdemServicoController extends Controller {
         $oClientes = Cliente::model()->ordemNome()->findAll();
         $oOrdemServicoItem = new OrdemServicoItem;
         $oLogItemNaoCadastrador = new LogItemNaoCadastrado;
+        
+        $oServicos = Servico::model()->ordenarTitulo()->naoExcluido()->findAll();
+        $oProdutos = Produto::model()->ordenarTitulo()->naoExcluido()->findAll();
 
         if (isset($_POST['OrdemServico'])) {
             $model->attributes = $_POST['OrdemServico'];
@@ -95,6 +98,8 @@ class OrdemServicoController extends Controller {
             'oOrdemServicoItem' => $oOrdemServicoItem,
             'valor_total' => $model->getValorTotal(),
             'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
+            'oServicos' => $oServicos,
+            'oProdutos' => $oProdutos,
         ));
     }
 
@@ -109,6 +114,9 @@ class OrdemServicoController extends Controller {
         $oClientes = Cliente::model()->ordemNome()->findAll();
         $oLogItemNaoCadastrador = new LogItemNaoCadastrado();
         $oOrdemServicoItem = new OrdemServicoItem();
+        
+        $oServicos = Servico::model()->ordenarTitulo()->naoExcluido()->findAll();
+        $oProdutos = Produto::model()->ordenarTitulo()->naoExcluido()->findAll();
 
         if (isset($_POST['OrdemServico'])) {
             $model->attributes = $_POST['OrdemServico'];
@@ -127,6 +135,8 @@ class OrdemServicoController extends Controller {
             'oOrdemServicoItem' => $oOrdemServicoItem,
             'valor_total' => $model->getValorTotal(),
             'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
+            'oServicos' => $oServicos,
+            'oProdutos' => $oProdutos,
         ));
     }
 

@@ -16,8 +16,9 @@
                 <th>Preço</th>
             </tr>
         </thead>
-        <tbody id="tipo_item_1_adicionados" class="resumo">
-            <?= OrdemServicoHelper::renderItens(1, $model->ordemServicoItens, false) ?>
+        <tbody id="tipo_item_<?= OrdemServicoItem::PRODUTO ?>_adicionados" class="resumo">
+            
+            <!--<//?= OrdemServicoHelper::renderItens(1, $model->ordemServicoItens, false) ?>-->
         </tbody>
     </table>
 </div>
@@ -29,8 +30,8 @@
                 <th>Preço</th>
             </tr>
         </thead>
-        <tbody id="tipo_item_2_adicionados" class="resumo">
-            <?= OrdemServicoHelper::renderItens(2, $model->ordemServicoItens, false) ?>
+        <tbody id="tipo_item_<?= OrdemServicoItem::SERVICO ?>_adicionados" class="resumo">
+            <!--<//?= OrdemServicoHelper::renderItens(2, $model->ordemServicoItens, false) ?>-->
         </tbody>
     </table>
 </div>

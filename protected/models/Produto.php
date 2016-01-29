@@ -28,14 +28,14 @@ class Produto extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('marca_id, modelo_id, quantidade, excluido, tipo_produto_id', 'numerical', 'integerOnly' => true),
+            array('marca_id, modelo_id, quantidade, excluido, tipo_produto_id, preco_variavel', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
             array('codigo_barra', 'length', 'max' => 300),
             array('preco', 'length', 'max' => 10),
             array('observacao', 'safe'),
             array('titulo', 'required'),
             array('preco', 'tratarPreco', 'except' => 'alteracaoCompra'),
-            array('id, titulo, codigo_barra, marca_id, modelo_id, preco, observacao, quantidade, excluido, tipo_produto_id', 'safe', 'on' => 'search'),
+            array('id, titulo, codigo_barra, marca_id, modelo_id, preco, observacao, quantidade, excluido, tipo_produto_id, preco_variavel', 'safe', 'on' => 'search'),
         );
     }
 
@@ -75,6 +75,7 @@ class Produto extends CActiveRecord {
             'marca.titulo' => 'Marca',
             'modelo.titulo' => 'Modelo',
             'tipoProduto.titulo' => 'Tipo do Produto',
+            'preco_variavel' => 'Preço variável',
         );
     }
     
@@ -115,6 +116,7 @@ class Produto extends CActiveRecord {
         $criteria->compare('quantidade', $this->quantidade);
         $criteria->compare('excluido', $this->excluido);
         $criteria->compare('tipo_produto_id', $this->tipo_produto_id);
+        $criteria->compare('preco_variavel', $this->preco_variavel);
 
         if (!empty($this->marca_id)) {
             $criteria->addCondition("marca.titulo like '%" . $this->marca_id . "%'");

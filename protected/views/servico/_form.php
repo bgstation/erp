@@ -20,6 +20,12 @@
 		<?php echo $form->textField($model,'titulo',array('size'=>60,'maxlength'=>200)); ?>
 		<?php echo $form->error($model,'titulo'); ?>
 	</div>
+        
+        <div class="row">
+            <?= $form->labelEx($model, 'preco_variavel') ?>
+            <?= $form->checkBox($model, 'preco_variavel') ?>
+            <?= $form->error($model, 'preco_variavel') ?>
+        </div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'preco'); ?>

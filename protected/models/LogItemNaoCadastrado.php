@@ -28,8 +28,16 @@ class LogItemNaoCadastrado extends CActiveRecord {
             array('ordem_servico_item_id', 'numerical', 'integerOnly' => true),
             array('titulo', 'length', 'max' => 200),
             array('preco', 'length', 'max' => 10),
+            array('preco', 'tratarPreco', 'except' => 'alteracao'),
             array('id, ordem_servico_item_id, titulo, preco, cadastrado, usuario_id', 'safe', 'on' => 'search'),
         );
+    }
+    
+    public function tratarPreco() {
+        if (!empty($this->preco)) {
+            $preco = str_replace('.', '', $this->preco);
+            $this->preco = str_replace(',', '.', $preco);
+        }
     }
 
     /**

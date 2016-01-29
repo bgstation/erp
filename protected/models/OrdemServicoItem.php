@@ -36,8 +36,16 @@ class OrdemServicoItem extends CActiveRecord {
         return array(
             array('ordem_servico_id, tipo_item_id, item_id, excluido', 'numerical', 'integerOnly' => true),
             array('observacao', 'safe'),
+            array('preco', 'tratarPreco', 'except' => 'alteracao'),
             array('id, ordem_servico_id, tipo_item_id, item_id, observacao, excluido', 'safe', 'on' => 'search'),
         );
+    }
+
+    public function tratarPreco() {
+        if (!empty($this->preco)) {
+            $preco = str_replace('.', '', $this->preco);
+            $this->preco = str_replace(',', '.', $preco);
+        }
     }
 
     /**
@@ -112,11 +120,24 @@ class OrdemServicoItem extends CActiveRecord {
         return parent::model($className);
     }
 
-    public function removerItens() {
+    public function removerItens($cadastrados = true) {
         if (!empty($this->ordem_servico_id)) {
-            $oModels = self::model()->deleteAllByAttributes(array(
-                'ordem_servico_id' => $this->ordem_servico_id,
-            ));
+            if ($cadastrados) {
+                $oModels = self::model()->deleteAll(array(
+                    'condition' => 'ordem_servico_id =' . $this->ordem_servico_id . ' AND item_id != 0',
+                ));
+            } else {
+                $oModels = self::model()->findAll(array(
+                    'condition' => 'ordem_servico_id =' . $this->ordem_servico_id . ' AND item_id = 0',
+                ));
+                foreach ($oModels as $model) {
+                    $oLogItensNaoCadastrado = LogItemNaoCadastrado::model()->deleteAllByAttributes(array(
+                        'ordem_servico_item_id' => $model->id,
+                        'cadastrado' => false,
+                    ));
+                    $model->delete();
+                }
+            }
         }
     }
 
@@ -125,7 +146,7 @@ class OrdemServicoItem extends CActiveRecord {
         $model->ordem_servico_id = $this->ordem_servico_id;
         $model->tipo_item_id = $tipoItem;
         $model->item_id = $aDados['id'];
-        $model->preco = $aDados['preco'];
+        $model->preco = !empty($aDados['preco']) ? $aDados['preco'] : null;
         if ($model->save() && $aDados['id'] == self::ITEM_NAO_CADASTRADO && !empty($aDados)) {
             $oLogItemNaoCadastrado = new LogItemNaoCadastrado;
             $oLogItemNaoCadastrado->ordem_servico_item_id = $model->id;
@@ -138,7 +159,7 @@ class OrdemServicoItem extends CActiveRecord {
 
     public function salvarItens($post) {
         if (!empty($post)) {
-            self::removerItens();
+            self::removerItens(true);
             if (!empty($post['Item'])) {
                 foreach ($post['Item'] as $tipoItem => $aItens) {
                     foreach ($aItens as $aItem) {
@@ -151,6 +172,7 @@ class OrdemServicoItem extends CActiveRecord {
 
     public function salvarItensNaoCadastrados($post) {
         if (!empty($post)) {
+            self::removerItens(false);
             foreach ($post['Item'] as $tipoItem => $aDados) {
                 if (!empty($aDados)) {
                     foreach ($aDados as $dados) {

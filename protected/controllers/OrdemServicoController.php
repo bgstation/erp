@@ -80,8 +80,8 @@ class OrdemServicoController extends Controller {
                 $oLogOrdemServico->ordem_servico_id = $model->id;
                 $oLogOrdemServico->observacao = $_POST['OrdemServico']['observacao'];
                 $oLogOrdemServico->salvarLog();
+                $oOrdemServicoItem->ordem_servico_id = $model->id;
                 if (!empty($_POST['OrdemServicoItem'])) {
-                    $oOrdemServicoItem->ordem_servico_id = $model->id;
                     $oOrdemServicoItem->salvarItens($_POST['OrdemServicoItem']);
                 }
                 if (!empty($_POST['LogItemNaoCadastrado'])) {
@@ -116,12 +116,13 @@ class OrdemServicoController extends Controller {
 
         $oServicos = Servico::model()->ordenarTitulo()->naoExcluido()->findAll();
         $oProdutos = Produto::model()->ordenarTitulo()->naoExcluido()->findAll();
-
+//        echo '<pre>';
+//        die(var_dump($_POST['OrdemServicoItem']));
         if (isset($_POST['OrdemServico'])) {
             $model->attributes = $_POST['OrdemServico'];
             if ($model->save()) {
+                $oOrdemServicoItem->ordem_servico_id = $model->id;
                 if (!empty($_POST['OrdemServicoItem'])) {
-                    $oOrdemServicoItem->ordem_servico_id = $model->id;
                     $oOrdemServicoItem->salvarItens($_POST['OrdemServicoItem']);
                 }
                 if (!empty($_POST['LogItemNaoCadastrado'])) {

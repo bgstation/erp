@@ -65,10 +65,12 @@ class ServicoController extends Controller {
             if ($model->save()) {
                 if (!empty(Yii::app()->user->getState('log_item_nao_cadastrado'))) {
                     $logItemNaoCadastrado = LogItemNaoCadastrado::model()->findByPk(Yii::app()->user->getState('log_item_nao_cadastrado'));
+                    $logItemNaoCadastrado->scenario = 'alteracao';
                     $logItemNaoCadastrado->cadastrado = true;
                     $logItemNaoCadastrado->save();
 
                     $oOrdemServicoItem = OrdemServicoItem::model()->findByPk($logItemNaoCadastrado->ordem_servico_item_id);
+                    $oOrdemServicoItem->scenario = 'alteracao';
                     $oOrdemServicoItem->item_id = $model->id;
                     $oOrdemServicoItem->save();
                     Yii::app()->user->setState('log_item_nao_cadastrado', NULL);

@@ -13,6 +13,7 @@ class m160107_160359_criar_tabela_de_produtos extends CDbMigration {
             'observacao' => 'text',
             'quantidade' => 'integer',
             'excluido' => 'boolean default false',
+            'preco_Variavel' => 'boolean default false',
                 )
         );
     }

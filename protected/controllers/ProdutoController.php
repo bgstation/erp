@@ -74,7 +74,6 @@ class ProdutoController extends Controller {
 
                     $oOrdemServicoItem = OrdemServicoItem::model()->findByPk($logItemNaoCadastrado->ordem_servico_item_id);
                     $oOrdemServicoItem->item_id = $model->id;
-                    $oOrdemServicoItem->preco = !empty($logItemNaoCadastrado->preco) ? $logItemNaoCadastrado->preco : null;
                     $oOrdemServicoItem->save();
                     Yii::app()->user->setState('log_item_nao_cadastrado', NULL);
                 }

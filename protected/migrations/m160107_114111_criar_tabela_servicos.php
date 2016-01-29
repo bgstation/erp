@@ -8,6 +8,7 @@ class m160107_114111_criar_tabela_servicos extends CDbMigration {
             'titulo' => 'varchar(200)',
             'preco' => 'decimal(10,2)',
             'observacao' => 'text',
+            'preco_Variavel' => 'boolean default false',
                 )
         );
     }

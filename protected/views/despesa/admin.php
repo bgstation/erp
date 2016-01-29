@@ -105,6 +105,13 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'value' => '!empty($data->data_hora) ? FormatHelper::dataHora($data->data_hora) : NULL'
         ),
         array(
+            'name' => 'especial',
+            'value' => '$data->especial == 0 ? "Não" : "Sim"',
+            'filter' => CHtml::activeDropDownList($model, 'especial', CHtml::listData($aTiposEspeciais, 'id', 'titulo'), array(
+                'empty' => '',
+            )),
+        ),
+        array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{view}{cancelar}',
             'buttons' => array(

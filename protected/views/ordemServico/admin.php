@@ -69,6 +69,10 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'value' => '!empty($data->cliente_carro_id) ? $data->clienteCarro->placa : "" ',
         ),
         array(
+            'header' => 'Valor',
+            'value' => 'RPFormat::valorMonetario($data->getValorTotal())',
+        ),
+        array(
             'header' => 'Status',
             'value' => '$data->getTituloStatus()',
         ),

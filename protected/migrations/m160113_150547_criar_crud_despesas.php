@@ -12,6 +12,7 @@ class m160113_150547_criar_crud_despesas extends CDbMigration {
             'data_hora' => 'DATETIME',
             'usuario_id' => 'integer',
             'excluido' => 'boolean default false',
+            'especial' => 'boolean default false',
         ));
     }
 

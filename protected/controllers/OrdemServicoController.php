@@ -65,11 +65,10 @@ class OrdemServicoController extends Controller {
         if (!empty($_GET['clienteCarroId']))
             $model->cliente_carro_id = $_GET['clienteCarroId'];
 
-
         $oClientes = Cliente::model()->ordemNome()->findAll();
         $oOrdemServicoItem = new OrdemServicoItem;
         $oLogItemNaoCadastrador = new LogItemNaoCadastrado;
-        
+
         $oServicos = Servico::model()->ordenarTitulo()->naoExcluido()->findAll();
         $oProdutos = Produto::model()->ordenarTitulo()->naoExcluido()->findAll();
 
@@ -84,9 +83,9 @@ class OrdemServicoController extends Controller {
                 if (!empty($_POST['OrdemServicoItem'])) {
                     $oOrdemServicoItem->ordem_servico_id = $model->id;
                     $oOrdemServicoItem->salvarItens($_POST['OrdemServicoItem']);
-                    if (!empty($_POST['LogItemNaoCadastrado'])) {
-                        $oOrdemServicoItem->salvarItensNaoCadastrados($_POST['LogItemNaoCadastrado']);
-                    }
+                }
+                if (!empty($_POST['LogItemNaoCadastrado'])) {
+                    $oOrdemServicoItem->salvarItensNaoCadastrados($_POST['LogItemNaoCadastrado']);
                 }
                 $this->redirect(array('view', 'id' => $model->id));
             }
@@ -114,7 +113,7 @@ class OrdemServicoController extends Controller {
         $oClientes = Cliente::model()->ordemNome()->findAll();
         $oLogItemNaoCadastrador = new LogItemNaoCadastrado();
         $oOrdemServicoItem = new OrdemServicoItem();
-        
+
         $oServicos = Servico::model()->ordenarTitulo()->naoExcluido()->findAll();
         $oProdutos = Produto::model()->ordenarTitulo()->naoExcluido()->findAll();
 
@@ -124,6 +123,9 @@ class OrdemServicoController extends Controller {
                 if (!empty($_POST['OrdemServicoItem'])) {
                     $oOrdemServicoItem->ordem_servico_id = $model->id;
                     $oOrdemServicoItem->salvarItens($_POST['OrdemServicoItem']);
+                }
+                if (!empty($_POST['LogItemNaoCadastrado'])) {
+                    $oOrdemServicoItem->salvarItensNaoCadastrados($_POST['LogItemNaoCadastrado']);
                 }
                 $this->redirect(array('view', 'id' => $model->id));
             }

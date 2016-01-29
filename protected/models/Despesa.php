@@ -32,12 +32,12 @@ class Despesa extends CActiveRecord {
      */
     public function rules() {
         return array(
-            array('tipo_despesa_id, quantidade, usuario_id, excluido', 'numerical', 'integerOnly' => true),
+            array('tipo_despesa_id, quantidade, usuario_id, excluido, especial', 'numerical', 'integerOnly' => true),
             array('preco', 'length', 'max' => 10),
             array('observacao, data_hora, data_hora_inicial, data_hora_final, data_hora_inicial_grid, data_hora_final_grid', 'safe'),
-            array('preco, tipo_despesa_id, quantidade', 'required'),
+            array('preco, tipo_despesa_id', 'required'),
             array('preco', 'tratarPreco', 'except' => 'cancelarCompra'),
-            array('id, tipo_despesa_id, preco, observacao, quantidade, data_hora, usuario_id, excluido', 'safe', 'on' => 'search'),
+            array('id, tipo_despesa_id, preco, observacao, quantidade, data_hora, usuario_id, excluido, especial', 'safe', 'on' => 'search'),
         );
     }
 
@@ -57,10 +57,10 @@ class Despesa extends CActiveRecord {
     }
 
     public function afterSave() {
-        if ($this->isNewRecord) {
+        if ($this->isNewRecord && !$this->especial) {
             $oFinanceiro = new Financeiro;
             $oFinanceiro->salvar(3, $this);
-        } else if ($this->excluido == 1) {
+        } else if ($this->excluido == 1 & !$this->especial) {
             $oFinanceiro = Financeiro::model()->findByAttributes(array(
                 'tipo_item' => 3,
                 'tipo_item_id' => $this->id,
@@ -93,6 +93,7 @@ class Despesa extends CActiveRecord {
             'data_hora' => 'Data',
             'usuario_id' => 'Usuário',
             'excluido' => 'Excluído',
+            'especial' => 'Especial',
         );
     }
 
@@ -120,6 +121,7 @@ class Despesa extends CActiveRecord {
         $criteria->compare('quantidade', $this->quantidade);
         $criteria->compare('data_hora', $this->data_hora, true);
         $criteria->compare('excluido', $this->excluido);
+        $criteria->compare('especial', $this->especial);
 
         if (!empty($this->data_hora_inicial) && !empty($this->data_hora_final)) {
             $this->data_hora_inicial_grid = $this->data_hora_inicial;

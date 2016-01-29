@@ -31,6 +31,12 @@
                 )); ?>
 		<?php echo $form->error($model,'tipo_despesa_id'); ?>
 	</div>
+        
+        <div class="row">
+            <?= $form->labelEx($model, 'especial') ?>
+            <?= $form->checkBox($model, 'especial') ?>
+            <?= $form->error($model, 'especial') ?>
+        </div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'preco'); ?>

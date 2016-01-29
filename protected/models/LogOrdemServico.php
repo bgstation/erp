@@ -18,7 +18,7 @@ class LogOrdemServico extends CActiveRecord {
         2 => 'Fechada',
         3 => 'Cancelada',
     );
-    
+
     CONST ABERTA = 1;
     CONST FECHADA = 2;
     CONST CANCELADA = 3;
@@ -47,7 +47,7 @@ class LogOrdemServico extends CActiveRecord {
             $oFinanceiro = new Financeiro;
             $oFinanceiro->salvar(1, $this->ordemServico, $this->usuario->nome);
             foreach ($this->ordemServico->ordemServicoItens as $item) {
-                if ($item->tipo_item_id == 1) {
+                if ($item->tipo_item_id == OrdemServicoItem::PRODUTO) {
                     $oLogRetiradaProduto = new LogRetiradaProduto;
                     $oLogRetiradaProduto->produto_id = $item->item_id;
                     $oLogRetiradaProduto->quantidade = 1;
@@ -58,8 +58,10 @@ class LogOrdemServico extends CActiveRecord {
                     if (!$oLogRetiradaProduto->save()) {
                         die(var_dump($oLogRetiradaProduto->getErrors()));
                     }
-                    $oProduto = Produto::model()->findByPk($item->item_id);
-                    $oProduto->decrementarQuantidade();
+                    if ($item->item_id != 0) {
+                        $oProduto = Produto::model()->findByPk($item->item_id);
+                        $oProduto->decrementarQuantidade();
+                    }
                 }
             }
         } else if ($this->status == self::CANCELADA) {

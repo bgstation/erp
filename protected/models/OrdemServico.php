@@ -168,7 +168,7 @@ class OrdemServico extends CActiveRecord {
                 $this->save();
             }
             $oLogOrdemServico = new LogOrdemServico;
-            $oLogOrdemServico->status = 2;
+            $oLogOrdemServico->status = LogOrdemServico::FECHADA;
             $oLogOrdemServico->ordem_servico_id = $this->id;
             $oLogOrdemServico->observacao = $_POST['LogOrdemServico']['observacao'];
             if ($oLogOrdemServico->salvarLog()) {
@@ -184,6 +184,27 @@ class OrdemServico extends CActiveRecord {
                 }
                 return true;
             }
+        }
+        return false;
+    }
+
+    public function atualizarOSFinalizada() {
+        if (!empty($_POST['OrdemServicoTipoPagamento'])) {
+            OrdemServicoTipoPagamento::model()->deleteAll('ordem_servico_id = ' . $this->id);
+            foreach ($_POST['OrdemServicoTipoPagamento'] as $post) {
+                if (!empty($post['forma_pagamento_id'])) {
+                    $oOrdemServicoTipoPagamento = new OrdemServicoTipoPagamento;
+                    $oOrdemServicoTipoPagamento->ordem_servico_id = $this->id;
+                    $oOrdemServicoTipoPagamento->forma_pagamento_id = $post['forma_pagamento_id'];
+                    $oOrdemServicoTipoPagamento->valor = $post['valor'];
+                    $oOrdemServicoTipoPagamento->parcelas = !empty($post['parcelas']) ? $post['parcelas'] : NULL;
+                    if (!$oOrdemServicoTipoPagamento->save()) {
+                        print_r($oOrdemServicoTipoPagamento->getErrors());
+                        DIE();
+                    }
+                }
+            }
+            return true;
         }
         return false;
     }
@@ -209,8 +230,18 @@ class OrdemServico extends CActiveRecord {
         if ($this->getStatus() == LogOrdemServico::ABERTA) {
             return Yii::app()->createUrl('ordemServico/update', array('id' => $this->id));
         } else if ($this->getStatus() == LogOrdemServico::FECHADA) {
-            return Yii::app()->createUrl('ordemServico/finalizar', array('id' => $this->id, 'update' => 1));
+            return Yii::app()->createUrl('ordemServico/atualizarFinalizada', array('id' => $this->id));
         }
+    }
+
+    public function checkEditarOrdemServico() {
+        $return = false;
+        if ($this->getStatus() == LogOrdemServico::ABERTA && Yii::app()->user->checkAccess('ordemServico/update')) {
+            $return = true;
+        } else if ($this->getStatus() == LogOrdemServico::FECHADA && Yii::app()->user->checkAccess('ordemServico/atualizarFinalizada')) {
+            $return = true;
+        }
+        return $return;
     }
 
 }

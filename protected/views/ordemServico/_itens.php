@@ -68,7 +68,7 @@
         'buttonType' => 'button',
         'label' => 'Voltar',
         'htmlOptions' => array(
-            'onclick' => 'alterarTab("servicos", "cliente")'
+            'onclick' => 'alterarTab("itens", "cliente")'
         ),
             )
     );
@@ -80,7 +80,7 @@
         'buttonType' => 'button',
         'label' => 'Continuar',
         'htmlOptions' => array(
-            'onclick' => 'alterarTab("servicos", "resumo")'
+            'onclick' => 'alterarTab("itens", "resumo")'
         ),
             )
     );

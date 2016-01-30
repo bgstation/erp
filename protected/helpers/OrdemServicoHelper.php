@@ -71,7 +71,6 @@ class OrdemServicoHelper {
 
     public static function renderLogs($oLogsOrdemServico) {
         $return = '';
-
         foreach ($oLogsOrdemServico as $log) {
             $return .= '<tr>';
             $return .= '<td>';
@@ -85,7 +84,6 @@ class OrdemServicoHelper {
             $return .= '</td>';
             $return .= '</tr>';
         }
-
         return $return;
     }
 
@@ -108,10 +106,11 @@ class OrdemServicoHelper {
         }
         $return .= '</td>';
         $return .= '<td>';
-        if ($obj->nao_cadastrado)
+        if ($obj->nao_cadastrado) {
             $return .= '<input class="preco item_' . $tipoItem . '_' . $obj->id . '" disabled="disabled" type="text" value="' . $obj->preco . '" name="LogItemNaoCadastrado[Item][' . $tipoItem . '][' . $obj->id . '][preco]">';
-        else
+        } else {
             $return .= '<input class="preco item_' . $tipoItem . '_' . $obj->id . '" disabled="disabled" type="text" value="' . $obj->preco . '" name="OrdemServicoItem[Item][' . $tipoItem . '][' . $obj->id . '][preco]">';
+        }
         $return .= '</td>';
         $return .= '</tr>';
         return $return;
@@ -145,9 +144,6 @@ class OrdemServicoHelper {
             }
         }
 
-//        echo '<pre>';
-//        die(var_dump($aItens));
-
         foreach ($oItens as $item) {
             $obj->id = $item->id;
             $obj->preco_variavel = $item->preco_variavel;
@@ -159,7 +155,6 @@ class OrdemServicoHelper {
         }
 
         $return .= $naoCadastrados;
-
         return $return;
     }
 

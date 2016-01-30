@@ -17,6 +17,10 @@ class OrdemServicoTipoPagamento extends CActiveRecord {
         2 => 'Débito',
         3 => 'Crédito',
     );
+    
+    const DINHEIRO = 1;
+    const DEBITO = 2;
+    const CREDITO = 3;
 
     /**
      * @return string the associated database table name

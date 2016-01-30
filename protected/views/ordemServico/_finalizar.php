@@ -59,61 +59,26 @@
             'enableAjaxValidation' => false,
         ));
         ?>
-
-        <div class="row">
-            <?= $form->labelEx($oOrdemServicoTipoPagamento, 'forma_pagamento_id') ?>
-            <?php
-            $this->widget('ext.select2.ESelect2', array(
-                'model' => $oOrdemServicoTipoPagamento,
-                'attribute' => '[1]forma_pagamento_id',
-                'data' => $oOrdemServicoTipoPagamento->aFormasPagamento,
-                'options' => array(
-                    'placeholder' => 'Forma de pagamento',
-                    'allowClear' => false,
-                ),
-                'htmlOptions' => array(
-                    'id' => 'select2_forma_pagamento_id_1',
-                    'onclick' => 'addFormaPagamento(1, $(this).val())',
-                ),
-            ));
-            ?>
-            <?= $form->error($model, 'forma_pagamento_id') ?>
-            <?= $form->textField($oOrdemServicoTipoPagamento, '[1]valor', array('class' => 'preco monetario', 'disabled' => 'disabled', 'value' => FormatHelper::valorMonetario($valor_total), 'placeholder' => 'Valor')) ?>
-            <?= $form->textField($oOrdemServicoTipoPagamento, '[1]parcelas', array('class' => 'parcelas oculta', 'placeholder' => 'Nº de Parcelas')) ?>
-        </div>
-
-        <div class="row">
-            <?php
-            $this->widget('ext.select2.ESelect2', array(
-                'model' => $oOrdemServicoTipoPagamento,
-                'attribute' => '[2]forma_pagamento_id',
-                'data' => $oOrdemServicoTipoPagamento->aFormasPagamento,
-                'options' => array(
-                    'placeholder' => 'Forma de pagamento',
-                    'allowClear' => true,
-                ),
-                'htmlOptions' => array(
-                    'id' => 'select2_forma_pagamento_id_2',
-                    'onclick' => 'addFormaPagamento(2, $(this).val())',
-                ),
-            ));
-            ?>
-            <?= $form->error($model, 'forma_pagamento_id') ?>
-
-            <?= $form->textField($oOrdemServicoTipoPagamento, '[2]valor', array('class' => 'preco monetario', 'disabled' => 'disabled', 'onchange' => 'atualizaValores()', 'placeholder' => 'Valor')) ?>
-            <?= $form->textField($oOrdemServicoTipoPagamento, '[2]parcelas', array('class' => 'parcelas oculta', 'placeholder' => 'Nº de Parcelas')) ?>
-        </div>
+        <?php
+        $this->renderPartial('_formas_pagamento', array(
+            'form' => $form,
+            'model' => $model,
+            'atualizar' => $atualizar,
+            'valor_total' => $valor_total,
+            'oOrdemServicoTipoPagamento' => $oOrdemServicoTipoPagamento,
+        ));
+        ?>
     </div>
 
     <div class="row">
         <?= $form->labelEx($model, 'desconto') ?>
-        <?= $form->textField($model, 'desconto', array('class' => 'monetario')) ?>
+        <?= $form->textField($model, 'desconto', array('class' => 'monetario', 'disabled' => $atualizar ? 'disabled' : '')) ?>
         <?= $form->error($model, 'desconto') ?>
     </div>
 
     <div class="row">
         <?= $form->labelEx($oLogOrdemServico, 'observacao') ?>
-        <?= $form->textArea($oLogOrdemServico, 'observacao', array('rows' => 6, 'cols' => 50, 'value' => '')) ?>
+        <?= $form->textArea($oLogOrdemServico, 'observacao', array('rows' => 6, 'cols' => 50, 'value' => '', 'disabled' => $atualizar ? 'disabled' : '')) ?>
         <?= $form->error($oLogOrdemServico, 'observacao') ?>
     </div>
 
@@ -143,10 +108,11 @@
     var valorTotalOri = <?= $valor_total ?>;
     var valorTotal = <?= $valor_total ?>;
     var desconto = 0;
+    var atualizar = <?= $atualizar ?>
 </script>
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/ordemServico/_finalizar.js"></script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 <?php if (!empty($model->desconto)): ?>
             var preDesconto = '<?= $model->desconto ?>';
             aplicaDesconto(preDesconto.replace('.', ','));

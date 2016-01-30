@@ -30,7 +30,8 @@ class OrdemServicoController extends Controller {
                 'users' => array('*'),
             ),
             array('allow',
-                'actions' => array('create', 'update', 'admin', 'delete', 'getItensPorTipoJson', 'finalizar', 'cancelar'),
+                'actions' => array('create', 'update', 'admin', 'delete', 'getItensPorTipoJson', 'finalizar', 'cancelar',
+                    'atualizarFinalizada'),
                 'users' => array('@'),
             ),
             array('deny',
@@ -116,8 +117,7 @@ class OrdemServicoController extends Controller {
 
         $oServicos = Servico::model()->ordenarTitulo()->naoExcluido()->findAll();
         $oProdutos = Produto::model()->ordenarTitulo()->naoExcluido()->findAll();
-//        echo '<pre>';
-//        die(var_dump($_POST['OrdemServicoItem']));
+
         if (isset($_POST['OrdemServico'])) {
             $model->attributes = $_POST['OrdemServico'];
             if ($model->save()) {
@@ -247,6 +247,7 @@ class OrdemServicoController extends Controller {
             'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
             'oLogOrdemServico' => $oLogOrdemServico,
             'oOrdemServicoTipoPagamento' => $oOrdemServicoTipoPagamento,
+            'atualizar' => false,
         ));
     }
 
@@ -264,6 +265,37 @@ class OrdemServicoController extends Controller {
             }
         }
         die(CJSON::encode($aRetorno));
+    }
+
+    public function actionAtualizarFinalizada($id) {
+        $model = $this->loadModel($id);
+
+        $oClientes = Cliente::model()->ordemNome()->findAll();
+        $oOrdemServicoItem = new OrdemServicoItem();
+        $oLogItemNaoCadastrador = new LogItemNaoCadastrado();
+        $oLogOrdemServico = LogOrdemServico::model()->aberta()->findByAttributes(array(
+            'ordem_servico_id' => $id,
+        ));
+        $oOrdemServicoTipoPagamento = OrdemServicoTipoPagamento::model()->findAllByAttributes(array(
+            'ordem_servico_id' => $id,
+        ));
+
+        if (isset($_POST['OrdemServicoTipoPagamento'])) {
+            if ($model->atualizarOSFinalizada()) {
+                $this->redirect(array('view', 'id' => $model->id));
+            }
+        }
+
+        $this->render('finalizar', array(
+            'model' => $model,
+            'oClientes' => $oClientes,
+            'oOrdemServicoItem' => $oOrdemServicoItem,
+            'valor_total' => $model->getValorTotal(),
+            'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
+            'oLogOrdemServico' => $oLogOrdemServico,
+            'oOrdemServicoTipoPagamento' => $oOrdemServicoTipoPagamento,
+            'atualizar' => true,
+        ));
     }
 
 }

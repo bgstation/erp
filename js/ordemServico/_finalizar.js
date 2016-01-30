@@ -25,11 +25,15 @@ var finalizar = function() {
     $('input').removeAttr('disabled');
 }
 
-$("#select2_forma_pagamento_id_1").val(1);
+if (!atualizar) {
+    $("#select2_forma_pagamento_id_1").val(1);
+}
 
 var resetarValor = function(tudo) {
     if (tudo) {
-        $("#select2_forma_pagamento_id_1").val(1);
+        if (!atualizar) {
+            $("#select2_forma_pagamento_id_1").val(1);
+        }
         $("#OrdemServicoTipoPagamento_1_valor").val(number_format(valorTotalOri - desconto, 2, ',', '.'));
         $("#select2_forma_pagamento_id_2").select2('val', '');
     }
@@ -54,9 +58,13 @@ var addFormaPagamento = function(indentificador, id) {
 
 $("#select2_forma_pagamento_id_2").change(function() {
     if ($(this).val() === "") {
-        resetarValor(false);
+        if (atualizar) {
+            resetarValor(true);
+        } else {
+            resetarValor(false);
+        }
     }
-})
+});
 
 $(".preco").focus(function() {
 

@@ -121,8 +121,8 @@ $this->widget('zii.widgets.CDetailView', array(
     <?php if (Yii::app()->user->checkAccess('ordemServico/admin')) : ?>
         <li><a class="btn" href="<?= $this->createUrl('admin') ?>"><?= Yii::t('site', 'Exibir todas') ?></a></li>
     <?php endif; ?>
-    <?php if (Yii::app()->user->checkAccess('ordemServico/update') && $model->getStatus() == 1) : ?>
-        <li><a class="btn" href="<?= $this->createUrl('update', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Editar Ordem de Serviço') ?></a></li>
+    <?php if ($model->checkEditarOrdemServico()) : ?>
+        <li><a class="btn" href="<?= $model->getUrlUpdate() ?>"><?= Yii::t('site', 'Editar Ordem de Serviço') ?></a></li>
     <?php endif; ?>
     <?php if (Yii::app()->user->checkAccess('ordemServico/finalizar') && $model->getStatus() == 1) : ?>
         <li><a class="btn" href="<?= $this->createUrl('finalizar', array('id' => $model->id)) ?>"><?= Yii::t('site', 'Finalizar Ordem de Serviço') ?></a></li>

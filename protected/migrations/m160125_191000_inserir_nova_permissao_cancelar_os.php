@@ -11,19 +11,9 @@ class m160125_191000_inserir_nova_permissao_cancelar_os extends CDbMigration {
         ));
     }
 
-    public function down() {
+    public function safeDown() {
         echo "m160125_191000_inserir_nova_permissao_cancelar_os does not support migration down.\n";
         return false;
     }
 
-    /*
-      // Use safeUp/safeDown to do migration with transaction
-      public function safeUp()
-      {
-      }
-
-      public function safeDown()
-      {
-      }
-     */
 }

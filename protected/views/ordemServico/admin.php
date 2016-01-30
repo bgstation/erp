@@ -70,7 +70,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
         array(
             'header' => 'Valor',
-            'value' => 'RPFormat::valorMonetario($data->getValorTotal())',
+            'value' => '"R$ " . RPFormat::valorMonetario($data->getValorTotal())',
         ),
         array(
             'header' => 'Status',
@@ -90,7 +90,8 @@ $this->widget('bootstrap.widgets.TbGridView', array(
                     'visible' => 'Yii::app()->user->checkAccess("ordemServico/view")',
                 ),
                 'update' => array(
-                    'visible' => 'Yii::app()->user->checkAccess("ordemServico/update") && $data->getStatus() == 1',
+                    'visible' => '$data->checkEditarOrdemServico()',
+                    'url' => '$data->getUrlUpdate()',
                 ),
                 'delete' => array(
                     'visible' => 'Yii::app()->user->checkAccess("ordemServico/delete") && $data->getStatus() == 1',

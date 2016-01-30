@@ -96,7 +96,7 @@ var alterarTab = function (atual, passoEscolhido) {
             alert("Favor escolher o cliente e o carro!");
             return false;
         }
-    } else if (atual == 'servicos') {
+    } else if (atual == 'itens') {
         if (!checaMarcado()) {
             alert("Selecione ao menos ou item!");
             return false;

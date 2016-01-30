@@ -48,7 +48,7 @@
         'buttonType' => 'button',
         'label' => 'Continuar',
         'htmlOptions' => array(
-            'onclick' => 'alterarTab("cliente", "servicos")'
+            'onclick' => 'alterarTab("cliente", "itens")'
         ),
             )
     );

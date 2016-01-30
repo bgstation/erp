@@ -23,5 +23,6 @@ $this->renderPartial('_finalizar', array(
     'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
     'oLogOrdemServico' => $oLogOrdemServico,
     'oOrdemServicoTipoPagamento' => $oOrdemServicoTipoPagamento,
+    'atualizar' => $atualizar,
 ));
 ?>

@@ -19,7 +19,7 @@
             <a href="#cliente" id="cliente-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Cliente</a>
         </li> 
         <li role="presentation" class="">
-            <a href="javascript:void(0)" role="tab" id="servicos-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Serviços</a>
+            <a href="javascript:void(0)" role="tab" id="itens-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Itens</a>
         </li>
         <li role="presentation" class="">
             <a href="javascript:void(0)" disabled="disabled" role="tab" id="resumo-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">Resumo</a>
@@ -37,9 +37,9 @@
             ?>
         </div>
 
-        <div role="tabpanel" class="tab-pane fade" id="servicos" aria-labelledby="servicos-tab">
+        <div role="tabpanel" class="tab-pane fade" id="itens" aria-labelledby="itens-tab">
             <?php
-            $this->renderPartial('_servicos', array(
+            $this->renderPartial('_itens', array(
                 'form' => $form,
                 'model' => $model,
                 'valor_total' => $valor_total,

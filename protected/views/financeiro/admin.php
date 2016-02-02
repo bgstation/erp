@@ -25,21 +25,27 @@ $('.search-form form').submit(function(){
 ?>
 
 <h1>Financeiro</h1>
-
-<div class="financeiro-resumo">
-    <p class='financeiro-resumo-os'>Ordens de Serviço: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServico) ?></p>
-    <li><p class="dinheiro">Dinheiro: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoDinheiro) ?></p></li>
-    <li>
-        <p class="cartao">Cartão: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartaoDebito + $oTotalOrdemServicoCartaoCredito) ?></p>
-        <ul>
-            <li class="cartao_debito">Débito: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartaoDebito) ?></li>
-            <li class="cartao_credito">Crédito: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartaoCredito) ?></li>
-        </ul>
-    </li>
-    <br>
-    <p class='financeiro-resumo-compras'>Compras: R$ <?= FormatHelper::valorMonetario($oTotalCompras) ?></p>
-    <p class='financeiro-resumo-despesas'>Despesas: R$ <?= FormatHelper::valorMonetario($oTotalDespesas) ?></p>
-    <strong><p class='financeiro-total'>Total: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServico - $oTotalDespesas) ?></p></strong>
+<div class="span6" >
+    <div class="financeiro-resumo">
+        <p class='financeiro-resumo-os'>Ordens de Serviço: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServico) ?></p>
+        <li><p class="dinheiro">Dinheiro: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoDinheiro) ?></p></li>
+        <li>
+            <p class="cartao">Cartão: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartaoDebito + $oTotalOrdemServicoCartaoCredito) ?></p>
+            <ul>
+                <li class="cartao_debito">Débito: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartaoDebito) ?></li>
+                <li class="cartao_credito">Crédito: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServicoCartaoCredito) ?></li>
+            </ul>
+        </li>
+        <br>
+        <p class='financeiro-resumo-compras'>Compras: R$ <?= FormatHelper::valorMonetario($oTotalCompras) ?></p>
+        <p class='financeiro-resumo-despesas'>Despesas: R$ <?= FormatHelper::valorMonetario($oTotalDespesas) ?></p>
+        <strong><p class='financeiro-total'>Total: R$ <?= FormatHelper::valorMonetario($oTotalOrdemServico - $oTotalDespesas) ?></p></strong>
+    </div>
+</div>
+<div class="span6" >
+    <h3>Caixa</h3>
+    <li>Inicial: R$ <?= FormatHelper::valorMonetario($aValoresCaixa['inicio']) ?></li>
+    <li>Atual: R$ <?= FormatHelper::valorMonetario($aValoresCaixa['inicio'] - $aValoresCaixa['retiradas'] + $oTotalOrdemServicoDinheiroParcial) ?></li>
 </div>
 
 <div class="admin-buttons">

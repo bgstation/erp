@@ -108,7 +108,7 @@
     var valorTotalOri = <?= $valor_total ?>;
     var valorTotal = <?= $valor_total ?>;
     var desconto = 0;
-    var atualizar = <?= $atualizar ?>
+    var atualizar = '<?= !empty($atualizar) ? $atualizar : FALSE ?>';
 </script>
 <script type="text/javascript" src="<?= Yii::app()->request->baseUrl ?>/js/ordemServico/_finalizar.js"></script>
 <script>

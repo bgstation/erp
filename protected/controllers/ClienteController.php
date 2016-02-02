@@ -57,7 +57,7 @@ class ClienteController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $this->pageTitle = 'RPSystem - Cadastro de clientes';
+        $this->pageTitle = 'BG Station - Cadastro de clientes';
         $model = new Cliente;
 
         if (isset($_POST['Cliente'])) {

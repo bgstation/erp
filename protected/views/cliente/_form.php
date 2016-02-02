@@ -34,9 +34,9 @@
         <?= $form->error($model, 'cpf') ?>
     </div>
 
-    <div class="row">
-        <?= $form->labelEx($model, 'sexo') ?>
-        <?php
+<!--    <div class="row">
+        <//?= $form->labelEx($model, 'sexo') ?>
+        <//?php
         $this->widget('ext.select2.ESelect2', array(
             'model' => $model,
             'attribute' => 'sexo',
@@ -50,8 +50,8 @@
             ),
         ));
         ?>
-        <?= $form->error($model, 'sexo') ?>
-    </div>
+        <//?= $form->error($model, 'sexo') ?>
+    </div>-->
 
     <div class="row">
         <?= $form->labelEx($model, 'telefone_fixo') ?>

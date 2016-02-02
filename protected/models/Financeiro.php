@@ -22,13 +22,12 @@ class Financeiro extends CActiveRecord {
     public $data_hora_final_grid;
     public $titulo_tipo_item;
     public $titulo_tipo_item_id;
-
     public $aTiposItens = array(
         1 => 'Ordem de serviço',
         2 => 'Compra',
         3 => 'Despesa',
     );
-    
+
     const ORDEM_SERVICO = 1;
     const COMPRA = 2;
     const DESPESA = 3;
@@ -118,7 +117,7 @@ class Financeiro extends CActiveRecord {
 
     public function getSearchCriteria() {
         $criteria = new CDbCriteria;
-        
+
         $criteria->select = '*,
                              CASE t.tipo_item
                                 WHEN 1 THEN "Ordem de Serviço"
@@ -151,9 +150,9 @@ class Financeiro extends CActiveRecord {
             $this->data_hora_final = $this->data_hora_final_grid;
             $criteria->addBetweenCondition('date(t.data_hora)', $this->data_hora_inicial, $this->data_hora_final);
         }
-        
+
 //        $criteria->join = 'JOIN produtos produto ON produto.id = compra.produto_id';
-        
+
         $criteria->with = array('ordemServico', 'compra', 'despesa');
 
         return $criteria;
@@ -198,16 +197,19 @@ class Financeiro extends CActiveRecord {
         }
     }
 
-    public function getTotalOrdemServicoDinheiro() {
+    public function getTotalOrdemServicoDinheiro($data_hora_inicio = null) {
         $criteria = $this->getSearchCriteria();
         $criteria->select = 'SUM(ostp.valor)';
         $criteria->join = 'JOIN ordens_servico_tipos_pagamento as ostp ON (t.tipo_item_id = ostp.ordem_servico_id)';
         $criteria->addCondition('t.tipo_item = ' . self::ORDEM_SERVICO);
         $criteria->addCondition('ostp.forma_pagamento_id = 1');
         $criteria->addCondition('t.status = 0');
+        if (!empty($data_hora_inicio)) {
+            $criteria->addCondition('data_hora > "' . $data_hora_inicio.'"');
+        }
         return $this->commandBuilder->createFindCommand($this->getTableSchema(), $criteria)->queryScalar();
     }
-    
+
     public function getTotalOrdemServicoCartaoCredito() {
         $criteria = $this->getSearchCriteria();
         $criteria->select = 'SUM(ostp.valor)';
@@ -217,7 +219,7 @@ class Financeiro extends CActiveRecord {
         $criteria->addCondition('t.status = 0');
         return $this->commandBuilder->createFindCommand($this->getTableSchema(), $criteria)->queryScalar();
     }
-    
+
     public function getTotalOrdemServicoCartaoDebito() {
         $criteria = $this->getSearchCriteria();
         $criteria->select = 'SUM(ostp.valor)';
@@ -227,7 +229,7 @@ class Financeiro extends CActiveRecord {
         $criteria->addCondition('t.status = 0');
         return $this->commandBuilder->createFindCommand($this->getTableSchema(), $criteria)->queryScalar();
     }
-    
+
     public function getTotalOrdemServico() {
         $criteria = $this->getSearchCriteria();
         $criteria->select = 'SUM(valor)';
@@ -235,7 +237,7 @@ class Financeiro extends CActiveRecord {
         $criteria->addCondition('t.status = 0');
         return $this->commandBuilder->createFindCommand($this->getTableSchema(), $criteria)->queryScalar();
     }
-    
+
     public function getTotalCompras() {
         $criteria = $this->getSearchCriteria();
         $criteria->select = 'SUM(valor)';
@@ -243,7 +245,7 @@ class Financeiro extends CActiveRecord {
         $criteria->addCondition('t.status = 0');
         return $this->commandBuilder->createFindCommand($this->getTableSchema(), $criteria)->queryScalar();
     }
-    
+
     public function getTotalDespesas() {
         $criteria = $this->getSearchCriteria();
         $criteria->select = 'SUM(valor)';
@@ -251,7 +253,7 @@ class Financeiro extends CActiveRecord {
         $criteria->addCondition('t.status = 0');
         return $this->commandBuilder->createFindCommand($this->getTableSchema(), $criteria)->queryScalar();
     }
-    
+
     public function getLink() {
         $link = '';
         switch ($this->tipo_item) {

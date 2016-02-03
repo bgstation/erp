@@ -58,7 +58,7 @@ class LogCaixa extends CActiveRecord {
             $oFinanceiro = new Financeiro('search');
             $total = ($aRetorno['inicio'] - $aRetorno['retiradas']) + $oFinanceiro->getTotalOrdemServicoDinheiro($aRetorno['data_inicio']);
             if ($this->valor > $total) {
-                $this->addError('valor', 'O valor disponível para retirada é de R$ '. RPFormat::valorMonetario($total));
+                $this->addError('valor', 'O valor disponível para retirada é de R$ ' . RPFormat::valorMonetario($total));
                 return false;
             }
         }
@@ -151,16 +151,20 @@ class LogCaixa extends CActiveRecord {
         $aRetorno = array();
         $aRetorno['inicio'] = 0;
         $aRetorno['retiradas'] = 0;
+        $aRetorno['data_inicio'] = date("Y-m-d");
         $oLogCaixaInicio = self::model()->ultimoInicio()->find();
-        $oLogCaixaRetirada = self::model()->valorRetirada()->findAll(array(
-            'condition' => 'id > ' . $oLogCaixaInicio->id,
-        ));
-        $aRetorno['inicio'] = $oLogCaixaInicio->valor;
-        $aRetorno['data_inicio'] = $oLogCaixaInicio->data_hora;
-        if (!empty($oLogCaixaRetirada))
+
+        if (!empty($oLogCaixaInicio)) {
+            $aRetorno['inicio'] = $oLogCaixaInicio->valor;
+            $aRetorno['data_inicio'] = $oLogCaixaInicio->data_hora;
+            $oLogCaixaRetirada = self::model()->valorRetirada()->findAll(array(
+                'condition' => 'id > ' . $oLogCaixaInicio->id,
+            ));
             foreach ($oLogCaixaRetirada as $logCaixa) {
                 $aRetorno['retiradas'] = $aRetorno['retiradas'] + $logCaixa->valor;
             }
+        }
+
         return $aRetorno;
     }
 

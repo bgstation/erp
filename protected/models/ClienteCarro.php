@@ -7,6 +7,7 @@
  * @property integer $id
  * @property string $placa
  * @property integer $marca_id
+ * @property integer $modelo_id
  * @property integer $cliente_id
  * @property string $observacao
  * @property integer $excluido

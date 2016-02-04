@@ -44,6 +44,7 @@ class Cliente extends CActiveRecord {
             array('nome, celular', 'required'),
             array('cpf, email', 'unique'),
             array('id, email, nome, cpf, sexo, telefone_fixo, celular, endereco, numero, complemento, data_cadastro', 'safe', 'on' => 'search'),
+//            array('nome', 'validarNome'),
         );
     }
 
@@ -53,6 +54,14 @@ class Cliente extends CActiveRecord {
         }
         return parent::beforeSave();
     }
+
+//    public function validarNome($attribute, $params) {
+//        $nome = explode(' ', trim($this->nome));
+//        if (count($nome) < 2) {
+//            $this->addError($attribute, 'Você deve preencher nome e sobrenome.');
+//        }
+//        return true;
+//    }
 
     /**
      * @return array relational rules.
@@ -149,22 +158,6 @@ class Cliente extends CActiveRecord {
             'data_cadastro',
         );
         return $headers;
-    }
-
-    public function getDropDownGridView() {
-        $opcoes = '<div class="btn-group">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Opções <span class="caret" style="margin-top:0;"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="' . Yii::app()->createUrl('ordemServico/create', array('clienteId' => $this->id)) . '"><i class="fa fa-file-text-o"></i> Abrir OS</a></li>
-                        <li><a href="#"><i class="fa fa-car"></i> Cadastrar Carro</a></li>
-                        <li><a href="#">Editar</a></li>
-                        <li><a href="#">Excluir</a></li>
-                        <li><a href="#">Exibir</a></li>
-                    </ul>
-                </div>';
-        return $opcoes;
     }
 
 }

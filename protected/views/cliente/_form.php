@@ -34,9 +34,9 @@
         <?= $form->error($model, 'cpf') ?>
     </div>
 
-<!--    <div class="row">
-        <//?= $form->labelEx($model, 'sexo') ?>
-        <//?php
+    <div class="row">
+        <?= $form->labelEx($model, 'sexo') ?>
+        <?php
         $this->widget('ext.select2.ESelect2', array(
             'model' => $model,
             'attribute' => 'sexo',
@@ -50,19 +50,19 @@
             ),
         ));
         ?>
-        <//?= $form->error($model, 'sexo') ?>
-    </div>-->
+        <?= $form->error($model, 'sexo') ?>
+    </div>
+    
+    <div class="row">
+        <?= $form->labelEx($model, 'celular') ?>
+        <?= $form->textField($model, 'celular', array('size' => 20, 'maxlength' => 20, 'placeholder' => '(21) 99999-9999')) ?>
+        <?= $form->error($model, 'celular') ?>
+    </div>
 
     <div class="row">
         <?= $form->labelEx($model, 'telefone_fixo') ?>
         <?= $form->textField($model, 'telefone_fixo', array('size' => 20, 'maxlength' => 20, 'placeholder' => '(21) 9999-9999')) ?>
         <?= $form->error($model, 'telefone_fixo') ?>
-    </div>
-
-    <div class="row">
-        <?= $form->labelEx($model, 'celular') ?>
-        <?= $form->textField($model, 'celular', array('size' => 20, 'maxlength' => 20, 'placeholder' => '(21) 99999-9999')) ?>
-        <?= $form->error($model, 'celular') ?>
     </div>
 
     <div class="row">

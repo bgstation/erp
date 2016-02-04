@@ -182,6 +182,9 @@ class OrdemServico extends CActiveRecord {
                         $oOrdemServicoTipoPagamento->save();
                     }
                 }
+                if (!empty($this->cliente->email)) {
+                    $this->enviarOrdemServicoPorEmail();
+                }
                 return true;
             }
         }
@@ -242,6 +245,48 @@ class OrdemServico extends CActiveRecord {
             $return = true;
         }
         return $return;
+    }
+
+    public function enviarOrdemServicoPorEmail() {
+        $oLogOrdemServico = LogOrdemServico::model()->finalizada()->findByAttributes(array(
+            'ordem_servico_id' => $this->id
+        ));
+
+        $oEmail = new Email();
+        $oEmail->destinatarios = $this->cliente->email;
+        $oEmail->assunto = Yii::app()->name . ' - Finalização de Ordem de Serviço Nº ' . $this->id;
+        $oEmail->mensagem = 'Número da Ordem de Serviço: ' . $this->id . '<br/>';
+        $oEmail->mensagem .= 'Cliente: ' . $this->cliente->nome . '<br/>';
+        $oEmail->mensagem .= 'Data: ' . FormatHelper::dataHora($oLogOrdemServico->data_hora) . '<br/><br/>';
+
+        $oEmail->mensagem .= 'Dados do veículo: <br/>';
+        $oEmail->mensagem .= 'Marca: ' . $this->clienteCarro->marca->titulo . '<br/>';
+        $oEmail->mensagem .= 'Modelo: ' . $this->clienteCarro->modelo->titulo . '<br/>';
+        $oEmail->mensagem .= 'Placa: ' . $this->clienteCarro->placa . '<br/><br/>';
+
+        $oEmail->mensagem .= 'Itens da Ordem de Serviço: <br/>';
+        foreach ($this->ordemServicoItens as $item) {
+            if ($item->tipo_item_id == OrdemServicoItem::PRODUTO) {
+                $oEmail->mensagem .= $item->produto->titulo . '<br/>';
+                $oEmail->mensagem .= 'R$ ' . FormatHelper::valorMonetario($item->produto->preco);
+                $oEmail->mensagem .= '<br/><br/>';
+            } else if ($item->tipo_item_id == OrdemServicoItem::SERVICO) {
+                $oEmail->mensagem .= $item->servico->titulo . '<br/>';
+                $oEmail->mensagem .= 'R$ ' . FormatHelper::valorMonetario($item->servico->preco);
+                $oEmail->mensagem .= '<br/><br/>';
+            }
+        }
+        
+        $oEmail->mensagem .= 'Formas de Pagamento: <br/>';
+        foreach($this->ordemServicoTipoPagamento as $formaPagamento) {
+            $oEmail->mensagem .= 'Tipo: ' . $formaPagamento->aFormasPagamento[$formaPagamento->forma_pagamento_id] . '<br/>';
+            $oEmail->mensagem .= 'Valor: ' . $formaPagamento->valor . '<br/>';
+            if (!empty($formaPagamento->parcelas)) {
+                $oEmail->mensagem .= 'Parcelas: ' . $formaPagamento->parcelas . '<br/>';
+            }
+            $oEmail->mensagem .= '<br/>';
+        }
+        $oEmail->enviar();
     }
 
 }

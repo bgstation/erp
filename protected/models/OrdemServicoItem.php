@@ -11,6 +11,7 @@
  * @property string $observacao
  * @property integer $excluido
  */
+
 class OrdemServicoItem extends CActiveRecord {
 
     public $aTipoItem = array(
@@ -72,11 +73,11 @@ class OrdemServicoItem extends CActiveRecord {
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'ordem_servico_id' => 'Ordem Servico',
+            'ordem_servico_id' => 'Ordem Serviço',
             'tipo_item_id' => 'Tipo do Item',
             'item_id' => 'Item',
-            'observacao' => 'Observacao',
-            'excluido' => 'Excluido',
+            'observacao' => 'Observação',
+            'excluido' => 'Excluído',
         );
     }
 

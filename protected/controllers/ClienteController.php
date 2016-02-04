@@ -57,7 +57,7 @@ class ClienteController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $this->pageTitle = 'BG Station - Cadastro de clientes';
+        $this->pageTitle = Yii::app()->name . ' - Cadastro de clientes';
         $model = new Cliente;
 
         if (isset($_POST['Cliente'])) {
@@ -125,7 +125,7 @@ class ClienteController extends Controller {
             $model->attributes = $_GET['Cliente'];
             $oSearchForm->request = $_GET['Cliente'];
         }
-        
+
         $headers = $model->getHeadersRelatorio();
         $this->exportarRelatorio($model->search(), 'Relatório Clientes - ', $headers, date('YmdHis') . '_relatorio_clientes.csv');
 

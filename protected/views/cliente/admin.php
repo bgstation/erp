@@ -58,7 +58,11 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
         'nome',
         'email',
         'cpf',
-        'celular',
+//        array(
+//            'header'  => '',
+//            'type'  => 'raw',
+//            'value' => '$data->getDropDownGridView()',
+//        ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{abrirOS}{addCarro}{view}{update}{delete}',

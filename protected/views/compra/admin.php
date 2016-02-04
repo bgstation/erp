@@ -94,10 +94,16 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'name' => 'produto_id',
             'value' => '!empty($data->produto_id) ? $data->produto->titulo : ""',
         ),
-        'nota_fiscal',
+        array(
+            'name' => 'nota_fiscal',
+            'value' => '$data->nota_fiscal',
+            'htmlOptions' => array('class' => 'hidden-xs'),
+            'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+        ),
         array(
             'name' => 'preco',
-            'value' => '!empty($data->preco) ? "R$ ". FormatHelper::valorMonetario($data->preco, 2) : ""'
+            'value' => '!empty($data->preco) ? "R$ ". FormatHelper::valorMonetario($data->preco, 2) : ""',
+            'htmlOptions' => array("width" => '100px')
         ),
         array(
             'name' => 'quantidade',
@@ -107,11 +113,14 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'name' => 'data_hora',
             'filter' => $intervaloDataPedido,
-            'value' => '!empty($data->data_hora) ? date("d/m/Y H:i:s", strtotime($data->data_hora)) : ""'
+            'value' => '!empty($data->data_hora) ? date("d/m/Y H:i:s", strtotime($data->data_hora)) : ""',
+            'htmlOptions' => array('width' => '200px'),
         ),
         array(
             'name' => 'excluido',
-            'value' => '!empty($data->excluido) && $data->excluido == 1 ? "Sim" : "Não"'
+            'value' => '!empty($data->excluido) && $data->excluido == 1 ? "Sim" : "Não"',
+            'htmlOptions' => array('class' => 'hidden-xs'),
+            'headerHtmlOptions'=>array('class' => 'hidden-xs'),
         ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',

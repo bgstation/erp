@@ -62,7 +62,7 @@ class Cliente extends CActiveRecord {
             'clientesCarros' => array(self::HAS_MANY, 'ClienteCarro', 'cliente_id'),
         );
     }
-    
+
     public function scopes() {
         return array(
             'ordemNome' => array(
@@ -133,7 +133,7 @@ class Cliente extends CActiveRecord {
     public static function model($className = __CLASS__) {
         return parent::model($className);
     }
-    
+
     public function getHeadersRelatorio() {
         $headers = array(
             'id',
@@ -149,6 +149,22 @@ class Cliente extends CActiveRecord {
             'data_cadastro',
         );
         return $headers;
+    }
+
+    public function getDropDownGridView() {
+        $opcoes = '<div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Opções <span class="caret" style="margin-top:0;"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="' . Yii::app()->createUrl('ordemServico/create', array('clienteId' => $this->id)) . '"><i class="fa fa-file-text-o"></i> Abrir OS</a></li>
+                        <li><a href="#"><i class="fa fa-car"></i> Cadastrar Carro</a></li>
+                        <li><a href="#">Editar</a></li>
+                        <li><a href="#">Excluir</a></li>
+                        <li><a href="#">Exibir</a></li>
+                    </ul>
+                </div>';
+        return $opcoes;
     }
 
 }

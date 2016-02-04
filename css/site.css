@@ -99,3 +99,6 @@ input {
 .dashboard-card .row {
     text-align:center;
 }
+.grid-view .button-column {
+    width: auto;
+}

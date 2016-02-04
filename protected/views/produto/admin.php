@@ -71,7 +71,12 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
             'name' => 'preco',
             'value' => '!empty($data->preco) ? "R$ ". FormatHelper::valorMonetario($data->preco) : ""'
         ),
-        'quantidade',
+        array(
+            'name' => 'quantidade',
+            'value' => '$data->quantidade',
+            'htmlOptions' => array('class' => 'hidden-xs'),
+            'headerHtmlOptions'=>array('class' => 'hidden-xs'),
+        ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',
             'template' => '{retirada}{view}{update}{delete}',

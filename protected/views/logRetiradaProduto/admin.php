@@ -77,7 +77,6 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
                               jQuery('#LogRetiradaProduto_data_hora_final_grid').datepicker(jQuery.extend({showMonthAfterYear:false}, jQuery.datepicker.regional['pt'], {'showAnim':'fold','dateFormat':'yy-mm-dd','changeMonth':'true','showButtonPanel':'true','changeYear':'true','constrainInput':'false'}));
                           }",
     'columns' => array(
-        'id',
         array(
             'name' => 'produto_id',
             'value' => '!empty($data->produto_id) ? $data->produto->titulo : ""',
@@ -94,7 +93,9 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
         ),
         array(
             'name' => 'excluido',
-            'value' => '$data->excluido == 1 ? "Cancelado" : "Ativo"'
+            'value' => '$data->excluido == 1 ? "Cancelado" : "Ativo"',
+            'htmlOptions' => array('class' => 'hidden-xs'),
+            'headerHtmlOptions'=>array('class' => 'hidden-xs'),
         ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',

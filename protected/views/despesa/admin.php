@@ -110,6 +110,8 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'filter' => CHtml::activeDropDownList($model, 'especial', $model->aTiposEspeciais, array(
                 'empty' => '',
             )),
+            'htmlOptions' => array('class' => 'hidden-xs'),
+            'headerHtmlOptions'=>array('class' => 'hidden-xs'),
         ),
         array(
             'class' => 'bootstrap.widgets.TbButtonColumn',

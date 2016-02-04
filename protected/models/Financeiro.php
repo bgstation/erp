@@ -123,13 +123,7 @@ class Financeiro extends CActiveRecord {
                                 WHEN 1 THEN "Ordem de Serviço"
                                 WHEN 2 THEN "Compra"
                                 WHEN 3 THEN "Despesa"
-                             END as titulo_tipo_item,
-                             
-                            CASE t.tipo_item
-                                WHEN 1 THEN ordemServico.id
-                                WHEN 2 THEN compra.produto_id
-                                WHEN 3 THEN despesa.tipo_despesa_id
-                             END as titulo_tipo_item_id';
+                             END as titulo_tipo_item';
 
         $criteria->compare('t.id', $this->id);
         $criteria->compare('tipo_item', $this->tipo_item);
@@ -150,11 +144,8 @@ class Financeiro extends CActiveRecord {
             $this->data_hora_final = $this->data_hora_final_grid;
             $criteria->addBetweenCondition('date(t.data_hora)', $this->data_hora_inicial, $this->data_hora_final);
         }
-
-//        $criteria->join = 'JOIN produtos produto ON produto.id = compra.produto_id';
-
         $criteria->with = array('ordemServico', 'compra', 'despesa');
-
+        
         return $criteria;
     }
 

@@ -124,13 +124,13 @@ class FinanceiroController extends Controller {
             $model->data_hora_inicial_grid = date("Y-m-d");
             $model->data_hora_final_grid = date("Y-m-d");
         }
-        
+
         $headers = $oFinanceiroForm->getHeadersRelatorio();
         $this->exportarRelatorio($model->search(), 'Relatório Financeiro - ', $headers, date('YmdHis') . '_relatorio_financeiro.csv');
-        
+
         $oLogCaixa = new LogCaixa;
         $aValoresCaixa = $oLogCaixa->getValores();
-        
+
         $this->render('admin', array(
             'model' => $model,
             'oTotalCompras' => $model->getTotalCompras(),

@@ -1,6 +1,6 @@
 <?php
 
-class FinanceiroController extends Controller {
+class LogCaixaController extends Controller {
 
     /**
      * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -13,8 +13,8 @@ class FinanceiroController extends Controller {
      */
     public function filters() {
         return array(
-            'accessControl',
-            'postOnly + delete',
+            'accessControl', // perform access control for CRUD operations
+            'postOnly + delete', // we only allow deletion via POST request
         );
     }
 
@@ -25,15 +25,19 @@ class FinanceiroController extends Controller {
      */
     public function accessRules() {
         return array(
-            array('allow',
+            array('allow', // allow all users to perform 'index' and 'view' actions
                 'actions' => array('index', 'view'),
                 'users' => array('*'),
             ),
-            array('allow',
-                'actions' => array('create', 'update', 'admin', 'delete'),
+            array('allow', // allow authenticated user to perform 'create' and 'update' actions
+                'actions' => array('create', 'update', 'admin'),
                 'users' => array('@'),
             ),
-            array('deny',
+            array('allow', // allow admin user to perform 'admin' and 'delete' actions
+                'actions' => array('admin', 'delete'),
+                'users' => array('admin'),
+            ),
+            array('deny', // deny all users
                 'users' => array('*'),
             ),
         );
@@ -54,10 +58,10 @@ class FinanceiroController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      */
     public function actionCreate() {
-        $model = new Financeiro;
-
-        if (isset($_POST['Financeiro'])) {
-            $model->attributes = $_POST['Financeiro'];
+        $model = new LogCaixa;
+        
+        if (isset($_POST['LogCaixa'])) {
+            $model->attributes = $_POST['LogCaixa'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -75,8 +79,11 @@ class FinanceiroController extends Controller {
     public function actionUpdate($id) {
         $model = $this->loadModel($id);
 
-        if (isset($_POST['Financeiro'])) {
-            $model->attributes = $_POST['Financeiro'];
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
+
+        if (isset($_POST['LogCaixa'])) {
+            $model->attributes = $_POST['LogCaixa'];
             if ($model->save())
                 $this->redirect(array('view', 'id' => $model->id));
         }
@@ -94,6 +101,7 @@ class FinanceiroController extends Controller {
     public function actionDelete($id) {
         $this->loadModel($id)->delete();
 
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
         if (!isset($_GET['ajax']))
             $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
     }
@@ -102,7 +110,7 @@ class FinanceiroController extends Controller {
      * Lists all models.
      */
     public function actionIndex() {
-        $dataProvider = new CActiveDataProvider('Financeiro');
+        $dataProvider = new CActiveDataProvider('LogCaixa');
         $this->render('index', array(
             'dataProvider' => $dataProvider,
         ));
@@ -112,37 +120,13 @@ class FinanceiroController extends Controller {
      * Manages all models.
      */
     public function actionAdmin() {
-        $model = new Financeiro('search');
-        $model->unsetAttributes();
-        $oSearchForm = new SearchForm();
-        $oFinanceiroForm = new FinanceiroForm();
+        $model = new LogCaixa('search');
+        $model->unsetAttributes();  // clear any default values
+        if (isset($_GET['LogCaixa']))
+            $model->attributes = $_GET['LogCaixa'];
 
-        if (isset($_GET['Financeiro'])) {
-            $model->attributes = $_GET['Financeiro'];
-            $oSearchForm->request = $_GET['Financeiro'];
-        } else {
-            $model->data_hora_inicial_grid = date("Y-m-d");
-            $model->data_hora_final_grid = date("Y-m-d");
-        }
-        
-        $headers = $oFinanceiroForm->getHeadersRelatorio();
-        $this->exportarRelatorio($model->search(), 'Relatório Financeiro - ', $headers, date('YmdHis') . '_relatorio_financeiro.csv');
-        
-        $oLogCaixa = new LogCaixa;
-        $aValoresCaixa = $oLogCaixa->getValores();
-        
         $this->render('admin', array(
             'model' => $model,
-            'oTotalCompras' => $model->getTotalCompras(),
-            'oTotalDespesas' => $model->getTotalDespesas(),
-            'oTotalOrdemServico' => $model->getTotalOrdemServico(),
-            'oTotalOrdemServicoDinheiro' => $model->getTotalOrdemServicoDinheiro(),
-            'oTotalOrdemServicoDinheiroParcial' => $model->getTotalOrdemServicoDinheiro($aValoresCaixa['data_inicio']),
-            'oTotalOrdemServicoCartaoCredito' => $model->getTotalOrdemServicoCartaoCredito(),
-            'oTotalOrdemServicoCartaoDebito' => $model->getTotalOrdemServicoCartaoDebito(),
-            'exibeFormularioBusca' => $oSearchForm->checaRequisicaoVazia(),
-            'oFinanceiroForm' => $oFinanceiroForm,
-            'aValoresCaixa' => $aValoresCaixa,
         ));
     }
 
@@ -150,11 +134,11 @@ class FinanceiroController extends Controller {
      * Returns the data model based on the primary key given in the GET variable.
      * If the data model is not found, an HTTP exception will be raised.
      * @param integer $id the ID of the model to be loaded
-     * @return Financeiro the loaded model
+     * @return LogCaixa the loaded model
      * @throws CHttpException
      */
     public function loadModel($id) {
-        $model = Financeiro::model()->findByPk($id);
+        $model = LogCaixa::model()->findByPk($id);
         if ($model === null)
             throw new CHttpException(404, 'The requested page does not exist.');
         return $model;
@@ -162,10 +146,10 @@ class FinanceiroController extends Controller {
 
     /**
      * Performs the AJAX validation.
-     * @param Financeiro $model the model to be validated
+     * @param LogCaixa $model the model to be validated
      */
     protected function performAjaxValidation($model) {
-        if (isset($_POST['ajax']) && $_POST['ajax'] === 'financeiro-form') {
+        if (isset($_POST['ajax']) && $_POST['ajax'] === 'log-caixa-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
         }

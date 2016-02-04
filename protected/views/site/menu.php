@@ -10,6 +10,7 @@ $this->widget('bootstrap.widgets.TbNavbar', array(
             'items' => array(
                 array('label' => 'Home', 'url' => array('site/index')),
                 array('label' => 'Cadastro', 'items' => array(
+                        array('label' => 'Caixa', 'url' => array('logCaixa/admin'),'visible' => Yii::app()->user->checkAccess('logCaixa/admin')),
                         array('label' => 'Clientes', 'url' => array('cliente/admin'), 'visible' => Yii::app()->user->checkAccess('cliente/admin')),
                         array('label' => 'Compras', 'url' => array('compra/admin'), 'visible' => Yii::app()->user->checkAccess('compra/admin')),
                         array('label' => 'Cores', 'url' => array('cor/admin'), 'visible' => Yii::app()->user->checkAccess('cor/admin')),

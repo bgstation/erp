@@ -47,9 +47,17 @@ class Financeiro extends CActiveRecord {
             array('tipo_item, tipo_item_id, parcelas, status', 'numerical', 'integerOnly' => true),
             array('descricao, usuario', 'length', 'max' => 200),
             array('valor', 'length', 'max' => 10),
+            array('valor', 'tratarValor'),
             array('data_hora, data_hora_inicial, data_hora_final, data_hora_inicial_grid, data_hora_final_grid, titulo_tipo_item, titulo_tipo_item_id', 'safe'),
             array('id, tipo_item, tipo_item_id, descricao, valor, parcelas, usuario, data_hora, status', 'safe', 'on' => 'search'),
         );
+    }
+    
+    public function tratarValor() {
+        if (!empty($this->valor)) {
+            $valor = str_replace('.', '', $this->valor);
+            $this->valor = str_replace(',', '.', $valor);
+        }
     }
 
     /**

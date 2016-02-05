@@ -36,8 +36,16 @@ class OrdemServicoTipoPagamento extends CActiveRecord {
         return array(
             array('ordem_servico_id, forma_pagamento_id, parcelas', 'numerical', 'integerOnly' => true),
             array('valor', 'length', 'max' => 10),
+            array('valor', 'tratarValor'),
             array('id, ordem_servico_id, forma_pagamento_id, parcelas, valor', 'safe', 'on' => 'search'),
         );
+    }
+    
+    public function tratarValor() {
+        if (!empty($this->valor)) {
+            $valor = str_replace('.', '', $this->valor);
+            $this->valor = str_replace(',', '.', $valor);
+        }
     }
 
     /**

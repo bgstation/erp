@@ -22,6 +22,7 @@ class Cliente extends CActiveRecord {
         'f' => 'Feminino',
         'm' => 'Masculino',
     );
+    public $placa;
 
     /**
      * @return string the associated database table name
@@ -43,7 +44,7 @@ class Cliente extends CActiveRecord {
             array('telefone_fixo, celular, complemento', 'length', 'max' => 20),
             array('nome, celular', 'required'),
             array('cpf, email', 'unique'),
-            array('id, email, nome, cpf, sexo, telefone_fixo, celular, endereco, numero, complemento, data_cadastro', 'safe', 'on' => 'search'),
+            array('id, email, nome, cpf, sexo, telefone_fixo, celular, endereco, numero, complemento, data_cadastro, placa', 'safe', 'on' => 'search'),
 //            array('nome', 'validarNome'),
         );
     }
@@ -96,6 +97,7 @@ class Cliente extends CActiveRecord {
             'numero' => 'Numero',
             'complemento' => 'Complemento',
             'data_cadastro' => 'Data Cadastro',
+            'placa' => 'Placa',
         );
     }
 
@@ -127,6 +129,13 @@ class Cliente extends CActiveRecord {
         $criteria->compare('numero', $this->numero);
         $criteria->compare('complemento', $this->complemento, true);
         $criteria->compare('data_cadastro', $this->data_cadastro, true);
+
+        if (!empty($this->placa)) {
+            $oClientesCarros = ClienteCarro::model()->findAll(array(
+               'condition' => 'placa like "%'.$this->placa.'%"', 
+            ));
+            $criteria->addCondition('t.id in ('.  implode(',', CHtml::listData($oClientesCarros, 'id', 'id')).')');
+        }
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

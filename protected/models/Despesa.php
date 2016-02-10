@@ -64,11 +64,12 @@ class Despesa extends CActiveRecord {
         if ($this->isNewRecord && !$this->especial) {
             $oFinanceiro = new Financeiro;
             $oFinanceiro->salvar(3, $this);
-        } else if ($this->excluido == 1 & !$this->especial) {
+        } else if ($this->excluido == 1 && !$this->especial) {
             $oFinanceiro = Financeiro::model()->findByAttributes(array(
                 'tipo_item' => 3,
                 'tipo_item_id' => $this->id,
             ));
+            $oFinanceiro->scenario = 'cancelar';
             $oFinanceiro->salvar(3, $this, null, 1);
         }
         parent::afterSave();

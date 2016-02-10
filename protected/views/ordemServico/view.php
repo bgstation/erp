@@ -129,5 +129,19 @@ $this->widget('zii.widgets.CDetailView', array(
     <?php endif; ?>
     <?php if (Yii::app()->user->checkAccess('ordemServico/create')) : ?>
         <li><a class="btn" href="<?= $this->createUrl('create') ?>"><?= Yii::t('site', 'Abrir Nova Ordem de Serviço') ?></a></li>
-        <?php endif; ?>
+    <?php endif; ?>
+    <li><a class="btn" href="#" onclick="imprimirOS();
+            return false;"><?= Yii::t('site', 'Abrir Nova Ordem de Serviço') ?></a></li>
 </ul>
+
+<div >
+    
+</div>
+
+<script>
+
+    var imprimirOS = function () {
+        
+    }
+
+</script>

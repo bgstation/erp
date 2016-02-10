@@ -6,11 +6,11 @@ class FinanceiroForm extends CFormModel {
         $headers = array(
             'titulo_tipo_item',
             'descricao',
-            'status',
             'valor',
             'parcelas',
             'usuario',
-            'datahora',
+            'data_hora',
+            'titulo_status',
         );
         return $headers;
     }

@@ -22,6 +22,7 @@ class Financeiro extends CActiveRecord {
     public $data_hora_final_grid;
     public $titulo_tipo_item;
     public $titulo_tipo_item_id;
+    public $titulo_status;
     public $aTiposItens = array(
         1 => 'Ordem de serviço',
         2 => 'Compra',
@@ -47,8 +48,8 @@ class Financeiro extends CActiveRecord {
             array('tipo_item, tipo_item_id, parcelas, status', 'numerical', 'integerOnly' => true),
             array('descricao, usuario', 'length', 'max' => 200),
             array('valor', 'length', 'max' => 10),
-            array('valor', 'tratarValor'),
-            array('data_hora, data_hora_inicial, data_hora_final, data_hora_inicial_grid, data_hora_final_grid, titulo_tipo_item, titulo_tipo_item_id', 'safe'),
+            array('valor', 'tratarValor', 'except' => 'cancelar'),
+            array('data_hora, data_hora_inicial, data_hora_final, data_hora_inicial_grid, data_hora_final_grid, titulo_tipo_item, titulo_tipo_item_id, titulo_status', 'safe'),
             array('id, tipo_item, tipo_item_id, descricao, valor, parcelas, usuario, data_hora, status', 'safe', 'on' => 'search'),
         );
     }
@@ -85,6 +86,7 @@ class Financeiro extends CActiveRecord {
             'usuario' => 'Usuário',
             'data_hora' => 'Data',
             'status' => 'Status',
+            'titulo_status' => 'Status',
         );
     }
 
@@ -131,7 +133,11 @@ class Financeiro extends CActiveRecord {
                                 WHEN 1 THEN "Ordem de Serviço"
                                 WHEN 2 THEN "Compra"
                                 WHEN 3 THEN "Despesa"
-                             END as titulo_tipo_item';
+                             END as titulo_tipo_item, 
+                             CASE t.status
+                                WHEN 0 THEN "Ativo"
+                                WHEN 1 THEN "Cancelado"
+                             END as titulo_status';
 
         $criteria->compare('t.id', $this->id);
         $criteria->compare('tipo_item', $this->tipo_item);

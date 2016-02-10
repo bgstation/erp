@@ -15,6 +15,11 @@
     ));
     ?>
     <?= $form->error($model, 'cliente_id') ?>
+    <?php if (Yii::app()->user->checkAccess('cliente/create')): ?>
+        <a href="<?= Yii::app()->createUrl('cliente/create') ?>" title="Adicionar novo cliente.">
+            <i class="fa fa-plus-square"></i>
+        </a>
+    <?php endif ?>
 </div>
 
 <div class="row oculta">

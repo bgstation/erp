@@ -58,6 +58,12 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
         'nome',
         'email',
         'cpf',
+        'celular',
+        array(
+            'name' => 'placa',
+            'value' => '$data->placa',
+        ),
+//        'telefone_fixo',
 //        array(
 //            'header'  => '',
 //            'type'  => 'raw',

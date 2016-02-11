@@ -160,6 +160,8 @@ class Financeiro extends CActiveRecord {
         }
         $criteria->with = array('ordemServico', 'compra', 'despesa');
         
+        $criteria->order = 't.id DESC';
+        
         return $criteria;
     }
 

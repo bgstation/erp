@@ -59,25 +59,26 @@ class OrdemServicoItem extends CActiveRecord {
         );
     }
 
-    public function scopes() {
-        return array(
-            'naoExcluido' => array(
-                'condition' => 't.excluido = false'
-            ),
-        );
-    }
-
     /**
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'ordem_servico_id' => 'Ordem Serviço',
+            'ordem_servico_id' => 'Nº Ordem Serviço',
             'tipo_item_id' => 'Tipo do Item',
             'item_id' => 'Item',
             'observacao' => 'Observação',
             'excluido' => 'Excluído',
+            'preco' => 'Preço',
+        );
+    }
+    
+    public function scopes() {
+        return array(
+            'naoExcluido' => array(
+                'condition' => 't.excluido = false'
+            ),
         );
     }
 
@@ -182,6 +183,10 @@ class OrdemServicoItem extends CActiveRecord {
                 }
             }
         }
+    }
+    
+    public function getTituloItem() {
+        return $this->tipo_item_id == OrdemServicoItem::PRODUTO ? $this->produto->titulo : $this->servico->titulo;
     }
 
 }

@@ -10,6 +10,8 @@
  * @property integer $item_id
  * @property string $observacao
  * @property integer $excluido
+ * @property string $datahora_insercao
+ * @property string $datahora_ultima_atualizacao
  */
 
 class OrdemServicoItem extends CActiveRecord {
@@ -36,7 +38,7 @@ class OrdemServicoItem extends CActiveRecord {
     public function rules() {
         return array(
             array('ordem_servico_id, tipo_item_id, item_id, excluido', 'numerical', 'integerOnly' => true),
-            array('observacao', 'safe'),
+            array('observacao, datahora_insercao, datahora_ultima_atualizacao', 'safe'),
             array('preco', 'tratarPreco', 'except' => 'alteracao'),
             array('id, ordem_servico_id, tipo_item_id, item_id, observacao, excluido', 'safe', 'on' => 'search'),
         );
@@ -47,6 +49,14 @@ class OrdemServicoItem extends CActiveRecord {
             $preco = str_replace('.', '', $this->preco);
             $this->preco = str_replace(',', '.', $preco);
         }
+    }
+    
+    public function beforeSave() {
+        if ($this->isNewRecord) {
+            $this->datahora_insercao = new CDbExpression('NOW()');
+        }
+        $this->datahora_ultima_atualizacao = new CDbExpression('NOW()');
+        return parent::beforeSave();
     }
 
     /**
@@ -105,7 +115,6 @@ class OrdemServicoItem extends CActiveRecord {
         $criteria->compare('item_id', $this->item_id);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
-
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

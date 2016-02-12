@@ -155,19 +155,5 @@ class OrdemServicoItemController extends Controller {
             Yii::app()->end();
         }
     }
-    
-    public function actionAtualizarPreco() {
-        $model = OrdemServicoItem::model()->findAll(array(
-            'condition' => "preco is null OR preco = ''"
-        ));
-        foreach ($model as $m) {
-            if ($m->tipo_item_id == OrdemServicoItem::PRODUTO) {
-                $m->preco = $m->produto->preco;
-            } else if ($m->tipo_item_id == OrdemServicoItem::SERVICO) {
-                $m->preco = $m->servico->preco;
-            }
-            $m->save();
-        }
-    }
 
 }

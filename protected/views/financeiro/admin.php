@@ -130,7 +130,8 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
         array(
             'name' => 'data_hora',
             'filter' => $intervaloDataPedido,
-            'value' => '!empty($data->data_hora) ? date("d/m/Y H:i:s", strtotime($data->data_hora)) : ""'
+            'value' => '!empty($data->data_hora) ? date("d/m/Y H:i:s", strtotime($data->data_hora)) : ""',
+            'visible' => Yii::app()->user->checkAccess("financeiro/adminFiltrarData"),
         ),
         array(
             'name' => 'status',

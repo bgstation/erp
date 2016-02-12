@@ -26,7 +26,7 @@ class OrdemServicoItemController extends Controller {
     public function accessRules() {
         return array(
             array('allow',
-                'actions' => array('index', 'view'),
+                'actions' => array('index', 'view', 'atualizarPreco'),
                 'users' => array('*'),
             ),
             array('allow',
@@ -149,6 +149,20 @@ class OrdemServicoItemController extends Controller {
         if (isset($_POST['ajax']) && $_POST['ajax'] === 'ordem-servico-item-form') {
             echo CActiveForm::validate($model);
             Yii::app()->end();
+        }
+    }
+    
+    public function actionAtualizarPreco() {
+        $model = OrdemServicoItem::model()->findAll(array(
+            'condition' => "preco is null OR preco = ''"
+        ));
+        foreach ($model as $m) {
+            if ($m->tipo_item_id == OrdemServicoItem::PRODUTO) {
+                $m->preco = $m->produto->preco;
+            } else if ($m->tipo_item_id == OrdemServicoItem::SERVICO) {
+                $m->preco = $m->servico->preco;
+            }
+            $m->save();
         }
     }
 

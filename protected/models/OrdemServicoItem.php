@@ -81,6 +81,8 @@ class OrdemServicoItem extends CActiveRecord {
             'observacao' => 'Observação',
             'excluido' => 'Excluído',
             'preco' => 'Preço',
+            'datahora_insercao' => 'Inserção',
+            'datahora_ultima_atualizacao' => 'Última Atualização',
         );
     }
     
@@ -115,6 +117,10 @@ class OrdemServicoItem extends CActiveRecord {
         $criteria->compare('item_id', $this->item_id);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
+        $criteria->compare('datahora_insercao', $this->datahora_insercao, true);
+        $criteria->compare('datahora_ultima_atualizacao', $this->datahora_ultima_atualizacao, true);
+        
+        $criteria->order = 'datahora_insercao DESC';
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

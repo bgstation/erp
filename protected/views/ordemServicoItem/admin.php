@@ -54,6 +54,10 @@ $this->widget('bootstrap.widgets.TbGridView', array(
             'value' => '$data->getTituloItem()',
         ),
         'preco',
+        array(
+            'name' => 'datahora_insercao',
+            'value' => 'FormatHelper::dataHora($data->datahora_insercao)'
+        ),
     ),
 ));
 ?>

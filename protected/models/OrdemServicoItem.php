@@ -44,7 +44,7 @@ class OrdemServicoItem extends CActiveRecord {
             array('ordem_servico_id, tipo_item_id, item_id, excluido', 'numerical', 'integerOnly' => true),
             array('observacao, datahora_insercao, datahora_ultima_atualizacao, data_hora_inicial, data_hora_final, data_hora_inicial_grid,'
                 . 'data_hora_final_grid, titulo_tipo_item', 'safe'),
-            array('preco', 'tratarPreco', 'except' => 'alteracao'),
+            array('preco', 'tratarPreco', 'except' => 'alteracao, produto_existente'),
             array('id, ordem_servico_id, tipo_item_id, item_id, observacao, excluido', 'safe', 'on' => 'search'),
         );
     }
@@ -187,9 +187,9 @@ class OrdemServicoItem extends CActiveRecord {
         if (!empty($aDados['preco'])) {
             $model->preco = $aDados['preco'];
         } else {
+            $model->scenario = 'produto_existente';
             $model->preco = $model->tipo_item_id == self::PRODUTO ? $model->produto->preco : $model->servico->preco;
         }
-        $model->preco = !empty($aDados['preco']) ? $aDados['preco'] : null;
         if ($model->save() && $aDados['id'] == self::ITEM_NAO_CADASTRADO && !empty($aDados)) {
             $oLogItemNaoCadastrado = new LogItemNaoCadastrado;
             $oLogItemNaoCadastrado->ordem_servico_item_id = $model->id;

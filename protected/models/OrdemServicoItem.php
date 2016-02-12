@@ -184,6 +184,11 @@ class OrdemServicoItem extends CActiveRecord {
         $model->ordem_servico_id = $this->ordem_servico_id;
         $model->tipo_item_id = $tipoItem;
         $model->item_id = $aDados['id'];
+        if (!empty($aDados['preco'])) {
+            $model->preco = $aDados['preco'];
+        } else {
+            $model->preco = $model->tipo_item_id == self::PRODUTO ? $model->produto->preco : $model->servico->preco;
+        }
         $model->preco = !empty($aDados['preco']) ? $aDados['preco'] : null;
         if ($model->save() && $aDados['id'] == self::ITEM_NAO_CADASTRADO && !empty($aDados)) {
             $oLogItemNaoCadastrado = new LogItemNaoCadastrado;

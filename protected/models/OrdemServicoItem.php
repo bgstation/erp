@@ -15,6 +15,11 @@
  */
 
 class OrdemServicoItem extends CActiveRecord {
+    
+    public $data_hora_inicial;
+    public $data_hora_final;
+    public $data_hora_inicial_grid;
+    public $data_hora_final_grid;
 
     public $aTipoItem = array(
         1 => 'Produto',
@@ -38,7 +43,8 @@ class OrdemServicoItem extends CActiveRecord {
     public function rules() {
         return array(
             array('ordem_servico_id, tipo_item_id, item_id, excluido', 'numerical', 'integerOnly' => true),
-            array('observacao, datahora_insercao, datahora_ultima_atualizacao', 'safe'),
+            array('observacao, datahora_insercao, datahora_ultima_atualizacao, data_hora_inicial, data_hora_final, data_hora_inicial_grid,
+                   data_hora_final_grid', 'safe'),
             array('preco', 'tratarPreco', 'except' => 'alteracao'),
             array('id, ordem_servico_id, tipo_item_id, item_id, observacao, excluido', 'safe', 'on' => 'search'),
         );
@@ -119,6 +125,16 @@ class OrdemServicoItem extends CActiveRecord {
         $criteria->compare('excluido', $this->excluido);
         $criteria->compare('datahora_insercao', $this->datahora_insercao, true);
         $criteria->compare('datahora_ultima_atualizacao', $this->datahora_ultima_atualizacao, true);
+        
+        if (!empty($this->data_hora_inicial) && !empty($this->data_hora_final)) {
+            $this->data_hora_inicial_grid = $this->data_hora_inicial;
+            $this->data_hora_final_grid = $this->data_hora_final;
+            $criteria->addBetweenCondition('date(t.datahora_insercao)', $this->data_hora_inicial, $this->data_hora_final);
+        } else if (!empty($this->data_hora_inicial_grid) && !empty($this->data_hora_final_grid)) {
+            $this->data_hora_inicial = $this->data_hora_inicial_grid;
+            $this->data_hora_final = $this->data_hora_final_grid;
+            $criteria->addBetweenCondition('date(t.datahora_insercao)', $this->data_hora_inicial, $this->data_hora_final);
+        }
         
         $criteria->order = 'datahora_insercao DESC';
 

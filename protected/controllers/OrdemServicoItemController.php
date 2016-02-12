@@ -115,11 +115,15 @@ class OrdemServicoItemController extends Controller {
         $model = new OrdemServicoItem('search');
         $model->unsetAttributes();
         $oSearchForm = new SearchForm();
+        $oOrdemServicoItemForm = new OrdemServicoItemForm();
 
         if (isset($_GET['OrdemServicoItem'])) {
             $model->attributes = $_GET['OrdemServicoItem'];
-            $oSearchForm->request = $_GET['Financeiro'];
+            $oSearchForm->request = $_GET['OrdemServicoItem'];
         }
+        
+        $headers = $oOrdemServicoItemForm->getHeadersRelatorio();
+        $this->exportarRelatorio($model->search(), 'Relatório de Itens das Ordens de Serviço - ', $headers, date('YmdHis') . '_relatorio_itens_ordens_servico.csv');
 
         $this->render('admin', array(
             'model' => $model,

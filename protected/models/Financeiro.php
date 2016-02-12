@@ -48,18 +48,18 @@ class Financeiro extends CActiveRecord {
             array('tipo_item, tipo_item_id, parcelas, status', 'numerical', 'integerOnly' => true),
             array('descricao, usuario', 'length', 'max' => 200),
             array('valor', 'length', 'max' => 10),
-            array('valor', 'tratarValor', 'except' => 'cancelar'),
+//            array('valor', 'tratarValor', 'except' => 'cancelar'),
             array('data_hora, data_hora_inicial, data_hora_final, data_hora_inicial_grid, data_hora_final_grid, titulo_tipo_item, titulo_tipo_item_id, titulo_status', 'safe'),
             array('id, tipo_item, tipo_item_id, descricao, valor, parcelas, usuario, data_hora, status', 'safe', 'on' => 'search'),
         );
     }
     
-    public function tratarValor() {
-        if (!empty($this->valor)) {
-            $valor = str_replace('.', '', $this->valor);
-            $this->valor = str_replace(',', '.', $valor);
-        }
-    }
+//    public function tratarValor() {
+//        if (!empty($this->valor)) {
+//            $valor = str_replace('.', '', $this->valor);
+//            $this->valor = str_replace(',', '.', $valor);
+//        }
+//    }
 
     /**
      * @return array relational rules.
@@ -159,6 +159,8 @@ class Financeiro extends CActiveRecord {
             $criteria->addBetweenCondition('date(t.data_hora)', $this->data_hora_inicial, $this->data_hora_final);
         }
         $criteria->with = array('ordemServico', 'compra', 'despesa');
+        
+        $criteria->order = 't.id DESC';
         
         return $criteria;
     }

@@ -58,7 +58,7 @@ $this->widget('bootstrap.widgets.TbGridView', array(
         ),
         array(
             'header' => 'Valor',
-            'value' => 'RPFormat::valorMonetario($data->getValorTotal())',
+            'value' => 'RPFormat::valorMonetario($data->getValorTotal(true))',
         ),
         array(
             'header' => 'Status',

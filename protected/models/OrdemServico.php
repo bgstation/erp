@@ -137,7 +137,7 @@ class OrdemServico extends CActiveRecord {
         return parent::model($className);
     }
 
-    public function getValorTotal() {
+    public function getValorTotal($desconto = false) {
         $valor_total = 0;
         if (!empty($this->ordemServicoItens)) {
             foreach ($this->ordemServicoItens as $item) {
@@ -156,6 +156,9 @@ class OrdemServico extends CActiveRecord {
                     ));
                     $valor_total = $valor_total + $oLogItemNaoCadastrado->preco;
                 }
+            }
+            if($desconto){
+                $valor_total = $valor_total - $this->desconto;
             }
         }
         return $valor_total;

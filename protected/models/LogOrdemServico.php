@@ -66,13 +66,13 @@ class LogOrdemServico extends CActiveRecord {
             }
         } else if ($this->status == self::CANCELADA) {
             $oFinanceiro = Financeiro::model()->findByAttributes(array(
-                'tipo_item' => 1,
+                'tipo_item' => Financeiro::ORDEM_SERVICO,
                 'tipo_item_id' => $this->ordem_servico_id,
             ));
 
-            $oFinanceiro->salvar(1, $this->ordemServico, $this->usuario->nome, 1);
+            $oFinanceiro->salvar(Financeiro::ORDEM_SERVICO, $this->ordemServico, $this->usuario->nome, 1);
             foreach ($this->ordemServico->ordemServicoItens as $item) {
-                if ($item->tipo_item_id == 1) {
+                if ($item->tipo_item_id == OrdemServicoItem::PRODUTO) {
                     $oLogRetiradaProduto = LogRetiradaProduto::model()->findByAttributes(array(
                         'ordem_servico_id' => $this->ordem_servico_id,
                         'produto_id' => $item->item_id,

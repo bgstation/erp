@@ -227,6 +227,12 @@ class OrdemServicoItem extends CActiveRecord {
     }
 
     public function getTituloItem() {
+        if ($this->item_id == 0) {
+            $oLogItemNaoCadastrado = LogItemNaoCadastrado::model()->findByAttributes(array(
+                'ordem_servico_item_id' => $this->id
+            ));
+            return $oLogItemNaoCadastrado->titulo;
+        }
         return $this->tipo_item_id == OrdemServicoItem::PRODUTO ? $this->produto->titulo : $this->servico->titulo;
     }
 

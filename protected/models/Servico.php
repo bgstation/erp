@@ -101,6 +101,19 @@ class Servico extends CActiveRecord {
             'criteria' => $criteria,
         ));
     }
+    
+    public function marcarComoExcluido() {
+        $transaction = Yii::app()->db->beginTransaction();
+        $this->excluido = true;
+        $return = $this->save();
+
+        if ($return) {
+            $transaction->commit();
+        } else {
+            $transaction->rollback();
+        }
+        return $return;
+    }
 
     /**
      * Returns the static model of the specified AR class.

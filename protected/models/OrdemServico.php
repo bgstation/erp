@@ -228,8 +228,16 @@ class OrdemServico extends CActiveRecord {
     }
 
     public function marcarExcluido() {
-        $this->excluido = 1;
-        $this->save();
+        $transaction = Yii::app()->db->beginTransaction();
+        $this->excluido = true;
+        $return = $this->save();
+
+        if ($return) {
+            $transaction->commit();
+        } else {
+            $transaction->rollback();
+        }
+        return $return;
     }
 
     public function getUrlUpdate() {

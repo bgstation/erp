@@ -87,7 +87,7 @@
     ?>
 </div>
 
-<script>
+<script type="text/javascript">
     var valorTotal = 0;
     var valorAtual;
 </script>

@@ -10,10 +10,16 @@
  * @property integer $item_id
  * @property string $observacao
  * @property integer $excluido
+ * @property string $datahora_insercao
+ * @property string $datahora_ultima_atualizacao
  */
-
 class OrdemServicoItem extends CActiveRecord {
 
+    public $data_hora_inicial;
+    public $data_hora_final;
+    public $data_hora_inicial_grid;
+    public $data_hora_final_grid;
+    public $titulo_tipo_item;
     public $aTipoItem = array(
         1 => 'Produto',
         2 => 'Serviço',
@@ -36,8 +42,9 @@ class OrdemServicoItem extends CActiveRecord {
     public function rules() {
         return array(
             array('ordem_servico_id, tipo_item_id, item_id, excluido', 'numerical', 'integerOnly' => true),
-            array('observacao', 'safe'),
-            array('preco', 'tratarPreco', 'except' => 'alteracao'),
+            array('observacao, datahora_insercao, datahora_ultima_atualizacao, data_hora_inicial, data_hora_final, data_hora_inicial_grid,'
+                . 'data_hora_final_grid, titulo_tipo_item', 'safe'),
+            array('preco', 'tratarPreco', 'except' => 'alteracao, produto_existente'),
             array('id, ordem_servico_id, tipo_item_id, item_id, observacao, excluido', 'safe', 'on' => 'search'),
         );
     }
@@ -47,6 +54,14 @@ class OrdemServicoItem extends CActiveRecord {
             $preco = str_replace('.', '', $this->preco);
             $this->preco = str_replace(',', '.', $preco);
         }
+    }
+
+    public function beforeSave() {
+        if ($this->isNewRecord) {
+            $this->datahora_insercao = new CDbExpression('NOW()');
+        }
+        $this->datahora_ultima_atualizacao = new CDbExpression('NOW()');
+        return parent::beforeSave();
     }
 
     /**
@@ -59,25 +74,28 @@ class OrdemServicoItem extends CActiveRecord {
         );
     }
 
-    public function scopes() {
-        return array(
-            'naoExcluido' => array(
-                'condition' => 't.excluido = false'
-            ),
-        );
-    }
-
     /**
      * @return array customized attribute labels (name=>label)
      */
     public function attributeLabels() {
         return array(
             'id' => 'ID',
-            'ordem_servico_id' => 'Ordem Serviço',
+            'ordem_servico_id' => 'Nº Ordem Serviço',
             'tipo_item_id' => 'Tipo do Item',
             'item_id' => 'Item',
             'observacao' => 'Observação',
             'excluido' => 'Excluído',
+            'preco' => 'Preço',
+            'datahora_insercao' => 'Inserção',
+            'datahora_ultima_atualizacao' => 'Última Atualização',
+        );
+    }
+
+    public function scopes() {
+        return array(
+            'naoExcluido' => array(
+                'condition' => 't.excluido = false'
+            ),
         );
     }
 
@@ -98,13 +116,32 @@ class OrdemServicoItem extends CActiveRecord {
 
         $criteria = new CDbCriteria;
 
+        $criteria->select = '*,
+                             CASE t.tipo_item_id
+                                WHEN 1 THEN "Produto"
+                                WHEN 2 THEN "Serviço"
+                             END as titulo_tipo_item';
+
         $criteria->compare('id', $this->id);
         $criteria->compare('ordem_servico_id', $this->ordem_servico_id);
         $criteria->compare('tipo_item_id', $this->tipo_item_id);
         $criteria->compare('item_id', $this->item_id);
         $criteria->compare('observacao', $this->observacao, true);
         $criteria->compare('excluido', $this->excluido);
+        $criteria->compare('datahora_insercao', $this->datahora_insercao, true);
+        $criteria->compare('datahora_ultima_atualizacao', $this->datahora_ultima_atualizacao, true);
 
+        if (!empty($this->data_hora_inicial) && !empty($this->data_hora_final)) {
+            $this->data_hora_inicial_grid = $this->data_hora_inicial;
+            $this->data_hora_final_grid = $this->data_hora_final;
+            $criteria->addBetweenCondition('date(t.datahora_insercao)', $this->data_hora_inicial, $this->data_hora_final);
+        } else if (!empty($this->data_hora_inicial_grid) && !empty($this->data_hora_final_grid)) {
+            $this->data_hora_inicial = $this->data_hora_inicial_grid;
+            $this->data_hora_final = $this->data_hora_final_grid;
+            $criteria->addBetweenCondition('date(t.datahora_insercao)', $this->data_hora_inicial, $this->data_hora_final);
+        }
+
+        $criteria->order = 'datahora_insercao DESC';
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
@@ -147,7 +184,12 @@ class OrdemServicoItem extends CActiveRecord {
         $model->ordem_servico_id = $this->ordem_servico_id;
         $model->tipo_item_id = $tipoItem;
         $model->item_id = $aDados['id'];
-        $model->preco = !empty($aDados['preco']) ? $aDados['preco'] : null;
+        if (!empty($aDados['preco'])) {
+            $model->preco = $aDados['preco'];
+        } else {
+            $model->scenario = 'produto_existente';
+            $model->preco = $model->tipo_item_id == self::PRODUTO ? $model->produto->preco : $model->servico->preco;
+        }
         if ($model->save() && $aDados['id'] == self::ITEM_NAO_CADASTRADO && !empty($aDados)) {
             $oLogItemNaoCadastrado = new LogItemNaoCadastrado;
             $oLogItemNaoCadastrado->ordem_servico_item_id = $model->id;
@@ -182,6 +224,16 @@ class OrdemServicoItem extends CActiveRecord {
                 }
             }
         }
+    }
+
+    public function getTituloItem() {
+        if ($this->item_id == 0) {
+            $oLogItemNaoCadastrado = LogItemNaoCadastrado::model()->findByAttributes(array(
+                'ordem_servico_item_id' => $this->id
+            ));
+            return $oLogItemNaoCadastrado->titulo;
+        }
+        return $this->tipo_item_id == OrdemServicoItem::PRODUTO ? $this->produto->titulo : $this->servico->titulo;
     }
 
 }

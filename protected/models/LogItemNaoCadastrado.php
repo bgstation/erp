@@ -10,6 +10,7 @@
  * @property string $preco
  * @property string $cadastrado
  * @property integer $usuario_id
+ * @property string $datahora_insercao
  */
 class LogItemNaoCadastrado extends CActiveRecord {
 
@@ -29,7 +30,7 @@ class LogItemNaoCadastrado extends CActiveRecord {
             array('titulo', 'length', 'max' => 200),
             array('preco', 'length', 'max' => 10),
             array('preco', 'tratarPreco', 'except' => 'alteracao'),
-            array('id, ordem_servico_item_id, titulo, preco, cadastrado, usuario_id, exibir', 'safe', 'on' => 'search'),
+            array('id, ordem_servico_item_id, titulo, preco, cadastrado, usuario_id, exibir, datahora_insercao', 'safe', 'on' => 'search'),
         );
     }
     
@@ -38,6 +39,13 @@ class LogItemNaoCadastrado extends CActiveRecord {
             $preco = str_replace('.', '', $this->preco);
             $this->preco = str_replace(',', '.', $preco);
         }
+    }
+    
+    public function beforeSave() {
+        if ($this->isNewRecord) {
+            $this->datahora_insercao = new CDbExpression('NOW()');
+        }
+        return parent::beforeSave();
     }
 
     /**
@@ -61,6 +69,7 @@ class LogItemNaoCadastrado extends CActiveRecord {
             'preco' => 'Preço',
             'cadastrado' => 'Cadastrado',
             'usuario_id' => 'Usuário Responsável',
+            'datahora_insercao' => 'Inserção',
         );
     }
     
@@ -99,6 +108,7 @@ class LogItemNaoCadastrado extends CActiveRecord {
         $criteria->compare('cadastrado', $this->cadastrado, true);
         $criteria->compare('usuario_id', $this->usuario_id);
         $criteria->compare('exibir', $this->exibir);
+        $criteria->compare('datahora_insercao', $this->datahora_insercao, true);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,

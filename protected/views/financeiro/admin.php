@@ -61,7 +61,7 @@ $('.search-form form').submit(function(){
 </div>
 
 <?php
-$intervaloDataPedido = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+$intervaloDataHora = $this->widget('zii.widgets.jui.CJuiDatePicker', array(
             'name' => 'Financeiro[data_hora_inicial_grid]',
             'language' => 'pt',
             'value' => $model->data_hora_inicial_grid,
@@ -129,8 +129,9 @@ $gridView = $this->widget('bootstrap.widgets.TbGridView', array(
         ),
         array(
             'name' => 'data_hora',
-            'filter' => $intervaloDataPedido,
-            'value' => '!empty($data->data_hora) ? date("d/m/Y H:i:s", strtotime($data->data_hora)) : ""'
+            'filter' => $intervaloDataHora,
+            'value' => '!empty($data->data_hora) ? date("d/m/Y H:i:s", strtotime($data->data_hora)) : ""',
+            'visible' => Yii::app()->user->checkAccess("financeiro/adminFiltrarData"),
         ),
         array(
             'name' => 'status',

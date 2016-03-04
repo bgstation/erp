@@ -97,7 +97,7 @@ class OrdemServicoController extends Controller {
             'oClientes' => $oClientes,
             'oOrdemServicoItem' => $oOrdemServicoItem,
             'valor_total' => $model->getValorTotal(),
-            'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
+            'oLogItemNaoCadastrado' => $oLogItemNaoCadastrado,
             'oServicos' => $oServicos,
             'oProdutos' => $oProdutos,
         ));

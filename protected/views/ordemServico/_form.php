@@ -44,7 +44,7 @@
                 'model' => $model,
                 'valor_total' => $valor_total,
                 'oOrdemServicoItem' => $oOrdemServicoItem,
-                'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
+                'oLogItemNaoCadastrado' => $oLogItemNaoCadastrado,
                 'oServicos' => $oServicos,
                 'oProdutos' => $oProdutos,
             ));

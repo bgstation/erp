@@ -20,7 +20,7 @@ $this->renderPartial('_form', array(
     'oClientes' => $oClientes,
     'oOrdemServicoItem' => $oOrdemServicoItem,
     'valor_total' => $valor_total,
-    'oLogItemNaoCadastrador' => $oLogItemNaoCadastrador,
+    'oLogItemNaoCadastrado' => $oLogItemNaoCadastrado,
     'oServicos' => $oServicos,
     'oProdutos' => $oProdutos,
 ));

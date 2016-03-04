@@ -46,7 +46,7 @@ class SiteController extends Controller {
      * when an action is not explicitly requested by users.
      */
     public function actionIndex() {
-        $oLogItemNaoCadastrado = LogItemNaoCadastrado::model()->naoCadastrado()->findAll();
+        $oLogItemNaoCadastrado = LogItemNaoCadastrado::model()->naoCadastrado()->exibir()->findAll();
 
         $oOrdemServico = new OrdemServico('search');
         $oOrdemServico->unsetAttributes();

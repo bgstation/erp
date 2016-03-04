@@ -69,7 +69,7 @@ class Despesa extends CActiveRecord {
                 'tipo_item' => 3,
                 'tipo_item_id' => $this->id,
             ));
-            $oFinanceiro->scenario = 'cancelar';
+//            $oFinanceiro->scenario = 'cancelar';
             $oFinanceiro->salvar(3, $this, null, 1);
         }
         parent::afterSave();

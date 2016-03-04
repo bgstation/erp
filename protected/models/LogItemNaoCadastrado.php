@@ -29,7 +29,7 @@ class LogItemNaoCadastrado extends CActiveRecord {
             array('titulo', 'length', 'max' => 200),
             array('preco', 'length', 'max' => 10),
             array('preco', 'tratarPreco', 'except' => 'alteracao'),
-            array('id, ordem_servico_item_id, titulo, preco, cadastrado, usuario_id', 'safe', 'on' => 'search'),
+            array('id, ordem_servico_item_id, titulo, preco, cadastrado, usuario_id, exibir', 'safe', 'on' => 'search'),
         );
     }
     
@@ -69,6 +69,9 @@ class LogItemNaoCadastrado extends CActiveRecord {
             'naoCadastrado' => array(
                 'condition' => 'cadastrado = false'
             ),
+            'exibir' => array(
+                'condition' => 't.exibir = true'
+            ),
         );
     }
 
@@ -95,6 +98,7 @@ class LogItemNaoCadastrado extends CActiveRecord {
         $criteria->compare('preco', $this->preco, true);
         $criteria->compare('cadastrado', $this->cadastrado, true);
         $criteria->compare('usuario_id', $this->usuario_id);
+        $criteria->compare('exibir', $this->exibir);
 
         return new CActiveDataProvider($this, array(
             'criteria' => $criteria,
